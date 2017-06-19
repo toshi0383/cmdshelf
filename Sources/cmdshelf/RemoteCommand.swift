@@ -22,5 +22,25 @@ class RemoteCommand: Group {
             let config = try Configuration()
             config.cmdshelfYml.removeRemote(name: name)
         })
+        addCommand("run", "Run command from specified remote.", Commander.command(
+            Argument<String>("NAME", description: "remote name"),
+            Argument<String>("COMMAND", description: "command name alias")
+        ) { (remoteName, command) in
+            guard let name = command.components(separatedBy: " ").first else {
+                return
+            }
+            let parameters = command.components(separatedBy: " ").dropFirst().map { $0 }
+            let config = try Configuration()
+            try config.cloneRemotesIfNeeded()
+            // Note: performs no updates
+            guard let remote = config.cmdshelfYml.remotes.filter({ $0.name == remoteName }).first else {
+                throw CmdshelfError("Invalid remote name: \(remoteName))")
+            }
+            guard let commandName = try config.commandNames(for: remote.name).filter({ $0 == name }).first else {
+                throw CmdshelfError("Invalid command name for remote \(remote.name): \(name)")
+            }
+            let localPath = config.remoteWorkspacePath + remoteName + commandName
+            safeShellOutAndPrint(to: localPath.string, arguments: parameters)
+        })
     }
 }
