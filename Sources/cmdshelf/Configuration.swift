@@ -206,13 +206,19 @@ class Configuration {
                 return "  \($1):\n    \(commands)"
             }
             .joined(separator: "\n\n")
-        queuedPrintln("blob:")
-        queuedPrintln("  " + cmdshelfYml.blobs.map { "\($0.name): \($0.url)" }.joined(separator: "\n  "))
-        queuedPrintln("")
-        queuedPrintln("remote:")
-        queuedPrintln("\(allRemoteCommands)")
-        queuedPrintln("")
-        queuedPrintln("swiftpm:")
-        queuedPrintln("  " + cmdshelfYml.swiftpms.map { "\($0.name): \($0.url)" }.joined(separator: "\n  "))
+        if cmdshelfYml.blobs.isEmpty == false {
+            queuedPrintln("blob:")
+            queuedPrintln("  " + cmdshelfYml.blobs.map { "\($0.name): \($0.url)" }.joined(separator: "\n  "))
+            queuedPrintln("")
+        }
+        if cmdshelfYml.remotes.isEmpty == false {
+            queuedPrintln("remote:")
+            queuedPrintln("\(allRemoteCommands)")
+            queuedPrintln("")
+        }
+        if cmdshelfYml.swiftpms.isEmpty == false {
+            queuedPrintln("swiftpm:")
+            queuedPrintln("  " + cmdshelfYml.swiftpms.map { "\($0.name): \($0.url)" }.joined(separator: "\n  "))
+        }
     }
 }
