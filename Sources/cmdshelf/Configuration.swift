@@ -4,75 +4,10 @@ import Yams
 import ShellOut
 
 enum Const {
-    static let ymlPath = Path("~/.cmdshelf.yml").absolute()
+    fileprivate static let ymlPath = Path("~/.cmdshelf.yml").absolute()
     private static let workspacePath = Path("~/.cmdshelf").absolute()
-    static let remoteWorkspacePath = Const.workspacePath + "remote"
-    static let swiftpmWorkspacePath = Const.workspacePath + "swiftpm"
-}
-
-func commandToDictionary(_ commands: [Command]) -> [String: [String: String]] {
-    var r = [String: [String: String]]()
-    for c in commands {
-        r[c.name] = ["url": c.url]
-    }
-    return r
-}
-struct CmdshelfYaml: NodeRepresentable {
-    var commands: [Command] = []
-    var remotes: [Command] {
-        return commands.filter { $0.type == .remote }
-    }
-    var blobs: [Command] {
-        return commands.filter { $0.type == .blob }
-    }
-    var swiftpms: [Command] {
-        return commands.filter { $0.type == .swiftpm }
-    }
-    mutating func addRemote(name: String, url: String) {
-        commands.append(Command(name: name, url: url, type: .remote))
-    }
-    mutating func removeRemote(name: String) {
-        guard remotes.map({ $0.name }).contains(name) else {
-            return
-        }
-        commands.remove(name: name)
-        // TODO: clean cloned repo
-    }
-    mutating func addBlob(name: String, url: String) {
-        commands.append(Command(name: name, url: url, type: .blob))
-    }
-    mutating func removeBlob(name: String) {
-        guard blobs.map({ $0.name }).contains(name) else {
-            return
-        }
-        commands.remove(name: name)
-    }
-    mutating func addSwiftPM(name: String, url: String) {
-        commands.append(Command(name: name, url: url, type: .swiftpm))
-    }
-    mutating func removeSwiftpm(name: String) {
-        guard swiftpms.map({ $0.name }).contains(name) else {
-            return
-        }
-        commands.remove(name: name)
-        // TODO: clean cloned repo
-    }
-    func represented() throws -> Node {
-        return [
-            "remote": try Node(commandToDictionary(remotes)),
-            "blob": try Node(commandToDictionary(blobs)),
-            "swiftpm": try Node(commandToDictionary(swiftpms)),
-        ]
-    }
-    func blobURL(for name: String) -> String? {
-        return blobs.filter { $0.name == name }.flatMap { $0.url }.first
-    }
-    func remoteURL(for name: String) -> String? {
-        return remotes.filter { $0.name == name }.flatMap { $0.url }.first
-    }
-    func swiftpmURL(for name: String) -> String? {
-        return swiftpms.filter { $0.name == name }.flatMap { $0.url }.first
-    }
+    fileprivate static let remoteWorkspacePath = Const.workspacePath + "remote"
+    fileprivate static let swiftpmWorkspacePath = Const.workspacePath + "swiftpm"
 }
 
 class Configuration {
