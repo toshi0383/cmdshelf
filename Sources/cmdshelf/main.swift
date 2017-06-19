@@ -3,6 +3,8 @@ import PathKit
 import Foundation
 import ShellOut
 
+let version = "0.1.1"
+
 let group = Group { group in
     group.addCommand("remote", RemoteCommand())
     group.addCommand("list", command() {
@@ -66,4 +68,4 @@ let group = Group { group in
     })
 }
 
-group.run("0.1.0")
+group.run(version)
