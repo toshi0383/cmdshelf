@@ -11,6 +11,9 @@ enum Const {
 }
 
 class Configuration {
+    var remoteWorkspacePath: Path {
+        return Const.remoteWorkspacePath
+    }
     var cmdshelfYml: CmdshelfYaml = .init() {
         didSet {
             writeYml()
@@ -124,21 +127,26 @@ class Configuration {
             .filter { $0.isExecutable }
             .first
     }
+
+    func commandNames(for remoteName: String) throws -> [String] {
+        let repoPath = Const.remoteWorkspacePath + remoteName
+        return try repoPath.recursiveChildren()
+            .filter {
+                $0.isExecutable
+                    && $0.isDirectory == false
+                    && $0.components.contains(".git") == false
+            }
+            .map { $0.string.substring(from: (repoPath.string + "/").endIndex) }
+    }
+
     func printAllCommands() throws {
         try cloneRemotesIfNeeded()
         let allRemoteCommands = try cmdshelfYml.remotes
-            .map { (Const.remoteWorkspacePath + $0.name, $0.name) }
+            .map { $0.name }
             .flatMap {
-                let repoPath = $0
-                let commands = try $0.recursiveChildren()
-                    .filter {
-                        $0.isExecutable
-                            && $0.isDirectory == false
-                            && $0.components.contains(".git") == false
-                    }
-                    .map { $0.string.substring(from: (repoPath.string + "/").endIndex) }
+                let commands = try self.commandNames(for: $0)
                     .joined(separator: "\n    ")
-                return "  \($1):\n    \(commands)"
+                return "  \($0):\n    \(commands)"
             }
             .joined(separator: "\n\n")
         if cmdshelfYml.blobs.isEmpty == false {
