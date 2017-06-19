@@ -137,7 +137,6 @@ I'm planning to support homebrew in future, but please build from source-code fo
 
 # TODO
 - Cache feature for blob
-- Potential command name collision issue (for now, first one is picked)
 - Support Makefile...?
 - Branch support for remote
 - Leave SwiftPM git tag version in .cmdshelf.yml
