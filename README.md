@@ -1,6 +1,6 @@
 cmdshelf
 ---
-cmdshelf integrates your team's inherited awesome handy scripts like a book shelf.
+cmdshelf integrates your team's inherited awesome handy scripts like a bookshelf.
 
 # Requirements
 - Xcode8.3+
