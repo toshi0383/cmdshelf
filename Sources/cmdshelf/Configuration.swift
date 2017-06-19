@@ -65,7 +65,7 @@ class Configuration {
         try cloneURLIfNeeded(workspacePath: Const.remoteWorkspacePath, repositories: cmdshelfYml.remotes)
     }
     func cloneSwiftpmsIfNeeded() throws {
-        try cloneURLIfNeeded(workspacePath: Const.swiftpmWorkspacePath, repositories: cmdshelfYml.swiftpms, atLatestTag: true)
+        try cloneURLIfNeeded(workspacePath: Const.swiftpmWorkspacePath, repositories: cmdshelfYml.swiftpms)
     }
     func cloneSwiftpmIfNeeded(repository: Repository) throws {
         let workspace = Const.swiftpmWorkspacePath + repository.name
@@ -108,14 +108,11 @@ class Configuration {
             }
         }
     }
-    private func cloneURLIfNeeded(workspacePath: Path, repositories: [Repository], atLatestTag: Bool = false) throws {
+    private func cloneURLIfNeeded(workspacePath: Path, repositories: [Repository]) throws {
         for repo in repositories {
             let workspace = workspacePath + repo.name
             if workspace.isDirectory == false {
                 try shellOutAndPrint(to: "git clone \(repo.url) \(workspace.string)")
-                if atLatestTag {
-                    try shellOutAndPrint(to: "cd \(workspace.string); git checkout $(git describe --tags)")
-                }
             }
         }
     }
