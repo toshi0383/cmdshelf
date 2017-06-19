@@ -19,6 +19,10 @@ let package = Package(
             deps += [
                 .Package(url: "https://github.com/krzysztofzablocki/Sourcery.git", majorVersion: 0, minor: 6),
             ]
+        } else {
+            deps += [
+                .Package(url: "https://github.com/jpsim/Yams.git", majorVersion: 0)
+            ]
         }
         return deps
     }(),
