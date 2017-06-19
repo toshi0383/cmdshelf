@@ -14,7 +14,7 @@ class SwiftPMCommand: Group {
             Argument<String>("URL", description: "repository URL", validator: validURL)
         ) { (name, url) in
             let config = try Configuration()
-            config.cmdshelfYml.addSwiftPM(name: name, url: url)
+            config.cmdshelfYml.swiftpms.append(Repository(name: name, url: url, tag: nil, branch: nil))
         })
         addCommand("remove", "Remove a swiftpm.", Commander.command(
             Argument<String>("NAME", description: "command name")

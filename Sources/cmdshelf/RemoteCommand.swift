@@ -14,7 +14,7 @@ class RemoteCommand: Group {
             Argument<String>("URL", description: "script URL", validator: validURL)
         ) { (name, url) in
             let config = try Configuration()
-            config.cmdshelfYml.addRemote(name: name, url: url)
+            config.cmdshelfYml.remotes.append(Repository(name: name, url: url, tag: nil, branch: nil))
         })
         addCommand("remove", "Remove a remote.", Commander.command(
             Argument<String>("NAME", description: "command name")

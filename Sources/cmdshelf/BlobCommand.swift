@@ -14,7 +14,7 @@ class BlobCommand: Group {
             Argument<String>("URL", description: "script URL", validator: validURL)
         ) { (name, url) in
             let config = try Configuration()
-            config.cmdshelfYml.addBlob(name: name, url: url)
+            config.cmdshelfYml.blobs.append(Blob(name: name, url: url))
         })
         addCommand("remove", "Remove a blob.", Commander.command(
             Argument<String>("NAME", description: "command name")

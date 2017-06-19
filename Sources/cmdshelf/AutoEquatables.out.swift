@@ -24,12 +24,20 @@ fileprivate func compareArrays<T>(lhs: [T], rhs: [T], compare: (_ lhs: T, _ rhs:
 }
 
 // MARK: - AutoEquatable for classes, protocols, structs
-// MARK: - Command AutoEquatable
-extension Command: Equatable {} 
-internal func == (lhs: Command, rhs: Command) -> Bool {
+// MARK: - Blob AutoEquatable
+extension Blob: Equatable {} 
+internal func == (lhs: Blob, rhs: Blob) -> Bool {
     guard lhs.name == rhs.name else { return false }
     guard lhs.url == rhs.url else { return false }
-    guard lhs.type == rhs.type else { return false }
+    return true
+}
+// MARK: - Repository AutoEquatable
+extension Repository: Equatable {} 
+internal func == (lhs: Repository, rhs: Repository) -> Bool {
+    guard lhs.name == rhs.name else { return false }
+    guard lhs.url == rhs.url else { return false }
+    guard compareOptionals(lhs: lhs.tag, rhs: rhs.tag, compare: ==) else { return false }
+    guard compareOptionals(lhs: lhs.branch, rhs: rhs.branch, compare: ==) else { return false }
     return true
 }
 
