@@ -185,7 +185,10 @@ class Configuration {
         }
         if cmdshelfYml.swiftpms.isEmpty == false {
             queuedPrintln("swiftpm:")
-            queuedPrintln("  " + cmdshelfYml.swiftpms.map { "\($0.name): \($0.url)" }.joined(separator: "\n  "))
+            queuedPrintln("  " + cmdshelfYml.swiftpms.map {
+                let tagOrBranch: String = $0.tag ?? $0.branch ?? ""
+                return "\($0.name)(\(tagOrBranch)): \($0.url)"
+            }.joined(separator: "\n  "))
         }
     }
 }
