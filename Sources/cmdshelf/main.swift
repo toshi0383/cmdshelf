@@ -38,10 +38,10 @@ let group = Group { group in
         }
 
         // Search in swiftpm
-        if let command = config.cmdshelfYml.swiftpms.filter({ $0.name == name }).first {
-            try config.cloneSwiftpmIfNeeded(command: command)
+        if let repository = config.cmdshelfYml.swiftpms.find({ $0.name == name }) {
+            try config.cloneSwiftpmIfNeeded(repository: repository)
             // Note: performs no updates
-            try config.buildSwiftpm(command: command)
+            try config.buildSwiftpm(repository: repository)
             if let localPath = config.swiftpm(for: name) {
                 safeShellOutAndPrint(to: localPath.string, arguments: parameters)
                 return
