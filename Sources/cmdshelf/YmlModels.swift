@@ -3,10 +3,22 @@ import Yams
 
 struct Blob: NodeRepresentable, AutoEquatable {
     let name: String
-    let url: String
+    let url: String?
+    let localPath: String?
+    init(name: String, url: String? = nil, localPath: String? = nil) {
+        if (url == nil && localPath == nil) {
+            assertionFailure("url and localPath cannot be nil at the same time.")
+        }
+        self.name = name
+        self.url = url
+        self.localPath = localPath
+    }
     // MARK: NodeRepresentable
     func represented() throws -> Node {
-        return try Node([name: Node(["url": url])])
+        if let url = url {
+            return try Node([name: Node(["url": url])])
+        }
+        return try Node([name: Node(["localPath": localPath!])])
     }
 }
 

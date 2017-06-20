@@ -20,7 +20,14 @@ private func repositoriesToDictionary(_ repositories: [Repository]) -> [String: 
 private func blobsToDictionary(_ blobs: [Blob]) -> [String: [String: String]] {
     var r = [String: [String: String]]()
     for b in blobs {
-        r[b.name] = ["url": b.url]
+        var d: [String: String] = [:]
+        if let url = b.url {
+            d["url"] = url
+        }
+        if let localPath = b.localPath {
+            d["localPath"] = localPath
+        }
+        r[b.name] = d
     }
     return r
 }
@@ -46,6 +53,9 @@ struct CmdshelfYaml: NodeRepresentable {
             "blob": try Node(blobsToDictionary(blobs)),
             "swiftpm": try Node(repositoriesToDictionary(swiftpms)),
         ]
+    }
+    func blobLocalPath(for name: String) -> String? {
+        return blobs.filter { $0.name == name }.flatMap { $0.localPath }.first
     }
     func blobURL(for name: String) -> String? {
         return blobs.filter { $0.name == name }.flatMap { $0.url }.first
