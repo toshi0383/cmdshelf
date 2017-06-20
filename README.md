@@ -139,7 +139,6 @@ I'm planning to support homebrew in future, but please build from source-code fo
 - Cache feature for blob
 - Support Makefile...?
 - Branch support for remote
-- Leave SwiftPM git tag version in .cmdshelf.yml
 
 # Contribute
 Any contribution is welcomed.

@@ -53,9 +53,10 @@ let group = Group { group in
     group.addCommand("blob", BlobCommand())
     group.addCommand("update", command() {
         let config = try Configuration()
+        try config.cloneRemotesIfNeeded()
         try config.updateRemotes()
+        try config.cloneSwiftpmsIfNeeded()
         try config.updateSwiftpms()
-        try config.buildSwiftpms()
     })
     group.addCommand("swiftpm", SwiftPMCommand())
     group.addCommand("bootstrap", command() {
