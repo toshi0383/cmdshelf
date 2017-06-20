@@ -1,4 +1,10 @@
 ## master
+##### Enhancements
+
+* Print SwiftPM Version on `list` command  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#6](https://github.com/toshi0383/cmdshelf/pull/6)
+
 ##### Bugfix
 
 * Fix checking out wrong tag on SwiftPM update  
