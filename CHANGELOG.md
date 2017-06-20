@@ -1,4 +1,4 @@
-## master
+## 0.2.0
 * Safer `update` and improve logging  
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#3](https://github.com/toshi0383/cmdshelf/pull/3)
@@ -11,3 +11,4 @@
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#1](https://github.com/toshi0383/cmdshelf/pull/1)
 
+## 0.1.x (Initial)
