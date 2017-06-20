@@ -70,7 +70,7 @@ class Configuration {
     func cloneSwiftpmIfNeeded(repository: Repository) throws {
         let workspace = Const.swiftpmWorkspacePath + repository.name
         if workspace.isDirectory == false {
-            try shellOutAndPrint(to: "git clone \(repository.url) \(workspace.string)")
+            safeShellOutAndPrint(to: "git clone \(repository.url) \(workspace.string)")
         }
     }
     func buildSwiftpms() throws {
@@ -79,32 +79,45 @@ class Configuration {
         }
     }
     func buildSwiftpm(repository: Repository) throws {
+        queuedPrintln("[\(repository.name)] Building...")
         let workspace = Const.swiftpmWorkspacePath + repository.name
         guard workspace.isDirectory else {
             throw CmdshelfError("Swiftpm command: \(repository.name) not found.")
         }
-        try shellOutAndPrint(to: "cd \(workspace.string); swift build -c release")
+        do {
+            try shellOutAndPrint(to: "cd \(workspace.string); swift build -c release")
+        } catch let error as ShellOutError {
+            throw CmdshelfError("[ERROR] \(error.message)")
+        }
     }
     func updateSwiftpms() throws {
         for repo in cmdshelfYml.swiftpms {
-            let workspace = Const.swiftpmWorkspacePath + repo.name
-            guard workspace.isDirectory else {
-                throw CmdshelfError("Swiftpm command: \(repo.name) not found.")
-            }
-            let cdAndFetchTags = "cd \(workspace.string); git fetch --all --tag"
-            let gitDescribeTag = "git describe --tags"
-            if let tag = repo.tag {
-                try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
-            } else if let branch = repo.branch {
-                try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout origin/\(branch)")
-            } else {
-                // Checkout the latest tag
-                try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout $(\(gitDescribeTag))")
-                let tag = try shellOut(to: gitDescribeTag)
-                cmdshelfYml.swiftpms.remove { $0 == repo }
-                cmdshelfYml.swiftpms.append(
-                    Repository(name: repo.name, url: repo.url, tag: tag, branch: nil)
-                )
+            queuedPrintln("[\(repo.name)] Updating...")
+            do {
+                let workspace = Const.swiftpmWorkspacePath + repo.name
+                guard workspace.isDirectory else {
+                    throw CmdshelfError("Swiftpm command: \(repo.name) not found.")
+                }
+                let cdAndFetchTags = "cd \(workspace.string); git fetch --all --tag"
+                let gitDescribeTag = "git describe --tags"
+                if let tag = repo.tag {
+                    queuedPrintln("[\(repo.name)] Checking out tag: \(tag) ...")
+                    try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
+                } else if let branch = repo.branch {
+                    queuedPrintln("[\(repo.name)] Checking out branch: \(branch) ...")
+                    try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout origin/\(branch)")
+                } else {
+                    // Checkout the latest tag
+                    queuedPrintln("[\(repo.name)] Checking out the latest tag...")
+                    try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout $(\(gitDescribeTag))")
+                    let tag = try shellOut(to: gitDescribeTag)
+                    cmdshelfYml.swiftpms.remove { $0 == repo }
+                    cmdshelfYml.swiftpms.append(
+                        Repository(name: repo.name, url: repo.url, tag: tag, branch: nil)
+                    )
+                }
+            } catch let error as ShellOutError {
+                queuedPrintln(error.message) // Prints STDERR
             }
         }
     }
@@ -112,7 +125,8 @@ class Configuration {
         for repo in repositories {
             let workspace = workspacePath + repo.name
             if workspace.isDirectory == false {
-                try shellOutAndPrint(to: "git clone \(repo.url) \(workspace.string)")
+                queuedPrintln("[\(repo.name)] Cloning...")
+                safeShellOutAndPrint(to: "git clone \(repo.url) \(workspace.string)")
             }
         }
     }
