@@ -1,4 +1,4 @@
-## master
+## 0.2.1
 ##### Enhancements
 
 * Allow local path for blob  
