@@ -49,6 +49,8 @@ class Configuration {
                 for (name, dictionary) in blob {
                     if let url = dictionary["url"] {
                         cmdshelfYml.blobs.append(Blob(name: name, url: url))
+                    } else if let localPath = dictionary["localPath"] {
+                        cmdshelfYml.blobs.append(Blob(name: name, localPath: localPath))
                     }
                 }
             }
@@ -175,7 +177,7 @@ class Configuration {
             .joined(separator: "\n\n")
         if cmdshelfYml.blobs.isEmpty == false {
             queuedPrintln("blob:")
-            queuedPrintln("  " + cmdshelfYml.blobs.map { "\($0.name): \($0.url)" }.joined(separator: "\n  "))
+            queuedPrintln("  " + cmdshelfYml.blobs.map { "\($0.name): \($0.url ?? $0.localPath!)" }.joined(separator: "\n  "))
             queuedPrintln("")
         }
         if cmdshelfYml.remotes.isEmpty == false {

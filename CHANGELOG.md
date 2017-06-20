@@ -1,6 +1,10 @@
 ## master
 ##### Enhancements
 
+* Allow local path for blob  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#7](https://github.com/toshi0383/cmdshelf/pull/7)
+
 * Print SwiftPM Version on `list` command  
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#6](https://github.com/toshi0383/cmdshelf/pull/6)

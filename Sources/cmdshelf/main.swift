@@ -25,7 +25,10 @@ let group = Group { group in
             // TODO:
             //   if let localURL = config.cache(for: url) {
 
-            try shellOutAndPrint(to: "bash <(curl -s \"\(url)\")")
+            safeShellOutAndPrint(to: "bash <(curl -s \"\(url)\")")
+            return
+        } else if let localPath = config.cmdshelfYml.blobLocalPath(for: name) {
+            safeShellOutAndPrint(to: localPath, arguments: parameters)
             return
         }
 
