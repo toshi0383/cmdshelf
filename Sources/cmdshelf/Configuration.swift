@@ -99,7 +99,7 @@ class Configuration {
                     throw CmdshelfError("Swiftpm command: \(repo.name) not found.")
                 }
                 let cdAndFetchTags = "cd \(workspace.string); git fetch --all --tag"
-                let gitDescribeTag = "git describe --tags"
+                let gitDescribeTag = "cd \(workspace.string); git describe --tags --abbrev=0"
                 if let tag = repo.tag {
                     queuedPrintln("[\(repo.name)] Checking out tag: \(tag) ...")
                     try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
@@ -108,9 +108,9 @@ class Configuration {
                     try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout origin/\(branch)")
                 } else {
                     // Checkout the latest tag
-                    queuedPrintln("[\(repo.name)] Checking out the latest tag...")
-                    try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout $(\(gitDescribeTag))")
                     let tag = try shellOut(to: gitDescribeTag)
+                    queuedPrintln("[\(repo.name)] Checking out the latest tag \(tag) ...")
+                    try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
                     cmdshelfYml.swiftpms.remove { $0 == repo }
                     cmdshelfYml.swiftpms.append(
                         Repository(name: repo.name, url: repo.url, tag: tag, branch: nil)
