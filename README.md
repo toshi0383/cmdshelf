@@ -23,6 +23,11 @@ You can add a single file as a blob. Make sure the URL directly points at the sc
 $ cmdshelf blob add random https://gist.githubusercontent.com/toshi0383/32728879049e95db41ab801b1f055009/raw/e84fa02c4f9ac7e08b686cee248ab72198470c0b/-
 ```
 
+A blob can be a local path.
+```
+$ cmdshelf blob add random2 ~/scripts/other-random-script.sh
+```
+
 ## list
 You can see registered commands by using `list` sub-command.
 ```
@@ -139,8 +144,13 @@ I'm planning to support homebrew in future, but please build from source-code fo
 - Cache feature for blob
 - Support Makefile...?
 - Branch support for remote
+- Write Tests
 
 # Contribute
 Any contribution is welcomed.
 Feel free to open issue for bug reports, questions, or feature requests.
 
+To start developing, clone and run following.
+```
+make bootstrap
+```
