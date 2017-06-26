@@ -6,6 +6,11 @@ cmdshelf integrates your team's inherited awesome handy scripts like a bookshelf
 - Xcode8.3+
 - Swift3.1+
 
+# Why
+With cmdshelf, you can
+- execute any scripts intuitively without manually download and configuring `$PATH`.
+- store team's common scripts in a single configuration file called `.cmdshelf.yml`.
+
 # How to use
 
 cmdshelf
