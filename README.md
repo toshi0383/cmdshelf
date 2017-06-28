@@ -20,7 +20,6 @@ cmdshelf
 - update
 - blob
 - swiftpm
-- bootstrap
 
 ## blob
 You can add a single file as a blob. Make sure the URL directly points at the script. (Not a web page of gist, for example.)
@@ -127,12 +126,6 @@ remote:
     exercises/bob/example.sh
 $ cmdshelf run exercises/bob/example.sh
 Fine. Be that way!
-```
-
-I recommend you to run `bootstrap` sub-command at first time.
-This will clone and download all repositories and build SwiftPM executables.
-```
-$ cmdshelf bootstrap
 ```
 
 ## update
