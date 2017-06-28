@@ -1,3 +1,9 @@
+## master
+##### Bugfix
+* Fix remote updating process: git pull => fetch and checkout  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#8](https://github.com/toshi0383/cmdshelf/pull/8)
+
 ## 0.2.1
 ##### Enhancements
 
