@@ -60,16 +60,9 @@ let group = Group { group in
         try config.updateRemotes()
         try config.cloneSwiftpmsIfNeeded()
         try config.updateSwiftpms()
-    })
-    group.addCommand("swiftpm", SwiftPMCommand())
-    group.addCommand("bootstrap", command() {
-        let config = try Configuration()
-        try config.cloneRemotesIfNeeded()
-        try config.updateRemotes()
-        try config.cloneSwiftpmsIfNeeded()
-        try config.updateSwiftpms()
         try config.buildSwiftpms()
     })
+    group.addCommand("swiftpm", SwiftPMCommand())
 }
 
 group.run(version)
