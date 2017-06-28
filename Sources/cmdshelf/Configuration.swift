@@ -136,7 +136,8 @@ class Configuration {
         for repo in cmdshelfYml.remotes {
             let workspace = Const.remoteWorkspacePath + repo.name
             if workspace.isDirectory {
-                safeShellOutAndPrint(to: "cd \(workspace.string); git pull")
+                queuedPrintln("[\(repo.name)] Updating...")
+                safeShellOutAndPrint(to: "cd \(workspace.string); git fetch origin master; git checkout origin/master")
             }
         }
     }
