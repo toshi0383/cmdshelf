@@ -1,4 +1,9 @@
 ## master
+##### Breaking
+* Remove bootstrap sub-command  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#10](https://github.com/toshi0383/cmdshelf/pull/10)
+
 ##### Bugfix
 * Fix remote updating process: git pull => fetch and checkout  
   [Toshihiro Suzuki](https://github.com/toshi0383)
