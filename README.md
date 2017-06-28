@@ -140,10 +140,20 @@ If you need to update cloned repository, run `update` sub-command.
 Rebuild is performed for SwiftPM repos.
 
 # Install
-I'm planning to support homebrew in future, but please build from source-code for now.  
+## install.sh (beta)
+I've written install/release scripts for SwiftPM executable.  
+This should be the easiest way.
+```
+bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/ios/swiftpm/install.sh) cmdshelf
+```
+
+## Build from source
+
+Please build from source-code if `install.sh` didn't work.
 
 - Clone this repo and run `swift build -c release`.  
 - Executable will be created at `.build/release/cmdshelf`.
+- `mv .build/release/cmdshelf /usr/local/bin/`
 
 # TODO
 - Cache feature for blob
