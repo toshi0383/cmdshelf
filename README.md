@@ -133,12 +133,24 @@ If you need to update cloned repository, run `update` sub-command.
 Rebuild is performed for SwiftPM repos.
 
 # Install
-## install.sh (beta)
+## install.sh
 I've written install/release scripts for SwiftPM executable.  
 This should be the easiest way.
 ```
 bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) cmdshelf
 ```
+
+## brew tap (beta)
+cmdshelf is available via homebrew. Run following to install.
+```
+brew tap toshi0383/cmdshelf
+brew install cmdshelf
+```
+This runs install.sh behind the scene.
+
+brew exits with "Empty Installation" error, but install should succeed.  
+Anyone knows how to fix this? PR is appreciated.  
+https://github.com/toshi0383/homebrew-cmdshelf
 
 ## Build from source
 
