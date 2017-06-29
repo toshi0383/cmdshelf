@@ -1,4 +1,4 @@
-## master
+## 0.3.0
 ##### Breaking
 * Remove bootstrap sub-command  
   [Toshihiro Suzuki](https://github.com/toshi0383)
