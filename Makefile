@@ -25,4 +25,4 @@ install:
 release:
 	rm -rf .build/release
 	swift build -c release
-	cmdshelf run "swiftpm/release.sh cmdshelf"
+	cmdshelf run "swiftpm/release.sh cmdshelf libCYaml.dylib"
