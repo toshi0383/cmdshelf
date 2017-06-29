@@ -20,7 +20,7 @@ sourcery:
 
 # Needs toshi0383/scripts to be added to cmdshelf's remote
 install:
-	cmdshelf run "swiftpm/install.sh cmdshelf"
+	cmdshelf run "swiftpm/install.sh toshi0383/cmdshelf"
 
 release:
 	rm -rf .build/release
