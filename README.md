@@ -137,7 +137,7 @@ Rebuild is performed for SwiftPM repos.
 I've written install/release scripts for SwiftPM executable.  
 This should be the easiest way.
 ```
-bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) cmdshelf
+bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) toshi0383/cmdshelf
 ```
 
 ## brew tap (beta)
