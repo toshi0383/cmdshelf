@@ -1,3 +1,10 @@
+## master
+
+##### Enhancements
+* Deprecate swiftpm command  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#13](https://github.com/toshi0383/cmdshelf/pull/13)
+
 ## 0.3.0
 ##### Breaking
 * Remove bootstrap sub-command  

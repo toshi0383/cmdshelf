@@ -20,7 +20,7 @@ cmdshelf
 - run
 - update
 - blob
-- swiftpm
+- swiftpm (deprecated)
 
 ## blob
 You can add a single file as a blob. Make sure the URL directly points at the script. (Not a web page of gist, for example.)
@@ -75,7 +75,7 @@ You can add multiple remotes.
 $ cmdshelf remote add exercism-bash https://github.com/exercism/bash.git
 ```
 
-## Swift
+## Swift (deprecated)
 You can add your favorite Swift CLI app by using `swiftpm` sub-command.
 ```
 $ cmdshelf swiftpm add xcconfig-extractor https://github.com/toshi0383/xcconfig-extractor.git
@@ -103,9 +103,6 @@ remote:
 blob:
   random:
     url: https://gist.githubusercontent.com/toshi0383/32728879049e95db41ab801b1f055009/raw/e84fa02c4f9ac7e08b686cee248ab72198470c0b/-
-swiftpm:
-  xcconfig-extractor:
-    url: https://github.com/toshi0383/xcconfig-extractor.git
 ```
 
 Just put `~/.cmdshelf.yml` and you are ready to go.
