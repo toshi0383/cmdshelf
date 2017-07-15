@@ -1,6 +1,7 @@
-cmdshelf
----
+[![cmdshelf](https://github.com/toshi0383/assets/blob/master/cmdshelf/banner.png)](https://github.com/toshi0383/cmdshelf)
+
 cmdshelf integrates your team's inherited awesome handy scripts like a bookshelf.
+No need to deal with your `$PATH` any more.
 
 # Requirements
 - Xcode8.3+
@@ -174,3 +175,6 @@ To start developing, clone and run following.
 ```
 make bootstrap
 ```
+
+# Special Thanks to
+- My wife for creating a daruma icon.
