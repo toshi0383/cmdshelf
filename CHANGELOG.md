@@ -1,4 +1,4 @@
-## master
+## 0.3.1
 
 ##### Enhancements
 * Deprecate swiftpm command  
