@@ -175,3 +175,6 @@ To start developing, clone and run following.
 ```
 make bootstrap
 ```
+
+# Special Thanks to
+- My wife for creating a daruma icon.
