@@ -1,4 +1,5 @@
 import Foundation
+import Reporter
 import ShellOut
 
 func safeShellOutAndPrint(to: String, arguments: [String] = []) {
@@ -6,7 +7,7 @@ func safeShellOutAndPrint(to: String, arguments: [String] = []) {
         try shellOutAndPrint(to: to, arguments: arguments)
     } catch {
         let error = error as! ShellOutError
-        queuedPrintln(error.message) // Prints STDERR
+        queuedPrintlnError(error.message) // Prints STDERR
         queuedPrintln(error.output) // Prints STDOUT
     }
 }

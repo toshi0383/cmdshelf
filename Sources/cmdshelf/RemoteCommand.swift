@@ -1,6 +1,7 @@
 import Commander
 import PathKit
 import Foundation
+import Reporter
 
 class RemoteCommand: Group {
     override init() {

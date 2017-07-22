@@ -1,7 +1,8 @@
 import Foundation
 import PathKit
-import Yams
+import Reporter
 import ShellOut
+import Yams
 
 enum Const {
     fileprivate static let ymlPath = Path("~/.cmdshelf.yml").absolute()
@@ -25,7 +26,7 @@ class Configuration {
             let string = try Yams.serialize(node: node)
             try Const.ymlPath.write(string)
         } catch {
-            queuedPrintln(error)
+            queuedPrintlnError(error)
         }
     }
     init() throws {

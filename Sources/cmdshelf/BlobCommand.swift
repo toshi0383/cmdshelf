@@ -1,6 +1,7 @@
 import Commander
-import PathKit
 import Foundation
+import PathKit
+import Reporter
 
 class BlobCommand: Group {
     override init() {

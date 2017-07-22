@@ -1,6 +1,7 @@
 import Commander
 import PathKit
 import Foundation
+import Reporter
 import ShellOut
 
 let version = "0.3.1"
