@@ -1,3 +1,9 @@
+## master
+##### Enhancements
+* Colorful Output on warning and error  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#14](https://github.com/toshi0383/cmdshelf/pull/14)
+
 ## 0.3.1
 
 ##### Enhancements
