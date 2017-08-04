@@ -13,7 +13,7 @@ let group = Group { group in
         try config.printAllCommands()
     })
     group.addCommand("run", command(
-        Argument<String>("COMMAND", description: "command name alias")
+        Argument<String>("COMMAND", description: "command name alias double or single quoted when passing arguments. e.g. `cmdshelf run \"myscript --option someargument\"")
     ) { (command) in
         guard let name = command.components(separatedBy: " ").first else {
             return

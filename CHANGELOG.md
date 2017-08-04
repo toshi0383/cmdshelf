@@ -1,5 +1,9 @@
 ## master
 ##### Enhancements
+* Improve run command description  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#17](https://github.com/toshi0383/cmdshelf/pull/17)
+
 * Colorful Output on warning and error  
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#14](https://github.com/toshi0383/cmdshelf/pull/14)
