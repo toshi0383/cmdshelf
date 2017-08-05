@@ -41,7 +41,7 @@ class RemoteCommand: Group {
                 throw CmdshelfError("Invalid command name for remote \(remote.name): \(name)")
             }
             let localPath = config.remoteWorkspacePath + remoteName + commandName
-            safeShellOutAndPrint(to: localPath.string, arguments: parameters)
+            shellOutAndPrint(to: localPath.string, arguments: parameters)
         })
     }
 }

@@ -1,7 +1,6 @@
 import Foundation
 import PathKit
 import Reporter
-import ShellOut
 import Yams
 
 enum Const {
@@ -65,15 +64,15 @@ class Configuration {
         }
     }
     func cloneRemotesIfNeeded() throws {
-        try cloneURLIfNeeded(workspacePath: Const.remoteWorkspacePath, repositories: cmdshelfYml.remotes)
+        cloneURLIfNeeded(workspacePath: Const.remoteWorkspacePath, repositories: cmdshelfYml.remotes)
     }
     func cloneSwiftpmsIfNeeded() throws {
-        try cloneURLIfNeeded(workspacePath: Const.swiftpmWorkspacePath, repositories: cmdshelfYml.swiftpms)
+        cloneURLIfNeeded(workspacePath: Const.swiftpmWorkspacePath, repositories: cmdshelfYml.swiftpms)
     }
     func cloneSwiftpmIfNeeded(repository: Repository) throws {
         let workspace = Const.swiftpmWorkspacePath + repository.name
         if workspace.isDirectory == false {
-            safeShellOutAndPrint(to: "git clone \(repository.url) \(workspace.string)")
+            shellOutAndPrint(to: "git clone \(repository.url) \(workspace.string)")
         }
     }
     func buildSwiftpms() throws {
@@ -87,58 +86,52 @@ class Configuration {
         guard workspace.isDirectory else {
             throw CmdshelfError("Swiftpm command: \(repository.name) not found.")
         }
-        do {
-            try shellOutAndPrint(to: "cd \(workspace.string); swift build -c release")
-        } catch let error as ShellOutError {
-            throw CmdshelfError("[ERROR] \(error.message)")
-        }
+        shellOutAndPrint(to: "cd \(workspace.string); swift build -c release")
     }
     func updateSwiftpms() throws {
         for repo in cmdshelfYml.swiftpms {
             queuedPrintln("[\(repo.name)] Updating...")
-            do {
-                let workspace = Const.swiftpmWorkspacePath + repo.name
-                guard workspace.isDirectory else {
-                    throw CmdshelfError("Swiftpm command: \(repo.name) not found.")
+            let workspace = Const.swiftpmWorkspacePath + repo.name
+            guard workspace.isDirectory else {
+                throw CmdshelfError("Swiftpm command: \(repo.name) not found.")
+            }
+            let cdAndFetchTags = "cd \(workspace.string); git fetch --all --tag"
+            let gitDescribeTag = "cd \(workspace.string); git describe --tags --abbrev=0"
+            if let tag = repo.tag {
+                queuedPrintln("[\(repo.name)] Checking out tag: \(tag) ...")
+                shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
+            } else if let branch = repo.branch {
+                queuedPrintln("[\(repo.name)] Checking out branch: \(branch) ...")
+                shellOutAndPrint(to: "\(cdAndFetchTags); git checkout origin/\(branch)")
+            } else {
+                // Checkout the latest tag
+                guard let tag = shellOutAndGetResult(to: gitDescribeTag) else {
+                    throw CmdshelfError("Failed to get tag with command: \(gitDescribeTag)")
                 }
-                let cdAndFetchTags = "cd \(workspace.string); git fetch --all --tag"
-                let gitDescribeTag = "cd \(workspace.string); git describe --tags --abbrev=0"
-                if let tag = repo.tag {
-                    queuedPrintln("[\(repo.name)] Checking out tag: \(tag) ...")
-                    try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
-                } else if let branch = repo.branch {
-                    queuedPrintln("[\(repo.name)] Checking out branch: \(branch) ...")
-                    try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout origin/\(branch)")
-                } else {
-                    // Checkout the latest tag
-                    let tag = try shellOut(to: gitDescribeTag)
-                    queuedPrintln("[\(repo.name)] Checking out the latest tag \(tag) ...")
-                    try shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
-                    cmdshelfYml.swiftpms.remove { $0 == repo }
-                    cmdshelfYml.swiftpms.append(
-                        Repository(name: repo.name, url: repo.url, tag: tag, branch: nil)
-                    )
-                }
-            } catch let error as ShellOutError {
-                queuedPrintln(error.message) // Prints STDERR
+                queuedPrintln("[\(repo.name)] Checking out the latest tag \(tag) ...")
+                shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
+                cmdshelfYml.swiftpms.remove { $0 == repo }
+                cmdshelfYml.swiftpms.append(
+                    Repository(name: repo.name, url: repo.url, tag: tag, branch: nil)
+                )
             }
         }
     }
-    private func cloneURLIfNeeded(workspacePath: Path, repositories: [Repository]) throws {
+    private func cloneURLIfNeeded(workspacePath: Path, repositories: [Repository]) {
         for repo in repositories {
             let workspace = workspacePath + repo.name
             if workspace.isDirectory == false {
                 queuedPrintln("[\(repo.name)] Cloning...")
-                safeShellOutAndPrint(to: "git clone \(repo.url) \(workspace.string)")
+                shellOutAndPrint(to: "git clone \(repo.url) \(workspace.string)")
             }
         }
     }
-    func updateRemotes() throws {
+    func updateRemotes() {
         for repo in cmdshelfYml.remotes {
             let workspace = Const.remoteWorkspacePath + repo.name
             if workspace.isDirectory {
                 queuedPrintln("[\(repo.name)] Updating...")
-                safeShellOutAndPrint(to: "cd \(workspace.string); git fetch origin master; git checkout origin/master")
+                shellOutAndPrint(to: "cd \(workspace.string); git fetch origin master; git checkout origin/master")
             }
         }
     }

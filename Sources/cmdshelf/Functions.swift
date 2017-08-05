@@ -1,18 +1,7 @@
 import Foundation
 import Reporter
-import ShellOut
 
-func safeShellOutAndPrint(to: String, arguments: [String] = []) {
-    do {
-        try shellOutAndPrint(to: to, arguments: arguments)
-    } catch {
-        let error = error as! ShellOutError
-        queuedPrintlnError(error.message) // Prints STDERR
-        queuedPrintln(error.output) // Prints STDOUT
-    }
-}
-
-func shellOutAndPrint(to: String, arguments: [String] = []) throws {
+func shellOutAndPrint(to: String, arguments: [String] = []) {
     let process = Process()
     process.launchPath = "/bin/bash"
     process.arguments = ["-c", "\(to) \(arguments.joined(separator: " "))"]
@@ -29,4 +18,20 @@ func shellOutAndPrint(to: String, arguments: [String] = []) throws {
     process.launch()
     process.waitUntilExit()
     inPipe.fileHandleForWriting.writeabilityHandler = nil
+}
+
+func shellOutAndGetResult(to: String, arguments: [String] = []) -> String? {
+    let process = Process()
+    process.launchPath = "/bin/bash"
+    process.arguments = ["-c", "\(to) \(arguments.joined(separator: " "))"]
+    let outPipe = Pipe()
+    var output = Data()
+    outPipe.fileHandleForReading.readabilityHandler = { handler in
+        output.append(handler.availableData)
+    }
+    process.standardOutput = outPipe
+    process.launch()
+    process.waitUntilExit()
+    outPipe.fileHandleForReading.readabilityHandler = nil
+    return String(data: output, encoding: .utf8)
 }

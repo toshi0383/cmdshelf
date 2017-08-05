@@ -13,7 +13,6 @@ let package = Package(
         var deps: [Package.Dependency] = [
             .Package(url: "https://github.com/kylef/Commander.git", majorVersion: 0),
             .Package(url: "https://github.com/kylef/PathKit.git", majorVersion: 0),
-            .Package(url: "https://github.com/toshi0383/ShellOut.git", majorVersion: 1),
             .Package(url: "https://github.com/toshi0383/Reporter.git", majorVersion: 0),
         ]
         if isDevelopment {
