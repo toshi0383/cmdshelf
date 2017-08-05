@@ -2,7 +2,6 @@ import Commander
 import PathKit
 import Foundation
 import Reporter
-import ShellOut
 
 let version = "0.3.1"
 
@@ -25,11 +24,10 @@ let group = Group { group in
         if let url = config.cmdshelfYml.blobURL(for: name) {
             // TODO:
             //   if let localURL = config.cache(for: url) {
-
-            safeShellOutAndPrint(to: "bash <(curl -s \"\(url)\")")
+            shellOutAndPrint(to: "bash <(curl -s \"\(url)\")")
             return
         } else if let localPath = config.cmdshelfYml.blobLocalPath(for: name) {
-            safeShellOutAndPrint(to: localPath, arguments: parameters)
+            shellOutAndPrint(to: localPath, arguments: parameters)
             return
         }
 
@@ -37,7 +35,7 @@ let group = Group { group in
         try config.cloneRemotesIfNeeded()
         // Note: performs no updates
         if let localPath = config.remote(for: name) {
-            safeShellOutAndPrint(to: localPath.string, arguments: parameters)
+            shellOutAndPrint(to: localPath.string, arguments: parameters)
             return
         }
 
@@ -47,7 +45,7 @@ let group = Group { group in
             // Note: performs no updates
             try config.buildSwiftpm(repository: repository)
             if let localPath = config.swiftpm(for: name) {
-                safeShellOutAndPrint(to: localPath.string, arguments: parameters)
+                shellOutAndPrint(to: localPath.string, arguments: parameters)
                 return
             }
         }
@@ -58,7 +56,7 @@ let group = Group { group in
     group.addCommand("update", command() {
         let config = try Configuration()
         try config.cloneRemotesIfNeeded()
-        try config.updateRemotes()
+        config.updateRemotes()
         try config.cloneSwiftpmsIfNeeded()
         try config.updateSwiftpms()
         try config.buildSwiftpms()
