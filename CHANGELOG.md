@@ -1,12 +1,16 @@
 ## master
 ##### Enhancements
+* Colorful Output on warning and error  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#14](https://github.com/toshi0383/cmdshelf/pull/14)
+
 * Improve run command description  
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#17](https://github.com/toshi0383/cmdshelf/pull/17)
 
-* Colorful Output on warning and error  
+* Pass through stdin  
   [Toshihiro Suzuki](https://github.com/toshi0383)
-  [#14](https://github.com/toshi0383/cmdshelf/pull/14)
+  [#16](https://github.com/toshi0383/cmdshelf/pull/16)
 
 ## 0.3.1
 
