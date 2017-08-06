@@ -63,16 +63,16 @@ class Configuration {
             }
         }
     }
-    func cloneRemotesIfNeeded() throws {
+    func cloneRemotesIfNeeded() {
         cloneURLIfNeeded(workspacePath: Const.remoteWorkspacePath, repositories: cmdshelfYml.remotes)
     }
-    func cloneSwiftpmsIfNeeded() throws {
+    func cloneSwiftpmsIfNeeded() {
         cloneURLIfNeeded(workspacePath: Const.swiftpmWorkspacePath, repositories: cmdshelfYml.swiftpms)
     }
     func cloneSwiftpmIfNeeded(repository: Repository) throws {
         let workspace = Const.swiftpmWorkspacePath + repository.name
         if workspace.isDirectory == false {
-            shellOutAndPrint(to: "git clone \(repository.url) \(workspace.string)")
+            shellOut(to: "git clone \(repository.url) \(workspace.string)")
         }
     }
     func buildSwiftpms() throws {
@@ -86,7 +86,7 @@ class Configuration {
         guard workspace.isDirectory else {
             throw CmdshelfError("Swiftpm command: \(repository.name) not found.")
         }
-        shellOutAndPrint(to: "cd \(workspace.string); swift build -c release")
+        shellOut(to: "cd \(workspace.string); swift build -c release")
     }
     func updateSwiftpms() throws {
         for repo in cmdshelfYml.swiftpms {
@@ -99,17 +99,17 @@ class Configuration {
             let gitDescribeTag = "cd \(workspace.string); git describe --tags --abbrev=0"
             if let tag = repo.tag {
                 queuedPrintln("[\(repo.name)] Checking out tag: \(tag) ...")
-                shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
+                shellOut(to: "\(cdAndFetchTags); git checkout \(tag)")
             } else if let branch = repo.branch {
                 queuedPrintln("[\(repo.name)] Checking out branch: \(branch) ...")
-                shellOutAndPrint(to: "\(cdAndFetchTags); git checkout origin/\(branch)")
+                shellOut(to: "\(cdAndFetchTags); git checkout origin/\(branch)")
             } else {
                 // Checkout the latest tag
                 guard let tag = shellOutAndGetResult(to: gitDescribeTag) else {
                     throw CmdshelfError("Failed to get tag with command: \(gitDescribeTag)")
                 }
                 queuedPrintln("[\(repo.name)] Checking out the latest tag \(tag) ...")
-                shellOutAndPrint(to: "\(cdAndFetchTags); git checkout \(tag)")
+                shellOut(to: "\(cdAndFetchTags); git checkout \(tag)")
                 cmdshelfYml.swiftpms.remove { $0 == repo }
                 cmdshelfYml.swiftpms.append(
                     Repository(name: repo.name, url: repo.url, tag: tag, branch: nil)
@@ -121,8 +121,13 @@ class Configuration {
         for repo in repositories {
             let workspace = workspacePath + repo.name
             if workspace.isDirectory == false {
-                queuedPrintln("[\(repo.name)] Cloning...")
-                shellOutAndPrint(to: "git clone \(repo.url) \(workspace.string)")
+                queuedPrint("[\(repo.name)] Cloning ...")
+                let status = silentShellOut(to: "git clone \(repo.url) \(workspace.string)")
+                if status != 0 {
+                    queuedPrintlnError("error")
+                } else {
+                    queuedPrintln("success", color: .green)
+                }
             }
         }
     }
@@ -130,8 +135,13 @@ class Configuration {
         for repo in cmdshelfYml.remotes {
             let workspace = Const.remoteWorkspacePath + repo.name
             if workspace.isDirectory {
-                queuedPrintln("[\(repo.name)] Updating...")
-                shellOutAndPrint(to: "cd \(workspace.string); git fetch origin master; git checkout origin/master")
+                queuedPrint("[\(repo.name)] Updating ... ")
+                let status = silentShellOut(to: "cd \(workspace.string) && git fetch origin master && git checkout origin/master")
+                if status != 0 {
+                    queuedPrintlnError("error")
+                } else {
+                    queuedPrintln("success", color: .green)
+                }
             }
         }
     }
@@ -161,7 +171,7 @@ class Configuration {
     }
 
     func printAllCommands() throws {
-        try cloneRemotesIfNeeded()
+        cloneRemotesIfNeeded()
         let allRemoteCommands = try cmdshelfYml.remotes
             .map { $0.name }
             .flatMap {

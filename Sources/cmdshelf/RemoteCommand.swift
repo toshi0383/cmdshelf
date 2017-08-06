@@ -32,7 +32,7 @@ class RemoteCommand: Group {
             }
             let parameters = command.components(separatedBy: " ").dropFirst().map { $0 }
             let config = try Configuration()
-            try config.cloneRemotesIfNeeded()
+            config.cloneRemotesIfNeeded()
             // Note: performs no updates
             guard let remote = config.cmdshelfYml.remotes.filter({ $0.name == remoteName }).first else {
                 throw CmdshelfError("Invalid remote name: \(remoteName))")
@@ -41,7 +41,7 @@ class RemoteCommand: Group {
                 throw CmdshelfError("Invalid command name for remote \(remote.name): \(name)")
             }
             let localPath = config.remoteWorkspacePath + remoteName + commandName
-            shellOutAndPrint(to: localPath.string, arguments: parameters)
+            shellOut(to: localPath.string, arguments: parameters)
         })
     }
 }

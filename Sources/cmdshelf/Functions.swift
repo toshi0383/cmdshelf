@@ -1,7 +1,13 @@
 import Foundation
 import Reporter
 
-func shellOutAndPrint(to: String, arguments: [String] = []) {
+@discardableResult
+func silentShellOut(to: String, arguments: [String] = []) -> Int32 {
+    return shellOut(to: to, arguments: arguments, shouldPrintStdout: false, shouldPrintError: false)
+}
+
+@discardableResult
+func shellOut(to: String, arguments: [String] = [], shouldPrintStdout: Bool = true, shouldPrintError: Bool = true) -> Int32 {
     let process = Process()
     process.launchPath = "/bin/bash"
     process.arguments = ["-c", "\(to) \(arguments.joined(separator: " "))"]
@@ -13,14 +19,23 @@ func shellOutAndPrint(to: String, arguments: [String] = []) {
             handler.closeFile()
         }
     }
-
     process.standardInput = inPipe
+
+    if !shouldPrintError {
+        let pipe = Pipe()
+        process.standardError = pipe
+    }
+    if !shouldPrintStdout {
+        let pipe = Pipe()
+        process.standardOutput = pipe
+    }
     process.launch()
     process.waitUntilExit()
     inPipe.fileHandleForWriting.writeabilityHandler = nil
+    return process.terminationStatus
 }
 
-func shellOutAndGetResult(to: String, arguments: [String] = []) -> String? {
+func shellOutAndGetResult(to: String, arguments: [String] = [], shouldPrintError: Bool = false) -> String? {
     let process = Process()
     process.launchPath = "/bin/bash"
     process.arguments = ["-c", "\(to) \(arguments.joined(separator: " "))"]
@@ -30,6 +45,10 @@ func shellOutAndGetResult(to: String, arguments: [String] = []) -> String? {
         output.append(handler.availableData)
     }
     process.standardOutput = outPipe
+    if !shouldPrintError {
+        let errorPipe = Pipe()
+        process.standardError = errorPipe
+    }
     process.launch()
     process.waitUntilExit()
     outPipe.fileHandleForReading.readabilityHandler = nil

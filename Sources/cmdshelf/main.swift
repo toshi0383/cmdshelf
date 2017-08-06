@@ -24,18 +24,18 @@ let group = Group { group in
         if let url = config.cmdshelfYml.blobURL(for: name) {
             // TODO:
             //   if let localURL = config.cache(for: url) {
-            shellOutAndPrint(to: "bash <(curl -s \"\(url)\")")
+            shellOut(to: "bash <(curl -s \"\(url)\")")
             return
         } else if let localPath = config.cmdshelfYml.blobLocalPath(for: name) {
-            shellOutAndPrint(to: localPath, arguments: parameters)
+            shellOut(to: localPath, arguments: parameters)
             return
         }
 
         // Search in remote
-        try config.cloneRemotesIfNeeded()
+        config.cloneRemotesIfNeeded()
         // Note: performs no updates
         if let localPath = config.remote(for: name) {
-            shellOutAndPrint(to: localPath.string, arguments: parameters)
+            shellOut(to: localPath.string, arguments: parameters)
             return
         }
 
@@ -45,19 +45,19 @@ let group = Group { group in
             // Note: performs no updates
             try config.buildSwiftpm(repository: repository)
             if let localPath = config.swiftpm(for: name) {
-                shellOutAndPrint(to: localPath.string, arguments: parameters)
+                shellOut(to: localPath.string, arguments: parameters)
                 return
             }
         }
-        queuedPrintln("Command \(command) not found.")
+        queuedPrintlnError("Command `\(command)` not found.")
         exit(1)
     })
     group.addCommand("blob", BlobCommand())
     group.addCommand("update", command() {
         let config = try Configuration()
-        try config.cloneRemotesIfNeeded()
+        config.cloneRemotesIfNeeded()
         config.updateRemotes()
-        try config.cloneSwiftpmsIfNeeded()
+        config.cloneSwiftpmsIfNeeded()
         try config.updateSwiftpms()
         try config.buildSwiftpms()
     })
