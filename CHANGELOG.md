@@ -4,6 +4,10 @@
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#21](https://github.com/toshi0383/cmdshelf/pull/21)
 
+* Remove `remote run` command  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#22](https://github.com/toshi0383/cmdshelf/pull/22)
+
 ##### Enhancements
 * Colorful Output on warning and error  
   [Toshihiro Suzuki](https://github.com/toshi0383)
