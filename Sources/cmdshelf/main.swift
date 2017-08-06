@@ -39,16 +39,6 @@ let group = Group { group in
             return
         }
 
-        // Search in swiftpm
-        if let repository = config.cmdshelfYml.swiftpms.find({ $0.name == name }) {
-            try config.cloneSwiftpmIfNeeded(repository: repository)
-            // Note: performs no updates
-            try config.buildSwiftpm(repository: repository)
-            if let localPath = config.swiftpm(for: name) {
-                shellOut(to: localPath.string, arguments: parameters)
-                return
-            }
-        }
         queuedPrintlnError("Command `\(command)` not found.")
         exit(1)
     })
@@ -57,11 +47,7 @@ let group = Group { group in
         let config = try Configuration()
         config.cloneRemotesIfNeeded()
         config.updateRemotes()
-        config.cloneSwiftpmsIfNeeded()
-        try config.updateSwiftpms()
-        try config.buildSwiftpms()
     })
-    group.addCommand("swiftpm", SwiftPMCommand())
 }
 
 group.run(version)

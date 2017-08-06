@@ -7,7 +7,6 @@ enum Const {
     fileprivate static let ymlPath = Path("~/.cmdshelf.yml").absolute()
     private static let workspacePath = Path("~/.cmdshelf").absolute()
     fileprivate static let remoteWorkspacePath = Const.workspacePath + "remote"
-    fileprivate static let swiftpmWorkspacePath = Const.workspacePath + "swiftpm"
 }
 
 class Configuration {
@@ -54,68 +53,10 @@ class Configuration {
                     }
                 }
             }
-            if let swiftpm = yml["swiftpm"] as? [String: [String: String]] {
-                for (name, dictionary) in swiftpm {
-                    if let url = dictionary["url"] {
-                        cmdshelfYml.swiftpms.append(Repository(name: name, url: url, tag: dictionary["tag"], branch: dictionary["branch"]))
-                    }
-                }
-            }
         }
     }
     func cloneRemotesIfNeeded() {
         cloneURLIfNeeded(workspacePath: Const.remoteWorkspacePath, repositories: cmdshelfYml.remotes)
-    }
-    func cloneSwiftpmsIfNeeded() {
-        cloneURLIfNeeded(workspacePath: Const.swiftpmWorkspacePath, repositories: cmdshelfYml.swiftpms)
-    }
-    func cloneSwiftpmIfNeeded(repository: Repository) throws {
-        let workspace = Const.swiftpmWorkspacePath + repository.name
-        if workspace.isDirectory == false {
-            shellOut(to: "git clone \(repository.url) \(workspace.string)")
-        }
-    }
-    func buildSwiftpms() throws {
-        for s in cmdshelfYml.swiftpms {
-            try buildSwiftpm(repository: s)
-        }
-    }
-    func buildSwiftpm(repository: Repository) throws {
-        queuedPrintln("[\(repository.name)] Building...")
-        let workspace = Const.swiftpmWorkspacePath + repository.name
-        guard workspace.isDirectory else {
-            throw CmdshelfError("Swiftpm command: \(repository.name) not found.")
-        }
-        shellOut(to: "cd \(workspace.string); swift build -c release")
-    }
-    func updateSwiftpms() throws {
-        for repo in cmdshelfYml.swiftpms {
-            queuedPrintln("[\(repo.name)] Updating...")
-            let workspace = Const.swiftpmWorkspacePath + repo.name
-            guard workspace.isDirectory else {
-                throw CmdshelfError("Swiftpm command: \(repo.name) not found.")
-            }
-            let cdAndFetchTags = "cd \(workspace.string); git fetch --all --tag"
-            let gitDescribeTag = "cd \(workspace.string); git describe --tags --abbrev=0"
-            if let tag = repo.tag {
-                queuedPrintln("[\(repo.name)] Checking out tag: \(tag) ...")
-                shellOut(to: "\(cdAndFetchTags); git checkout \(tag)")
-            } else if let branch = repo.branch {
-                queuedPrintln("[\(repo.name)] Checking out branch: \(branch) ...")
-                shellOut(to: "\(cdAndFetchTags); git checkout origin/\(branch)")
-            } else {
-                // Checkout the latest tag
-                guard let tag = shellOutAndGetResult(to: gitDescribeTag) else {
-                    throw CmdshelfError("Failed to get tag with command: \(gitDescribeTag)")
-                }
-                queuedPrintln("[\(repo.name)] Checking out the latest tag \(tag) ...")
-                shellOut(to: "\(cdAndFetchTags); git checkout \(tag)")
-                cmdshelfYml.swiftpms.remove { $0 == repo }
-                cmdshelfYml.swiftpms.append(
-                    Repository(name: repo.name, url: repo.url, tag: tag, branch: nil)
-                )
-            }
-        }
     }
     private func cloneURLIfNeeded(workspacePath: Path, repositories: [Repository]) {
         for repo in repositories {
@@ -151,13 +92,6 @@ class Configuration {
             .filter { $0.isExecutable }
             .first
     }
-    func swiftpm(for moduleName: String) -> Path? {
-        return cmdshelfYml.swiftpms
-            .filter { $0.name == moduleName }
-            .map { Const.swiftpmWorkspacePath + $0.name + ".build/release/\(moduleName)"}
-            .filter { $0.isExecutable }
-            .first
-    }
 
     func commandNames(for remoteName: String) throws -> [String] {
         let repoPath = Const.remoteWorkspacePath + remoteName
@@ -189,13 +123,6 @@ class Configuration {
             queuedPrintln("remote:")
             queuedPrintln("\(allRemoteCommands)")
             queuedPrintln("")
-        }
-        if cmdshelfYml.swiftpms.isEmpty == false {
-            queuedPrintln("swiftpm:")
-            queuedPrintln("  " + cmdshelfYml.swiftpms.map {
-                let tagOrBranch: String = $0.tag ?? $0.branch ?? ""
-                return "\($0.name)(\(tagOrBranch)): \($0.url)"
-            }.joined(separator: "\n  "))
         }
     }
 }
