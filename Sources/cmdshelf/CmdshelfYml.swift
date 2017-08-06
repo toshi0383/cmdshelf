@@ -44,6 +44,7 @@ struct CmdshelfYaml: NodeRepresentable {
     }
     func represented() throws -> Node {
         return [
+            "tools_version": Node(version),
             "remote": try Node(repositoriesToDictionary(remotes)),
             "blob": try Node(blobsToDictionary(blobs)),
         ]

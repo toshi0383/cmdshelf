@@ -65,6 +65,12 @@
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#4](https://github.com/toshi0383/cmdshelf/pull/4)
 
+##### Enhancements
+
+* Write tools_version to .cmdshelf.yml  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#5](https://github.com/toshi0383/cmdshelf/pull/5)
+
 ## 0.2.0
 ##### Enhancements
 
