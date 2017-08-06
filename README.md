@@ -41,7 +41,7 @@ blob:
 ```
 
 ## run
-Now you can pass your `random` command to `run` sub-command. You'd be better to quote the whole command to pass arguments or options.
+Now you can pass your `random` command to `run` sub-command. Quote the whole command to pass arguments or options.
 ```
 $ cmdshelf run random
 $ cmdshelf run "random arg1 arg2 --option" # need quote
@@ -64,7 +64,6 @@ remote:
 You can add multiple remotes.
 ```
 $ cmdshelf remote add bash-snippets https://github.com/alexanderepstein/Bash-Snippets
-$ cmdshelf list
 $ cmdshelf remote list
 bash-snippets: https://github.com/alexanderepstein/Bash-Snippets
 toshi0383-scripts: https://github.com/toshi0383/scripts.git
@@ -77,7 +76,7 @@ Just put `~/.cmdshelf.yml` and you are ready to go.
 ```
 $ cp ~/Download/.cmdshelf.yml ~
 $ cmdshelf remote list
-exercism-bash: https://github.com/exercism/bash.git
+bash-snippets: https://github.com/alexanderepstein/Bash-Snippets
 toshi0383-scripts: https://github.com/toshi0383/scripts.git
 $ cmdshelf blob list
 random https://gist.githubusercontent.com/toshi0383/32728879049e95db41ab801b1f055009/raw/e84fa02c4f9ac7e08b686cee248ab72198470c0b/-
@@ -96,7 +95,7 @@ remote:
     git/git-branch-by-author
     git/replaceOriginWith.sh
     ...
-$ cmdshelf run "movies/movies inception"
+$ cmdshelf run "movies/movies inception" # Run movies script from Bash-Snippets
 
 ==================================================
 | Title: Inception
@@ -114,6 +113,13 @@ $ cmdshelf run "movies/movies inception"
 
 ## update
 If you need to update cloned repository, run `update` sub-command.
+```
+$ cmdshelf update
+[bash-snippets] Updating ... success
+[md-toc] Updating ... success
+[abema-ios-script] Updating ... success
+[toshi0383-scripts] Updating ... success
+```
 
 # Install
 ## install.sh
