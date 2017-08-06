@@ -1,4 +1,9 @@
 ## master
+##### Breaking
+* Remove `swiftpm` command  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#21](https://github.com/toshi0383/cmdshelf/pull/21)
+
 ##### Enhancements
 * Colorful Output on warning and error  
   [Toshihiro Suzuki](https://github.com/toshi0383)
