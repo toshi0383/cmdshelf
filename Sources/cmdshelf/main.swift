@@ -24,7 +24,7 @@ let group = Group { group in
         if let url = config.cmdshelfYml.blobURL(for: name) {
             // TODO:
             //   if let localURL = config.cache(for: url) {
-            shellOut(to: "bash <(curl -s \"\(url)\")")
+            shellOut(to: "bash <(curl -s \"\(url)\")", arguments: parameters)
             return
         } else if let localPath = config.cmdshelfYml.blobLocalPath(for: name) {
             shellOut(to: localPath, arguments: parameters)

@@ -8,6 +8,11 @@
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#22](https://github.com/toshi0383/cmdshelf/pull/22)
 
+##### Bugfix
+* Fix URL blob ignoring parameters  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#23](https://github.com/toshi0383/cmdshelf/pull/23)
+
 ##### Enhancements
 * Colorful Output on warning and error  
   [Toshihiro Suzuki](https://github.com/toshi0383)
