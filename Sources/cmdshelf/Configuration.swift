@@ -62,7 +62,7 @@ class Configuration {
         for repo in repositories {
             let workspace = workspacePath + repo.name
             if workspace.isDirectory == false {
-                queuedPrint("[\(repo.name)] Cloning ...")
+                queuedPrint("[\(repo.name)] Cloning ... ")
                 let status = silentShellOut(to: "git clone \(repo.url) \(workspace.string)")
                 if status != 0 {
                     queuedPrintlnError("error")
