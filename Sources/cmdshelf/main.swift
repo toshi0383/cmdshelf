@@ -3,7 +3,7 @@ import PathKit
 import Foundation
 import Reporter
 
-let version = "0.3.1"
+let version = "0.4.0"
 
 let group = Group { group in
     group.addCommand("list", command() {

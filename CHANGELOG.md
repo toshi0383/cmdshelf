@@ -1,4 +1,4 @@
-## master
+## 0.4.0
 ##### Breaking
 * Remove `swiftpm` command  
   [Toshihiro Suzuki](https://github.com/toshi0383)
