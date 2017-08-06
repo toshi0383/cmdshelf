@@ -6,11 +6,12 @@ import Reporter
 let version = "0.3.1"
 
 let group = Group { group in
-    group.addCommand("remote", RemoteCommand())
     group.addCommand("list", command() {
         let config = try Configuration()
         try config.printAllCommands()
     })
+    group.addCommand("remote", RemoteCommand())
+    group.addCommand("blob", BlobCommand())
     group.addCommand("run", command(
         Argument<String>("COMMAND", description: "command name alias double or single quoted when passing arguments. e.g. `cmdshelf run \"myscript --option someargument\"")
     ) { (command) in
@@ -42,7 +43,6 @@ let group = Group { group in
         queuedPrintlnError("Command `\(command)` not found.")
         exit(1)
     })
-    group.addCommand("blob", BlobCommand())
     group.addCommand("update", command() {
         let config = try Configuration()
         config.cloneRemotesIfNeeded()

@@ -16,11 +16,10 @@ With cmdshelf, you can
 
 cmdshelf
 - list
-- remote     
+- remote
+- blob
 - run
 - update
-- blob
-- swiftpm (deprecated)
 
 ## blob
 You can add a single file as a blob. Make sure the URL directly points at the script. (Not a web page of gist, for example.)
@@ -57,14 +56,6 @@ $ cmdshelf remote add toshi0383-scripts https://github.com/toshi0383/scripts
 $ cmdshelf list
 remote:
   toshi0383-scripts:
-    fix-framework-infoplist-if-needed.sh
-    fix-framework-version.sh
-    git-branch-by-author
-    open-device-support-dir.sh
-    pixelSize.sh
-    printUUIDofMobileprovision.sh
-    replaceGitOriginWith.sh
-    sort-Xcode-project-file
     sort-xcpretty-by-time
     total-test-duration
     your-command 
@@ -72,42 +63,19 @@ remote:
 
 You can add multiple remotes.
 ```
-$ cmdshelf remote add exercism-bash https://github.com/exercism/bash.git
+$ cmdshelf remote add bash-snippets https://github.com/alexanderepstein/Bash-Snippets
+$ cmdshelf list
+$ cmdshelf remote list
+bash-snippets: https://github.com/alexanderepstein/Bash-Snippets
+toshi0383-scripts: https://github.com/toshi0383/scripts.git
 ```
-
-## Swift (deprecated)
-You can add your favorite Swift CLI app by using `swiftpm` sub-command.
-```
-$ cmdshelf swiftpm add xcconfig-extractor https://github.com/toshi0383/xcconfig-extractor.git
-$ cmdshelf run "xcconfig-extractor --help"
-
-Usage:
-
-    $ /Users/toshi0383/.cmdshelf/swiftpm/xcconfig-extractor/.build/release/xcconfig-extractor <PATH> <DIR>
-
-Arguments:
-...
-```
-This will clone and run `swift build -c release` before running the executable.  
-Currently cmdshelf always checkouts the latest tag.
 
 ## .cmdshelf.yml
 Finally if you want to share your cmdshelf configuration with your friends or teammates, you just share `~/.cmdshelf.yml` file.
-```
-$ cat ~/.cmdshelf.yml
-remote:
-  exercism-bash:
-    url: https://github.com/exercism/bash.git
-  toshi0383-scripts:
-    url: https://github.com/toshi0383/scripts.git
-blob:
-  random:
-    url: https://gist.githubusercontent.com/toshi0383/32728879049e95db41ab801b1f055009/raw/e84fa02c4f9ac7e08b686cee248ab72198470c0b/-
-```
 
 Just put `~/.cmdshelf.yml` and you are ready to go.
 ```
-$ mv ~/Download/.cmdshelf.yml ~
+$ cp ~/Download/.cmdshelf.yml ~
 $ cmdshelf remote list
 exercism-bash: https://github.com/exercism/bash.git
 toshi0383-scripts: https://github.com/toshi0383/scripts.git
@@ -118,17 +86,34 @@ blob:
   random: https://gist.githubusercontent.com/toshi0383/32728879049e95db41ab801b1f055009/raw/e84fa02c4f9ac7e08b686cee248ab72198470c0b/-
 
 remote:
-  exercism-bash:
-    bin/fetch-configlet
-    exercises/bob/bob_test.sh
-    exercises/bob/example.sh
-$ cmdshelf run exercises/bob/example.sh
-Fine. Be that way!
+  bash-snippets:
+    cheat/cheat
+    cloudup/cloudup
+    crypt/crypt
+    ...
+  toshi0383-scripts:
+    decimal2hex.sh
+    git/git-branch-by-author
+    git/replaceOriginWith.sh
+    ...
+$ cmdshelf run "movies/movies inception"
+
+==================================================
+| Title: Inception
+| Year: 2010
+| Runtime: 148 min
+| IMDB: 8.8/10
+| Tomato: 86%
+| Rated: PG-13
+| Genre: Action, Adventure, Sci-Fi
+| Director: Christopher Nolan
+| Actors: Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Tom Hardy
+| Plot: A thief, who steals corporate secrets through use of dream-sharing technology, is given the inverse task of planting an idea into the mind of a CEO.
+==================================================
 ```
 
 ## update
 If you need to update cloned repository, run `update` sub-command.
-Rebuild is performed for SwiftPM repos.
 
 # Install
 ## install.sh
@@ -146,9 +131,7 @@ brew install cmdshelf
 ```
 This runs install.sh behind the scene.
 
-brew exits with "Empty Installation" error, but install should succeed.  
-Anyone knows how to fix this? PR is appreciated.  
-https://github.com/toshi0383/homebrew-cmdshelf
+brew exits with "Empty Installation" error, but install succeeds.
 
 ## Build from source
 
