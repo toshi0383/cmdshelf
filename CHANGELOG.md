@@ -12,6 +12,10 @@
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#16](https://github.com/toshi0383/cmdshelf/pull/16)
 
+* Improve error handling and output  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#20](https://github.com/toshi0383/cmdshelf/pull/20)
+
 ## 0.3.1
 
 ##### Enhancements
