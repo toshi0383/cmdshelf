@@ -35,7 +35,6 @@ private func blobsToDictionary(_ blobs: [Blob]) -> [String: [String: String]] {
 struct CmdshelfYaml: NodeRepresentable {
     var remotes: [Repository] = []
     var blobs: [Blob] = []
-    var swiftpms: [Repository] = []
     mutating func removeRemote(name: String) {
         remotes.remove { $0.name == name }
         // TODO: clean cloned repo
@@ -43,15 +42,10 @@ struct CmdshelfYaml: NodeRepresentable {
     mutating func removeBlob(name: String) {
         blobs.remove { $0.name == name }
     }
-    mutating func removeSwiftpm(name: String) {
-        swiftpms.remove { $0.name == name }
-        // TODO: clean cloned repo
-    }
     func represented() throws -> Node {
         return [
             "remote": try Node(repositoriesToDictionary(remotes)),
             "blob": try Node(blobsToDictionary(blobs)),
-            "swiftpm": try Node(repositoriesToDictionary(swiftpms)),
         ]
     }
     func blobLocalPath(for name: String) -> String? {
@@ -62,8 +56,5 @@ struct CmdshelfYaml: NodeRepresentable {
     }
     func remoteURL(for name: String) -> String? {
         return remotes.filter { $0.name == name }.flatMap { $0.url }.first
-    }
-    func swiftpmURL(for name: String) -> String? {
-        return swiftpms.filter { $0.name == name }.flatMap { $0.url }.first
     }
 }
