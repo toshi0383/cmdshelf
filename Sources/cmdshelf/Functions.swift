@@ -39,26 +39,3 @@ func shellOut(to: String, arguments: [String] = [], shouldPrintStdout: Bool = tr
     return process.terminationStatus
 }
 
-func shellOutAndGetResult(to: String, arguments: [String] = [], shouldPrintError: Bool = false) -> String? {
-    let process = Process()
-    process.launchPath = "/bin/bash"
-    process.arguments = ["-c", "\(to) \(arguments.joined(separator: " "))"]
-    #if !os(Linux)
-    let outPipe = Pipe()
-    var output = Data()
-    outPipe.fileHandleForReading.readabilityHandler = { handler in
-        output.append(handler.availableData)
-    }
-    process.standardOutput = outPipe
-    #endif
-    if !shouldPrintError {
-        let errorPipe = Pipe()
-        process.standardError = errorPipe
-    }
-    process.launch()
-    process.waitUntilExit()
-    #if !os(Linux)
-    outPipe.fileHandleForReading.readabilityHandler = nil
-    #endif
-    return String(data: output, encoding: .utf8)
-}
