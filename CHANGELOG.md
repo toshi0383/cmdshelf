@@ -1,4 +1,4 @@
-## master
+## 0.5.0
 ##### Enhancements
 * Linux Support  
   [Toshihiro Suzuki](https://github.com/toshi0383)
