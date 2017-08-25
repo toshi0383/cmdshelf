@@ -172,6 +172,9 @@ swift build -c release
 .build/release/cmdshelf --version
 ```
 
+# Limitation on Linux
+`cmdshelf` cannot handle `stdin` on Linux. This is rather Foundation's problem than cmdshelf's.
+
 # TODO
 - Cache feature for blob
 - Support Makefile...?
