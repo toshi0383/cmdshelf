@@ -4,8 +4,12 @@ cmdshelf integrates your team's inherited awesome handy scripts like a bookshelf
 No need to deal with your `$PATH` any more.
 
 # Requirements
+## macOS Sierra+
 - Xcode8.3+
-- Swift3.1+
+- Swift3.1
+
+## Linux
+- Swift3.1
 
 # Why
 With cmdshelf, you can
@@ -122,14 +126,15 @@ $ cmdshelf update
 ```
 
 # Install
-## install.sh
+## macOS
+### install.sh
 I've written install/release scripts for SwiftPM executable.  
 This should be the easiest way.
 ```
 bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) toshi0383/cmdshelf
 ```
 
-## brew tap (beta)
+### brew tap (beta)
 cmdshelf is available via homebrew. Run following to install.
 ```
 brew tap toshi0383/cmdshelf
@@ -139,13 +144,33 @@ This runs install.sh behind the scene.
 
 brew exits with "Empty Installation" error, but install succeeds.
 
-## Build from source
+### Build from source
 
 Please build from source-code if `install.sh` didn't work.
 
 - Clone this repo and run `swift build -c release`.  
 - Executable will be created at `.build/release/cmdshelf`.
 - `mv .build/release/cmdshelf /usr/local/bin/`
+
+## Linux
+### Build from source
+
+Please build from source code for Linux. You need Swift installed.
+
+- Clone this repo and run `swift build -c release`.
+- Executable will be created at `.build/release/cmdshelf`.
+- `mv .build/release/cmdshelf /usr/local/bin/`
+
+Here is the script I use on Bitrise CI, to install Swift and then cmdshelf.
+```bash
+#!/bin/bash
+set -e
+sudo apt-get -y install libcurl4-openssl-dev clang libicu-dev
+eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
+swiftenv install 3.1
+swift build -c release
+.build/release/cmdshelf --version
+```
 
 # TODO
 - Cache feature for blob
