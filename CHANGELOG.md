@@ -1,3 +1,9 @@
+## master
+##### Enhancements
+* Linux Support  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#25](https://github.com/toshi0383/cmdshelf/pull/25)
+
 ## 0.4.0
 ##### Breaking
 * Remove `swiftpm` command  

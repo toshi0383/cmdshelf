@@ -11,6 +11,7 @@ func shellOut(to: String, arguments: [String] = [], shouldPrintStdout: Bool = tr
     let process = Process()
     process.launchPath = "/bin/bash"
     process.arguments = ["-c", "\(to) \(arguments.joined(separator: " "))"]
+    #if !os(Linux)
     let inPipe = Pipe()
     inPipe.fileHandleForWriting.writeabilityHandler = { handler in
         if let d = readLine(strippingNewline: false)?.data(using: .utf8) {
@@ -20,6 +21,7 @@ func shellOut(to: String, arguments: [String] = [], shouldPrintStdout: Bool = tr
         }
     }
     process.standardInput = inPipe
+    #endif
 
     if !shouldPrintError {
         let pipe = Pipe()
@@ -31,26 +33,9 @@ func shellOut(to: String, arguments: [String] = [], shouldPrintStdout: Bool = tr
     }
     process.launch()
     process.waitUntilExit()
+    #if !os(Linux)
     inPipe.fileHandleForWriting.writeabilityHandler = nil
+    #endif
     return process.terminationStatus
 }
 
-func shellOutAndGetResult(to: String, arguments: [String] = [], shouldPrintError: Bool = false) -> String? {
-    let process = Process()
-    process.launchPath = "/bin/bash"
-    process.arguments = ["-c", "\(to) \(arguments.joined(separator: " "))"]
-    let outPipe = Pipe()
-    var output = Data()
-    outPipe.fileHandleForReading.readabilityHandler = { handler in
-        output.append(handler.availableData)
-    }
-    process.standardOutput = outPipe
-    if !shouldPrintError {
-        let errorPipe = Pipe()
-        process.standardError = errorPipe
-    }
-    process.launch()
-    process.waitUntilExit()
-    outPipe.fileHandleForReading.readabilityHandler = nil
-    return String(data: output, encoding: .utf8)
-}
