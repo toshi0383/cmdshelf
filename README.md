@@ -4,7 +4,7 @@ cmdshelf integrates your team's inherited awesome handy scripts like a bookshelf
 No need to deal with your `$PATH` any more.
 
 # Requirements
-## macOS Sierra+
+## macOS
 - Xcode8.3+
 - Swift3.1
 
