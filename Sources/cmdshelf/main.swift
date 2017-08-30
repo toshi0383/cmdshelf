@@ -12,6 +12,40 @@ let group = Group { group in
     })
     group.addCommand("remote", RemoteCommand())
     group.addCommand("blob", BlobCommand())
+    group.addCommand("cat", "concatenate and print commands", command(
+        VariadicArgument<String>("COMMAND", description: "command name")
+    ) { (commands) in
+        if commands.isEmpty {
+            shellOut(to: "cat")
+        } else {
+            let config = try Configuration()
+            var failure = false
+            for name in commands {
+                // Search in blob
+                if let url = config.cmdshelfYml.blobURL(for: name) {
+                    // TODO:
+                    //   if let localURL = config.cache(for: url) {
+                    shellOut(to: "curl -sSL \"\(url)\"")
+                    continue
+                } else if let localPath = config.cmdshelfYml.blobLocalPath(for: name) {
+                    shellOut(to: "cat \(localPath)")
+                    continue
+                }
+
+                // Search in remote
+                config.cloneRemotesIfNeeded()
+                if let localPath = config.remote(for: name) {
+                    shellOut(to: "cat \(localPath)")
+                    continue
+                }
+                queuedPrintln("cat: \(name): No such file or directory")
+                failure = true
+            }
+            if failure {
+                exit(1)
+            }
+        }
+    })
     group.addCommand("run", command(
         Argument<String>("COMMAND", description: "command name alias double or single quoted when passing arguments. e.g. `cmdshelf run \"myscript --option someargument\"")
     ) { (command) in
@@ -34,7 +68,6 @@ let group = Group { group in
 
         // Search in remote
         config.cloneRemotesIfNeeded()
-        // Note: performs no updates
         if let localPath = config.remote(for: name) {
             shellOut(to: localPath.string, arguments: parameters)
             return
