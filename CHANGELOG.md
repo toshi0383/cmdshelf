@@ -4,6 +4,10 @@
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#27](https://github.com/toshi0383/cmdshelf/pull/27)
 
+* Add S and L option to curl command of `run`  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#29](https://github.com/toshi0383/cmdshelf/pull/29)
+
 ##### Bugfix
 * [Fixed] blob adds relative path and `run` fails to execute.  
   [Toshihiro Suzuki](https://github.com/toshi0383)
