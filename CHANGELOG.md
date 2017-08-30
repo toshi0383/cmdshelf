@@ -1,4 +1,4 @@
-## master
+## 0.6.0
 ##### Enhancements
 * Add cat command  
   [Toshihiro Suzuki](https://github.com/toshi0383)
