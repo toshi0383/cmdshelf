@@ -4,6 +4,11 @@
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#27](https://github.com/toshi0383/cmdshelf/pull/27)
 
+##### Bugfix
+* [Fixed] blob adds relative path and `run` fails to execute.  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#28](https://github.com/toshi0383/cmdshelf/pull/28)
+
 ## 0.5.0
 ##### Enhancements
 * Linux Support  

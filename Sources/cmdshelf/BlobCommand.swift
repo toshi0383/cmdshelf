@@ -17,7 +17,7 @@ class BlobCommand: Group {
             let config = try Configuration()
             let path = Path(url)
             if path.exists {
-                config.cmdshelfYml.blobs.append(Blob(name: name, localPath: path.string))
+                config.cmdshelfYml.blobs.append(Blob(name: name, localPath: path.absolute().string))
             } else {
                 config.cmdshelfYml.blobs.append(Blob(name: name, url: url))
             }
