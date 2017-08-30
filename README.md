@@ -22,6 +22,7 @@ cmdshelf
 - list
 - remote
 - blob
+- cat
 - run
 - update
 
@@ -49,6 +50,15 @@ Now you can pass your `random` command to `run` sub-command. Quote the whole com
 ```
 $ cmdshelf run random
 $ cmdshelf run "random arg1 arg2 --option" # need quote
+```
+
+## cat
+You can use `cat` sub-command to print your script's source code.
+```
+$ cmdshelf cat random
+#!/bin/bash
+# SeeAlso: http://unix.stackexchange.com/questions/45404/why-cant-tr-read-from-dev-urandom-on-osx
+LC_CTYPE=C tr -dc 'A-Z0-9' < /dev/urandom | head -c 32 | xargs echo
 ```
 
 ## remote
