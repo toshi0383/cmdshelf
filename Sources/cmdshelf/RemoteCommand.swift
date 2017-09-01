@@ -18,7 +18,7 @@ class RemoteCommand: Group {
             config.cmdshelfYml.remotes.append(Repository(name: name, url: url, tag: nil, branch: nil))
         })
         addCommand("remove", "Remove a remote.", Commander.command(
-            Argument<String>("NAME", description: "command name")
+            Argument<String>("NAME", description: "remote name")
         ) { name in
             let config = try Configuration()
             config.cmdshelfYml.removeRemote(name: name)

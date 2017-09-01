@@ -146,9 +146,9 @@ class Configuration {
         let allRemoteCommands = try cmdshelfYml.remotes
             .map { $0.name }
             .flatMap {
-                let commands = try self.displayNames(for: $0, type: displayType)
+                let names = try self.displayNames(for: $0, type: displayType)
                     .joined(separator: "\n    ")
-                return "  \($0):\n    \(commands)"
+                return "  \($0):\n    \(names)"
             }
             .joined(separator: "\n\n")
         if cmdshelfYml.blobs.isEmpty == false {

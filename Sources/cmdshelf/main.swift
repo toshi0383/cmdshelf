@@ -7,7 +7,7 @@ let version = "0.6.0"
 
 let group = Group { group in
     group.addCommand("list", command(
-        Flag("path", disabledName: "", description: "display absolute path instead of command alias name", default: false)
+        Flag("path", disabledName: "", description: "display absolute path instead of command name alias", default: false)
         ) { isPath in
         let config = try Configuration()
         try config.printAllCommands(displayType: isPath ? .absolutePath : .alias)
