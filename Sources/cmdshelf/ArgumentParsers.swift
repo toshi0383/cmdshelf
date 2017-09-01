@@ -46,7 +46,7 @@ private class ParameterParser {
 struct VaradicAliasArgument: ArgumentDescriptor {
     typealias ValueType = [Alias]
     let name: String = "[COMMAND ...]"
-    let description: String? = nil
+    let description: String? = "[[remoteName:]my/command ...]"
     let type: ArgumentType = .argument
     func parse(_ parser: ArgumentParser) throws -> ValueType {
         let remainder = parser.remainder
@@ -60,7 +60,7 @@ struct VaradicAliasArgument: ArgumentDescriptor {
 struct AliasParameterArgument: ArgumentDescriptor {
     typealias ValueType = (alias: Alias, parameter: String?)
     let name: String = "COMMAND"
-    let description: String? = "command name alias\n double or single quoted when passing arguments. e.g. `cmdshelf run \"myscript --option someargument\"\nTo avoid name collision, add remote name separated by :. e.g. `cmdshelf run my-remote:my/script`"
+    let description: String? = "\"[remoteName:]my/command [parameter ...]\"\n    -   double or single quoted when passing arguments. e.g. `cmdshelf run \"myscript --option someargument\"\n    -   To avoid name collision, add remote name separated by \":\". e.g. `cmdshelf run my-remote:my/script`"
     let type: ArgumentType = .argument
     func parse(_ parser: ArgumentParser) throws -> ValueType {
         guard let string = parser.shift() else {

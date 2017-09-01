@@ -90,7 +90,7 @@ class Configuration {
             }
         }
     }
-    func getContextForRemote(alias: String, remoteName: String? = nil) -> Context? {
+    private func getContextForRemote(alias: String, remoteName: String? = nil) -> Context? {
         return cmdshelfYml.remotes
             .filter {
                 if let remoteName = remoteName {
