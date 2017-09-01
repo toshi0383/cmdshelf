@@ -26,7 +26,7 @@ let group = Group { group in
             for alias in aliases {
                 // Search in blobs and remote
                 guard let context = config.getContexts(for: alias.alias, remoteName: alias.remoteName).first else {
-                    queuedPrintlnError(Message.noSuchCommand(alias.fullAlias))
+                    queuedPrintlnError(Message.noSuchCommand(alias.originalValue))
                     failure = true
                     continue
                 }
@@ -50,7 +50,7 @@ let group = Group { group in
         let parameter = aliasParam.parameter
         // Search in blobs and remote
         guard let context = config.getContexts(for: alias, remoteName: remoteName).first else {
-            queuedPrintlnError(Message.noSuchCommand(aliasParam.0.fullAlias))
+            queuedPrintlnError(Message.noSuchCommand(aliasParam.0.originalValue))
             exit(1)
         }
         shellOut(to: context.location, argument: parameter)

@@ -4,13 +4,7 @@ import Foundation
 struct Alias {
     let alias: String
     let remoteName: String?
-    var fullAlias: String {
-        if let remoteName = remoteName {
-            return "\(remoteName):\(alias)"
-        } else {
-            return alias
-        }
-    }
+    let originalValue: String
 }
 
 private class AliasParser {
@@ -30,7 +24,7 @@ private class AliasParser {
             alias = _alias
             remoteName = nil
         }
-        return Alias(alias: alias, remoteName: remoteName)
+        return Alias(alias: alias, remoteName: remoteName, originalValue: _alias)
     }
 }
 
