@@ -11,15 +11,13 @@ struct Alias {
             return alias
         }
     }
-    static let empty = Alias(alias: "", remoteName: nil)
 }
 
 class AliasParser {
     static func parse(_ string: String) -> Alias {
-        let components = string.components(separatedBy: " ")
-        guard let _alias = components.first else {
-            return .empty
-        }
+        // Get "remote:my/script" part.
+        // `"".components(separatedBy: " ").count` is 1, so force unwrap.
+        let _alias  = string.components(separatedBy: " ").first!
         let alias: String
         let remoteName: String?
         if _alias.contains(":") {
@@ -49,7 +47,7 @@ struct VaradicAliasArgument: ArgumentDescriptor {
         for _ in remainder {
             _ = parser.shift()
         }
-        return remainder.map(AliasParser.parse)
+        return remainder.map(AliasParser.parse).filter { !$0.alias.isEmpty }
     }
 }
 
