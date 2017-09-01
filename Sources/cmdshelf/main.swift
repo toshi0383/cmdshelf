@@ -6,9 +6,11 @@ import Reporter
 let version = "0.6.0"
 
 let group = Group { group in
-    group.addCommand("list", command() {
+    group.addCommand("list", command(
+        Flag("path", disabledName: "", description: "display absolute path instead of command alias name", default: false)
+        ) { isPath in
         let config = try Configuration()
-        try config.printAllCommands()
+        try config.printAllCommands(displayType: isPath ? .absolutePath : .alias)
     })
     group.addCommand("remote", RemoteCommand())
     group.addCommand("blob", BlobCommand())
