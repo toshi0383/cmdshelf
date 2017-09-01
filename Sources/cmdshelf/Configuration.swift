@@ -128,7 +128,7 @@ class Configuration {
             if let url = cmdshelfYml.blobURL(for: alias) {
                 // TODO:
                 //   if let localURL = config.cache(for: url) {
-                contexts.append(Context(location: "bash <(curl -sSL \"\(url)\")"))
+                contexts.append(Context(location: "curl -sSL \"\(url)\""))
             } else if let localPath = cmdshelfYml.blobLocalPath(for: alias) {
                 contexts.append(Context(location: localPath))
             }

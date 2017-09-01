@@ -53,7 +53,11 @@ let group = Group { group in
             queuedPrintlnError(Message.noSuchCommand(aliasParam.alias.originalValue))
             exit(1)
         }
-        shellOut(to: context.location, argument: parameter)
+        if context.location.hasPrefix("curl ") {
+            shellOut(to: "bash <(\(context.location))", argument: parameter)
+        } else {
+            shellOut(to: context.location, argument: parameter)
+        }
     })
     group.addCommand("update", command() {
         let config = try Configuration()
