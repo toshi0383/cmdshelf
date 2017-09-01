@@ -13,8 +13,11 @@ struct Alias {
     }
 }
 
-class AliasParser {
-    static func parse(_ string: String) -> Alias {
+private class AliasParser {
+    static func parse(_ string: String) -> Alias? {
+        guard !string.isEmpty else {
+            return nil
+        }
         // Get "remote:my/script" part.
         // `"".components(separatedBy: " ").count` is 1, so force unwrap.
         let _alias  = string.components(separatedBy: " ").first!
@@ -31,8 +34,11 @@ class AliasParser {
     }
 }
 
-class ParameterParser {
-    static func parse(_ string: String) -> String {
+private class ParameterParser {
+    static func parse(_ string: String) -> String? {
+        guard !string.isEmpty else {
+            return nil
+        }
         return string.components(separatedBy: " ").dropFirst().joined()
     }
 }
@@ -47,12 +53,12 @@ struct VaradicAliasArgument: ArgumentDescriptor {
         for _ in remainder {
             _ = parser.shift()
         }
-        return remainder.map(AliasParser.parse).filter { !$0.alias.isEmpty }
+        return remainder.flatMap(AliasParser.parse)
     }
 }
 
 struct AliasParameterArgument: ArgumentDescriptor {
-    typealias ValueType = (alias: Alias, parameter: String)
+    typealias ValueType = (alias: Alias, parameter: String?)
     let name: String = "COMMAND"
     let description: String? = "command name alias\n double or single quoted when passing arguments. e.g. `cmdshelf run \"myscript --option someargument\"\nTo avoid name collision, add remote name separated by :. e.g. `cmdshelf run my-remote:my/script`"
     let type: ArgumentType = .argument
@@ -60,6 +66,9 @@ struct AliasParameterArgument: ArgumentDescriptor {
         guard let string = parser.shift() else {
             throw ArgumentError.missingValue(argument: name)
         }
-        return (AliasParser.parse(string), ParameterParser.parse(string))
+        guard let alias = AliasParser.parse(string) else {
+            throw ArgumentError.missingValue(argument: "COMMAND")
+        }
+        return (alias, ParameterParser.parse(string))
     }
 }
