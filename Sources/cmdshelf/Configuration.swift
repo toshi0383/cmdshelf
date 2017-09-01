@@ -9,6 +9,10 @@ enum Const {
     fileprivate static let remoteWorkspacePath = Const.workspacePath + "remote"
 }
 
+enum DisplayType: String {
+    case alias, absolutePath
+}
+
 class Configuration {
     var remoteWorkspacePath: Path {
         return Const.remoteWorkspacePath
@@ -93,23 +97,28 @@ class Configuration {
             .first
     }
 
-    func commandNames(for remoteName: String) throws -> [String] {
+    func displayNames(for remoteName: String, type: DisplayType) throws -> [String] {
         let repoPath = Const.remoteWorkspacePath + remoteName
+        func _convert(path: Path) -> String {
+            return type == .alias ?
+                path.string.substring(from: (repoPath.string + "/").endIndex) :
+                path.absolute().string
+        }
         return try repoPath.recursiveChildren()
             .filter {
                 $0.isExecutable
                     && $0.isDirectory == false
                     && $0.components.contains(".git") == false
             }
-            .map { $0.string.substring(from: (repoPath.string + "/").endIndex) }
+            .map(_convert)
     }
 
-    func printAllCommands() throws {
+    func printAllCommands(displayType: DisplayType) throws {
         cloneRemotesIfNeeded()
         let allRemoteCommands = try cmdshelfYml.remotes
             .map { $0.name }
             .flatMap {
-                let commands = try self.commandNames(for: $0)
+                let commands = try self.displayNames(for: $0, type: displayType)
                     .joined(separator: "\n    ")
                 return "  \($0):\n    \(commands)"
             }
