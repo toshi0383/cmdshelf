@@ -43,11 +43,7 @@ struct VaradicAliasArgument: ArgumentDescriptor {
     let description: String? = "[[remoteName:]my/command ...]"
     let type: ArgumentType = .argument
     func parse(_ parser: ArgumentParser) throws -> ValueType {
-        let remainder = parser.remainder
-        for _ in remainder {
-            _ = parser.shift()
-        }
-        return remainder.flatMap(AliasParser.parse)
+        return parser.shiftAll().flatMap(AliasParser.parse)
     }
 }
 
@@ -64,5 +60,16 @@ struct AliasParameterArgument: ArgumentDescriptor {
             throw ArgumentError.missingValue(argument: "COMMAND")
         }
         return (alias, ParameterParser.parse(string))
+    }
+}
+
+// MARK: - Commander extension
+extension ArgumentParser {
+    func shiftAll() -> [String] {
+        let _remainder = remainder
+        for _ in remainder {
+            _ = shift()
+        }
+        return _remainder
     }
 }
