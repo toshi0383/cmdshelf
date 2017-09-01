@@ -90,11 +90,19 @@ class Configuration {
             }
         }
     }
-    func remote(for name: String) -> Path? {
+    func getContextForRemote(alias: String, remoteName: String? = nil) -> Context? {
         return cmdshelfYml.remotes
-            .map { Const.remoteWorkspacePath + $0.name + name }
+            .filter {
+                if let remoteName = remoteName {
+                    return $0.name == remoteName
+                } else {
+                    return true
+                }
+            }
+            .map { Const.remoteWorkspacePath + $0.name + alias }
             .filter { $0.isExecutable }
             .first
+            .map { Context(location: $0.absolute().string) }
     }
 
     func displayNames(for remoteName: String, type: DisplayType) throws -> [String] {
@@ -111,6 +119,26 @@ class Configuration {
                     && $0.components.contains(".git") == false
             }
             .map(_convert)
+    }
+
+    func getContexts(for alias: String, remoteName: String? = nil) -> [Context] {
+        var contexts = [Context]()
+        if remoteName == nil {
+            // Search in blob
+            if let url = cmdshelfYml.blobURL(for: alias) {
+                // TODO:
+                //   if let localURL = config.cache(for: url) {
+                contexts.append(Context(location: "bash <(curl -sSL \"\(url)\")"))
+            } else if let localPath = cmdshelfYml.blobLocalPath(for: alias) {
+                contexts.append(Context(location: localPath))
+            }
+        }
+        // Search in remote
+        cloneRemotesIfNeeded()
+        if let c = getContextForRemote(alias: alias, remoteName: remoteName) {
+            contexts.append(c)
+        }
+        return contexts
     }
 
     func printAllCommands(displayType: DisplayType) throws {
