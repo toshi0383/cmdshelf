@@ -1,4 +1,4 @@
-## master
+## 0.7.0
 ##### Enhancements
 * Add --path option for `list` command  
   [Toshihiro Suzuki](https://github.com/toshi0383)
