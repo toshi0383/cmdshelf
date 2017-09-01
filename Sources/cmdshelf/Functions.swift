@@ -2,15 +2,19 @@ import Foundation
 import Reporter
 
 @discardableResult
-func silentShellOut(to: String, arguments: [String] = []) -> Int32 {
-    return shellOut(to: to, arguments: arguments, shouldPrintStdout: false, shouldPrintError: false)
+func silentShellOut(to: String, argument: String? = nil) -> Int32 {
+    return shellOut(to: to, argument: argument, shouldPrintStdout: false, shouldPrintError: false)
 }
 
 @discardableResult
-func shellOut(to: String, arguments: [String] = [], shouldPrintStdout: Bool = true, shouldPrintError: Bool = true) -> Int32 {
+func shellOut(to: String, argument: String? = nil, shouldPrintStdout: Bool = true, shouldPrintError: Bool = true) -> Int32 {
     let process = Process()
     process.launchPath = "/bin/bash"
-    process.arguments = ["-c", "\(to) \(arguments.joined(separator: " "))"]
+    if let arg = argument {
+        process.arguments = ["-c", "\(to) \(arg)"]
+    } else {
+        process.arguments = ["-c", "\(to)"]
+    }
     #if !os(Linux)
     let inPipe = Pipe()
     inPipe.fileHandleForWriting.writeabilityHandler = { handler in
@@ -38,4 +42,3 @@ func shellOut(to: String, arguments: [String] = [], shouldPrintStdout: Bool = tr
     #endif
     return process.terminationStatus
 }
-

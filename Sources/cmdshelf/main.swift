@@ -7,7 +7,7 @@ let version = "0.6.0"
 
 let group = Group { group in
     group.addCommand("list", command(
-        Flag("path", disabledName: "", description: "display absolute path instead of command alias name", default: false)
+        Flag("path", disabledName: "", description: "display absolute path instead of command name alias", default: false)
         ) { isPath in
         let config = try Configuration()
         try config.printAllCommands(displayType: isPath ? .absolutePath : .alias)
@@ -15,68 +15,49 @@ let group = Group { group in
     group.addCommand("remote", RemoteCommand())
     group.addCommand("blob", BlobCommand())
     group.addCommand("cat", "concatenate and print commands", command(
-        VariadicArgument<String>("COMMAND", description: "command name")
-    ) { (commands) in
-        if commands.isEmpty {
+        VaradicAliasArgument()
+    ) { (aliases) in
+        if aliases.isEmpty {
             shellOut(to: "cat")
         } else {
             let config = try Configuration()
+            config.cloneRemotesIfNeeded()
             var failure = false
-            for name in commands {
-                // Search in blob
-                if let url = config.cmdshelfYml.blobURL(for: name) {
-                    // TODO:
-                    //   if let localURL = config.cache(for: url) {
-                    shellOut(to: "curl -sSL \"\(url)\"")
-                    continue
-                } else if let localPath = config.cmdshelfYml.blobLocalPath(for: name) {
-                    shellOut(to: "cat \(localPath)")
+            for alias in aliases {
+                // Search in blobs and remote
+                guard let context = config.getContexts(for: alias.alias, remoteName: alias.remoteName).first else {
+                    queuedPrintlnError(Message.noSuchCommand(alias.originalValue))
+                    failure = true
                     continue
                 }
-
-                // Search in remote
-                config.cloneRemotesIfNeeded()
-                if let localPath = config.remote(for: name) {
-                    shellOut(to: "cat \(localPath)")
-                    continue
+                if context.location.hasPrefix("curl ") {
+                    shellOut(to: context.location)
+                } else {
+                    shellOut(to: "cat \(context.location)")
                 }
-                queuedPrintln("cat: \(name): No such file or directory")
-                failure = true
             }
             if failure {
                 exit(1)
             }
         }
     })
-    group.addCommand("run", command(
-        Argument<String>("COMMAND", description: "command name alias double or single quoted when passing arguments. e.g. `cmdshelf run \"myscript --option someargument\"")
-    ) { (command) in
-        guard let name = command.components(separatedBy: " ").first else {
-            return
-        }
-        let parameters = command.components(separatedBy: " ").dropFirst().map { $0 }
+    group.addCommand("run", "Run command", command(
+        AliasParameterArgument()
+    ) { (aliasParam) in
         let config = try Configuration()
-
-        // Search in blob
-        if let url = config.cmdshelfYml.blobURL(for: name) {
-            // TODO:
-            //   if let localURL = config.cache(for: url) {
-            shellOut(to: "bash <(curl -sSL \"\(url)\")", arguments: parameters)
-            return
-        } else if let localPath = config.cmdshelfYml.blobLocalPath(for: name) {
-            shellOut(to: localPath, arguments: parameters)
-            return
+        let alias = aliasParam.alias.alias
+        let remoteName = aliasParam.alias.remoteName
+        let parameter = aliasParam.parameter
+        // Search in blobs and remote
+        guard let context = config.getContexts(for: alias, remoteName: remoteName).first else {
+            queuedPrintlnError(Message.noSuchCommand(aliasParam.alias.originalValue))
+            exit(1)
         }
-
-        // Search in remote
-        config.cloneRemotesIfNeeded()
-        if let localPath = config.remote(for: name) {
-            shellOut(to: localPath.string, arguments: parameters)
-            return
+        if context.location.hasPrefix("curl ") {
+            shellOut(to: "bash <(\(context.location))", argument: parameter)
+        } else {
+            shellOut(to: context.location, argument: parameter)
         }
-
-        queuedPrintlnError("Command `\(command)` not found.")
-        exit(1)
     })
     group.addCommand("update", command() {
         let config = try Configuration()

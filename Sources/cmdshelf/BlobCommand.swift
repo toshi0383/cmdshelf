@@ -23,7 +23,7 @@ class BlobCommand: Group {
             }
         })
         addCommand("remove", "Remove a blob.", Commander.command(
-            Argument<String>("NAME", description: "command name")
+            Argument<String>("NAME", description: "command name alias")
             ) { name in
             let config = try Configuration()
             config.cmdshelfYml.removeBlob(name: name)
