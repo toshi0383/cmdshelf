@@ -4,6 +4,11 @@
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#33](https://github.com/toshi0383/cmdshelf/pull/33)
 
+* Introduce new COMMAND argument syntax to distinguish remotes  
+  `"[remoteName:]my/command [parameter ...]"`  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#34](https://github.com/toshi0383/cmdshelf/pull/34)
+
 ## 0.6.0
 ##### Enhancements
 * Add cat command  
