@@ -1,3 +1,9 @@
+## master
+##### Enhancements
+* Add --path option for `list` command  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#33](https://github.com/toshi0383/cmdshelf/pull/33)
+
 ## 0.6.0
 ##### Enhancements
 * Add cat command  
