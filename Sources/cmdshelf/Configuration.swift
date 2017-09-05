@@ -37,7 +37,7 @@ class Configuration {
                 throw CmdshelfError("\(Const.ymlPath.string) is expected to be a file but is not. Please remove or rename existing file or directory.")
             }
             let url = URL(fileURLWithPath: Const.ymlPath.string)
-            let data = try String(contentsOf: url)
+            let data = try String(contentsOfFile: url.path, encoding: .utf8)
             guard let yml = try Yams.load(yaml: data) as? [String: Any] else {
                 throw CmdshelfError("Failed to load \(Const.ymlPath.string).")
             }
