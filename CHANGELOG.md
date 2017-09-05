@@ -1,3 +1,13 @@
+## master
+##### Bugfix
+* [fixed] run concats all parameters  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#35](https://github.com/toshi0383/cmdshelf/issues/35)
+
+* [fixed] [Linux] Runtime Error  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#38](https://github.com/toshi0383/cmdshelf/issues/38)
+
 ## 0.7.0
 ##### Enhancements
 * Add --path option for `list` command  
