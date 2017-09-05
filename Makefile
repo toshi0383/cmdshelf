@@ -4,7 +4,8 @@ MODULE_NAME = cmdshelf
 PARAM = SWIFTPM_DEVELOPMENT=YES
 
 test:
-	$(PARAM) swift test
+	$(PARAM) swift build
+	./test/main.sh
 
 update:
 	$(PARAM) swift package update
