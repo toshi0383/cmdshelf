@@ -33,7 +33,7 @@ private class ParameterParser {
         guard !string.isEmpty else {
             return nil
         }
-        return string.components(separatedBy: " ").dropFirst().joined()
+        return string.components(separatedBy: " ").dropFirst().joined(separator: " ")
     }
 }
 
