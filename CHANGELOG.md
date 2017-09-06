@@ -1,4 +1,4 @@
-## master
+## 0.7.1
 ##### Bugfix
 * [fixed] run concats all parameters  
   [Toshihiro Suzuki](https://github.com/toshi0383)
