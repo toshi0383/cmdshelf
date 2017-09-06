@@ -5,7 +5,7 @@ PARAM = SWIFTPM_DEVELOPMENT=YES
 
 test:
 	$(PARAM) swift build
-	./test/main.sh
+	./tests/main.sh
 
 update:
 	$(PARAM) swift package update
