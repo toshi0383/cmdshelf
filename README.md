@@ -5,13 +5,17 @@ No need to deal with your `$PATH` any more.
 
 # Requirements
 ## macOS
-- Xcode8.3+
+- Sierra
+- HighSierra
+
+## Linux and Windows
+- should work on Swift compatible distribution
+
+## Development
+- Xcode8.3.3
 - Swift3.1
 
-## Linux
-- Swift3.1
-
-# Why
+# What
 With cmdshelf, you can
 - execute any scripts intuitively without manually download and configuring `$PATH`.
 - store team's common scripts in a single configuration file called `.cmdshelf.yml`.
@@ -143,16 +147,6 @@ This should be the easiest way.
 ```
 bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) toshi0383/cmdshelf
 ```
-
-### brew tap (beta)
-cmdshelf is available via homebrew. Run following to install.
-```
-brew tap toshi0383/cmdshelf
-brew install cmdshelf
-```
-This runs install.sh behind the scene.
-
-brew exits with "Empty Installation" error, but install succeeds.
 
 ### Build from source
 
