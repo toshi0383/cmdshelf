@@ -2,7 +2,7 @@
 ##### Enhancements
 * Add description for each commands  
   [Toshihiro Suzuki](https://github.com/toshi0383)
-  [#38](https://github.com/toshi0383/cmdshelf/pull/38)
+  [#40](https://github.com/toshi0383/cmdshelf/pull/40)
 
 ## 0.7.1
 ##### Bugfix
