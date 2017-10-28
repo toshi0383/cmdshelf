@@ -3,7 +3,7 @@ import PathKit
 import Foundation
 import Reporter
 
-let version = "0.7.1"
+let version = "0.7.2"
 
 let group = Group { group in
     group.addCommand("list", "Show all registered commands (use --path to print absolute paths)", command(
