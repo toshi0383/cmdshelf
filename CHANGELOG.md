@@ -1,4 +1,9 @@
-## 0.7.1
+## master
+##### Enhancements
+* Add description for each commands  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#39](https://github.com/toshi0383/cmdshelf/pull/39)
+
 ##### Bugfix
 * [fixed] run concats all parameters  
   [Toshihiro Suzuki](https://github.com/toshi0383)

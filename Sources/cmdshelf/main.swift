@@ -6,15 +6,15 @@ import Reporter
 let version = "0.7.1"
 
 let group = Group { group in
-    group.addCommand("list", command(
+    group.addCommand("list", "Show all registered commands (use --path to print absolute paths)", command(
         Flag("path", default: false, disabledName: "", description: "display absolute path instead of command name alias")
         ) { isPath in
         let config = try Configuration()
         try config.printAllCommands(displayType: isPath ? .absolutePath : .alias)
     })
-    group.addCommand("remote", RemoteCommand())
-    group.addCommand("blob", BlobCommand())
-    group.addCommand("cat", "concatenate and print commands", command(
+    group.addCommand("remote", "Manage remote commands (type `cmdshelf remote --help` for usage)", RemoteCommand())
+    group.addCommand("blob", "Manage blob commands (type `cmdshelf blob --help` for usage)", BlobCommand())
+    group.addCommand("cat", "Concatenate and print commands", command(
         VaradicAliasArgument()
     ) { (aliases) in
         if aliases.isEmpty {
@@ -59,7 +59,7 @@ let group = Group { group in
             shellOut(to: context.location, argument: parameter)
         }
     })
-    group.addCommand("update", command() {
+    group.addCommand("update", "Update all cloned repositories", command() {
         let config = try Configuration()
         config.cloneRemotesIfNeeded()
         config.updateRemotes()
