@@ -34,12 +34,12 @@ class Configuration {
     init() throws {
         if Const.ymlPath.exists {
             guard Const.ymlPath.isFile else {
-                throw CmdshelfError("\(Const.ymlPath.string) is expected to be a file but is not. Please remove or rename existing file or directory.")
+                throw CmdshelfError("\(Const.ymlPath.description) is expected to be a file but is not. Please remove or rename existing file or directory.")
             }
-            let url = URL(fileURLWithPath: Const.ymlPath.string)
+            let url = URL(fileURLWithPath: Const.ymlPath.description)
             let data = try String(contentsOfFile: url.path, encoding: .utf8)
             guard let yml = try Yams.load(yaml: data) as? [String: Any] else {
-                throw CmdshelfError("Failed to load \(Const.ymlPath.string).")
+                throw CmdshelfError("Failed to load \(Const.ymlPath.description).")
             }
             if let remote = yml["remote"] as? [String: [String: String]] {
                 for (name, dictionary) in remote {
@@ -67,7 +67,7 @@ class Configuration {
             let workspace = workspacePath + repo.name
             if workspace.isDirectory == false {
                 queuedPrint("[\(repo.name)] Cloning ... ")
-                let status = silentShellOut(to: "git clone \(repo.url) \(workspace.string)")
+                let status = silentShellOut(to: "git clone \(repo.url) \(workspace.description)")
                 if status != 0 {
                     queuedPrintlnError("error")
                 } else {
@@ -81,7 +81,7 @@ class Configuration {
             let workspace = Const.remoteWorkspacePath + repo.name
             if workspace.isDirectory {
                 queuedPrint("[\(repo.name)] Updating ... ")
-                let status = silentShellOut(to: "cd \(workspace.string) && git fetch origin master && git checkout origin/master")
+                let status = silentShellOut(to: "cd \(workspace.description) && git fetch origin master && git checkout origin/master")
                 if status != 0 {
                     queuedPrintlnError("error")
                 } else {
@@ -102,15 +102,15 @@ class Configuration {
             .map { Const.remoteWorkspacePath + $0.name + alias }
             .filter { $0.isExecutable }
             .first
-            .map { Context(location: $0.absolute().string) }
+            .map { Context(location: $0.absolute().description) }
     }
 
     func displayNames(for remoteName: String, type: DisplayType) throws -> [String] {
         let repoPath = Const.remoteWorkspacePath + remoteName
         func _convert(path: Path) -> String {
             return type == .alias ?
-                path.string.substring(from: (repoPath.string + "/").endIndex) :
-                path.absolute().string
+                path.description.substring(from: (repoPath.description + "/").endIndex) :
+                path.absolute().description
         }
         return try repoPath.recursiveChildren()
             .filter {
