@@ -6,7 +6,7 @@ import Reporter
 let version = "0.7.1"
 
 let group = Group { group in
-    group.addCommand("list", "Show all registered commands (use --path to print absolute paths)", command(
+    group.addCommand("list", alias: "ls", "Show all registered commands (use --path to print absolute paths)", command(
         Flag("path", default: false, disabledName: "", description: "display absolute path instead of command name alias")
         ) { isPath in
         let config = try Configuration()
