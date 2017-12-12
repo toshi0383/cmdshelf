@@ -63,6 +63,31 @@ struct AliasParameterArgument: ArgumentDescriptor {
     }
 }
 
+enum SubCommand: String {
+    case run, list, remote, blob, cat, update
+}
+
+struct SubCommandConvertibleArgument: ArgumentDescriptor {
+
+    typealias ValueType = (SubCommand, parser: ArgumentParser)?
+
+    let name: String = "\"\(Message.COMMAND) [parameter ...]\""
+    let description: String? = "Double or single quote when passing arguments. e.g. `cmdshelf run \"myscript --option someargument\""
+    let type: ArgumentType = .argument
+
+    func parse(_ parser: ArgumentParser) throws -> ValueType {
+        if let string = parser.shift() {
+            if let subCommand = SubCommand(rawValue: string) {
+                return (subCommand, parser)
+            } else {
+                throw ArgumentError.invalidType(value: string, type: "SubCommand", argument: nil)
+            }
+        } else {
+            return nil
+        }
+    }
+}
+
 // MARK: - Commander extension
 extension ArgumentParser {
     func shiftAll() -> [String] {
