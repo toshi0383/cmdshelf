@@ -4,6 +4,8 @@ import PathKit
 import Reporter
 
 class BlobCommand: Group {
+    let name: String = "blob"
+    let description: String? = "Manage blob commands (type `cmdshelf blob` for usage)"
     override init() {
         super.init()
         addCommand("list", "Show registered blobs.", Commander.command() {

@@ -4,6 +4,8 @@ import Foundation
 import Reporter
 
 class RemoteCommand: Group {
+    let name: String = "remote"
+    let description: String? = "Manage remote commands (type `cmdshelf remote` for usage)"
     override init() {
         super.init()
         addCommand("list", "Show registered remotes.", Commander.command() {
