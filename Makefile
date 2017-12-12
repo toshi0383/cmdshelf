@@ -1,5 +1,5 @@
-.PHONY = update build test bootstrap sourcery
-SOURCERY ?= ./.build/debug/sourcery
+.PHONY = clean update build test bootstrap sourcery
+SOURCERY ?= sourcery # Please install appropriate version on your own.
 MODULE_NAME = cmdshelf
 PARAM = SWIFTPM_DEVELOPMENT=YES
 
@@ -7,17 +7,18 @@ test:
 	$(PARAM) swift build
 	./tests/main.sh
 
+clean:
+	rm -rf .build
+	rm Package.resolved
+
 update:
 	$(PARAM) swift package update
 
 build:
 	$(PARAM) swift build
+
 bootstrap: build
 	$(PARAM) swift package generate-xcodeproj
-
-sourcery:
-	$(SOURCERY) --templates Resources/SourceryTemplates/AutoEquatables.stencil --sources Sources/$(MODULE_NAME)/ --output Sources/$(MODULE_NAME)/AutoEquatables.out.swift
-	# $(SOURCERY) --templates Resources/SourceryTemplates/LinuxMain.stencil --sources Tests/PbxprojTests/ --output Tests/LinuxMain.swift
 
 # Needs toshi0383/scripts to be added to cmdshelf's remote
 install:

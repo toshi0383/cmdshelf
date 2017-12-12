@@ -10,20 +10,12 @@ var isDevelopment: Bool {
 let package = Package(
     name: "cmdshelf",
     dependencies: {
-        var deps: [Package.Dependency] = [
-            .Package(url: "https://github.com/kylef/Commander.git", majorVersion: 0),
-            .Package(url: "https://github.com/kylef/PathKit.git", majorVersion: 0),
+        let deps: [Package.Dependency] = [
+            .Package(url: "https://github.com/toshi0383/Commander.git", majorVersion: 0),
+            .Package(url: "https://github.com/toshi0383/PathKit.git", majorVersion: 0),
             .Package(url: "https://github.com/toshi0383/Reporter.git", majorVersion: 0),
+            .Package(url: "https://github.com/jpsim/Yams.git", majorVersion: 0)
         ]
-        if isDevelopment {
-            deps += [
-                .Package(url: "https://github.com/krzysztofzablocki/Sourcery.git", majorVersion: 0, minor: 6),
-            ]
-        } else {
-            deps += [
-                .Package(url: "https://github.com/jpsim/Yams.git", majorVersion: 0)
-            ]
-        }
         return deps
     }(),
     exclude: ["Resources/SourceryTemplates"]
