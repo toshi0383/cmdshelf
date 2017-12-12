@@ -1,0 +1,7 @@
+sources:
+  - Sources/cmdshelf
+templates:
+  - Resources/SourceryTemplates/AutoEquatables.stencil
+output:
+  Sources/cmdshelf/Sourcery.out.swift
+

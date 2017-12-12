@@ -1,4 +1,4 @@
-// Generated using Sourcery 0.6.1 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 0.9.0 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
 
@@ -28,7 +28,8 @@ fileprivate func compareArrays<T>(lhs: [T], rhs: [T], compare: (_ lhs: T, _ rhs:
 extension Blob: Equatable {} 
 internal func == (lhs: Blob, rhs: Blob) -> Bool {
     guard lhs.name == rhs.name else { return false }
-    guard lhs.url == rhs.url else { return false }
+    guard compareOptionals(lhs: lhs.url, rhs: rhs.url, compare: ==) else { return false }
+    guard compareOptionals(lhs: lhs.localPath, rhs: rhs.localPath, compare: ==) else { return false }
     return true
 }
 // MARK: - Repository AutoEquatable
