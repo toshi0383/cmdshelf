@@ -8,6 +8,7 @@ test:
 	./tests/main.sh
 
 clean:
+	rm -rf .build
 	rm Package.resolved
 
 update:
