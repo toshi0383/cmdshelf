@@ -12,8 +12,8 @@ No need to deal with your `$PATH` any more.
 - should work on Swift compatible distribution
 
 ## Development
-- Xcode9.0.1
-- Swift3.2
+- Xcode9+
+- Swift4+
 
 # What
 With cmdshelf, you can

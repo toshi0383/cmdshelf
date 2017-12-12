@@ -1,5 +1,5 @@
-.PHONY = update build test bootstrap sourcery
-SOURCERY ?= ./.build/debug/sourcery
+.PHONY = clean update build test bootstrap sourcery
+SOURCERY ?= sourcery # Please install appropriate version on your own.
 MODULE_NAME = cmdshelf
 PARAM = SWIFTPM_DEVELOPMENT=YES
 
@@ -7,11 +7,15 @@ test:
 	$(PARAM) swift build
 	./tests/main.sh
 
+clean:
+	rm Package.resolved
+
 update:
 	$(PARAM) swift package update
 
 build:
 	$(PARAM) swift build
+
 bootstrap: build
 	$(PARAM) swift package generate-xcodeproj
 
