@@ -96,11 +96,13 @@ extension SubCommand {
 
             \(description):
                 The `remote` subcommand manages remotes.
-                See `cmdshelf help remote` for usage.
 
             \(commands):
                 \(bold("add")) <name> <git URL>
                     Add a repository as a remote named \(bold("<name>")).
+
+                \(bold("list"))
+                    List remotes.
 
                 \(bold("remove")) <name>
                     Remove remote named \(bold("<name>")).
