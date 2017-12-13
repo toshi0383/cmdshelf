@@ -4,6 +4,10 @@
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#43](https://github.com/toshi0383/cmdshelf/pull/43)
 
+* Improve Help and Manual Pages  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#45](https://github.com/toshi0383/cmdshelf/pull/45)
+
 ## 0.7.2
 ##### Enhancements
 * Add description for each commands  
