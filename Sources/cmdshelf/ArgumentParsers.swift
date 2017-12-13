@@ -1,5 +1,6 @@
 import Commander
 import Foundation
+import Reporter
 
 struct Alias {
     let alias: String
@@ -55,21 +56,6 @@ struct AliasParameterArgument: ArgumentDescriptor {
     }
 }
 
-enum SubCommand: String {
-    case run, list, remote, blob, cat, update, help
-    var helpMessage: String {
-        switch self {
-        case .run: return ""
-        case .list: return ""
-        case .remote: return ""
-        case .blob: return ""
-        case .cat: return ""
-        case .update: return ""
-        default: return ""
-        }
-    }
-}
-
 struct SubCommandArgument: ArgumentDescriptor {
 
     typealias ValueType = SubCommand?
@@ -89,6 +75,10 @@ struct SubCommandArgument: ArgumentDescriptor {
             return nil
         }
     }
+}
+
+enum SubCommand: String {
+    case run, list, remote, blob, cat, update, help
 }
 
 struct SubCommandConvertibleArgument: ArgumentDescriptor {
