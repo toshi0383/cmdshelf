@@ -45,7 +45,7 @@ struct AliasParameterArgument: ArgumentDescriptor {
     let description: String? = nil
     let type: ArgumentType = .argument
     func parse(_ parser: ArgumentParser) throws -> ValueType {
-        guard let string = parser.shift() else {
+        guard let string = parser.shiftArgument() else {
             throw ArgumentError.missingValue(argument: name)
         }
         let splitted = string.split(separator: " ")
@@ -65,7 +65,7 @@ struct SubCommandArgument: ArgumentDescriptor {
     let type: ArgumentType = .argument
 
     func parse(_ parser: ArgumentParser) throws -> ValueType {
-        if let string = parser.shift() {
+        if let string = parser.shiftArgument() {
             if let subCommand = SubCommand(rawValue: string) {
                 return subCommand
             } else {
