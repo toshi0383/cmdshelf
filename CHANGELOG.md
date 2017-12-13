@@ -1,3 +1,9 @@
+## master
+##### Enhancements
+* No need to quote command with parameters  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+  [#43](https://github.com/toshi0383/cmdshelf/pull/43)
+
 ## 0.7.2
 ##### Enhancements
 * Add description for each commands  
