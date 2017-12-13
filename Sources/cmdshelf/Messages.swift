@@ -55,10 +55,10 @@ extension SubCommand {
             \(synopsis)
                 `cmdshelf blob` <command> [<args>]
 
-            \(description):
+            \(description)
                 The `blob` subcommand manages blobs.
 
-            \(commands):
+            \(commands)
                 \(bold("add")) <name> <blob URL|local file path>
                     Add a remote file URL or a local file path as a blob named \(bold("<name>")).
 
@@ -72,7 +72,7 @@ extension SubCommand {
             \(synopsis)
                 cmdshelf cat [[<remoteName>:]<command>]
 
-            \(description):
+            \(description)
                 The `cat` subcommand reads commands script files sequentially,
                 writing them to the standard output.
 
@@ -83,7 +83,7 @@ extension SubCommand {
             \(synopsis)
                 cmdshelf list [--path]
 
-            \(description):
+            \(description)
                 The `list` subcommand lists all commands from remotes and blobs.
                 `--path` prints absolute path to each commands.
 
@@ -114,8 +114,15 @@ extension SubCommand {
             \(synopsis)
                 cmdshelf run [<remoteName>:]<command> [<args>]
 
-            \(description):
-                The `run` subcommand receives command-alias and whitespace separated list of parameters.
+            \(description)
+                The `run` subcommand receives command-alias and whitespace
+                separated list of parameters.
+
+            \(bold("AVOIDING NAMESPACE CONFLICT"))
+                The `run` subcommand picks-up first command matches the command name.
+                If you end-up with multiple same command names from different remotes,
+                add \(bold("<remoteName>:")) before the \(bold("<command>")).
+                    e.g. cmdshelf run myRemote:echo-sd hello
 
             \(footerSection)
             """
@@ -127,7 +134,7 @@ extension SubCommand {
             \(synopsis)
                 cmdshelf update
 
-            \(description):
+            \(description)
                 The `update` subcommand updates all cloned repositories.
                 Cmdshelf automatically clones repositories under \(bold(remoteDirPath)).
                 Please run \(bold(removeInstruction)) and re-try update when it keeps
