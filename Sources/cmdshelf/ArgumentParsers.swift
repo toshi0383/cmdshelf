@@ -79,6 +79,15 @@ struct SubCommandArgument: ArgumentDescriptor {
 
 enum SubCommand: String {
     case run, list, remote, blob, cat, update, help
+    init?(string: String) {
+        if let v = SubCommand(rawValue: string) {
+            self = v
+        } else if ["-h", "--help"].contains(string) {
+            self = .help
+        } else {
+            return nil
+        }
+    }
 }
 
 struct SubCommandConvertibleArgument: ArgumentDescriptor {
@@ -91,7 +100,7 @@ struct SubCommandConvertibleArgument: ArgumentDescriptor {
 
     func parse(_ parser: ArgumentParser) throws -> ValueType {
         if let string = parser.shift() {
-            if let subCommand = SubCommand(rawValue: string) {
+            if let subCommand = SubCommand(string: string) {
                 return (subCommand, parser)
             } else {
                 throw ArgumentError.invalidType(value: string, type: "SubCommand", argument: nil)
