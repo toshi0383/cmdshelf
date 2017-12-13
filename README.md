@@ -54,16 +54,16 @@ toshi0383-scripts: https://github.com/toshi0383/scripts.git
 ```
 
 ## run
-Now you can execute your command with `run` sub-command. Quote the whole command to pass arguments or options.
+Now you can execute your command with `run` sub-command.
 ```
 $ cmdshelf run your-command
-$ cmdshelf run "your-command argument and --option"
+$ cmdshelf run your-command argument and --option
 ```
 
 Add remote specifier to avoid name conflict.
 ```
 $ cmdshelf run your-scripts:your-command
-$ cmdshelf run "your-scripts:your-command argument and --option"
+$ cmdshelf run your-scripts:your-command argument and --option
 ```
 
 ## update
@@ -142,7 +142,7 @@ remote:
     git/git-branch-by-author
     git/replaceOriginWith.sh
     ...
-$ cmdshelf run "movies/movies inception" # Run movies script from Bash-Snippets
+$ cmdshelf run movies/movies inception # Run movies script from Bash-Snippets
 
 ==================================================
 | Title: Inception
