@@ -41,6 +41,7 @@ func printHelpMessage() {
     queuedPrintln("Options:")
     queuedPrintln("    -h, --help")
     queuedPrintln("        Show this help message.")
+    queuedPrintln("        Type \(bold("cmdshelf help <command>")) to see more detailed manual page.")
     queuedPrintln("")
     queuedPrintln("Commands:")
     queuedPrintln("")
