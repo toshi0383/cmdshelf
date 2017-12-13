@@ -62,6 +62,9 @@ extension SubCommand {
                 \(bold("add")) <name> <blob URL|local file path>
                     Add a remote file URL or a local file path as a blob named \(bold("<name>")).
 
+                \(bold("list"))
+                    List blobs.
+
                 \(bold("remove")) <name>
                     Remove blob named \(bold("<name>")).
 
