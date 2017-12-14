@@ -1,4 +1,4 @@
-## master
+## 0.8.0
 ##### Enhancements
 * No need to quote command with parameters  
   [Toshihiro Suzuki](https://github.com/toshi0383)
