@@ -1,5 +1,6 @@
 import Commander
 import Foundation
+import Reporter
 
 struct Alias {
     let alias: String
@@ -44,7 +45,7 @@ struct AliasParameterArgument: ArgumentDescriptor {
     let description: String? = nil
     let type: ArgumentType = .argument
     func parse(_ parser: ArgumentParser) throws -> ValueType {
-        guard let string = parser.shift() else {
+        guard let string = parser.shiftArgument() else {
             throw ArgumentError.missingValue(argument: name)
         }
         let splitted = string.split(separator: " ")
@@ -52,21 +53,6 @@ struct AliasParameterArgument: ArgumentDescriptor {
             throw ArgumentError.missingValue(argument: "COMMAND")
         }
         return (alias, (splitted.dropFirst().map(String.init) + parser.shiftAll()).joined(separator: " "))
-    }
-}
-
-enum SubCommand: String {
-    case run, list, remote, blob, cat, update, help
-    var helpMessage: String {
-        switch self {
-        case .run: return ""
-        case .list: return ""
-        case .remote: return ""
-        case .blob: return ""
-        case .cat: return ""
-        case .update: return ""
-        default: return ""
-        }
     }
 }
 
@@ -79,12 +65,25 @@ struct SubCommandArgument: ArgumentDescriptor {
     let type: ArgumentType = .argument
 
     func parse(_ parser: ArgumentParser) throws -> ValueType {
-        if let string = parser.shift() {
+        if let string = parser.shiftArgument() {
             if let subCommand = SubCommand(rawValue: string) {
                 return subCommand
             } else {
                 throw ArgumentError.invalidType(value: string, type: "SubCommand", argument: nil)
             }
+        } else {
+            return nil
+        }
+    }
+}
+
+enum SubCommand: String {
+    case run, list, remote, blob, cat, update, help
+    init?(string: String) {
+        if let v = SubCommand(rawValue: string) {
+            self = v
+        } else if ["-h", "--help"].contains(string) {
+            self = .help
         } else {
             return nil
         }
@@ -101,7 +100,7 @@ struct SubCommandConvertibleArgument: ArgumentDescriptor {
 
     func parse(_ parser: ArgumentParser) throws -> ValueType {
         if let string = parser.shift() {
-            if let subCommand = SubCommand(rawValue: string) {
+            if let subCommand = SubCommand(string: string) {
                 return (subCommand, parser)
             } else {
                 throw ArgumentError.invalidType(value: string, type: "SubCommand", argument: nil)

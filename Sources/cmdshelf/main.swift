@@ -6,6 +6,7 @@ import Reporter
 let version = "0.7.2"
 
 let blob = BlobCommand()
+
 let cat = command(VaradicAliasArgument()) { (aliases) in
     if aliases.isEmpty {
         shellOut(to: "cat")
@@ -37,19 +38,7 @@ let help = command(SubCommandArgument()) { (subCommand) in
         queuedPrintln(subCommand.helpMessage)
         return
     }
-
-    queuedPrintln("Usage:")
-    queuedPrintln("")
-    queuedPrintln("    $ cmdshelf")
-    queuedPrintln("")
-    queuedPrintln("Commands:")
-    queuedPrintln("")
-    queuedPrintln("    + list - Show all registered commands (use --path to print absolute paths)")
-    queuedPrintln("    + remote - Manage remote commands (type `cmdshelf remote` for usage)")
-    queuedPrintln("    + blob - Manage blob commands (type `cmdshelf blob` for usage)")
-    queuedPrintln("    + cat - concatenate and print commands")
-    queuedPrintln("    + run - Run command")
-    queuedPrintln("    + update - Update all cloned repositories")
+    queuedPrintln(SubCommand.help.helpMessage)
 }
 
 let list = command(
@@ -86,18 +75,28 @@ let update = command() {
 
 let c = command(SubCommandConvertibleArgument())
 { (tuple) in
-    if let (subCommand, parser) = tuple {
-        switch subCommand {
-        case .blob: try blob.run(parser)
-        case .cat: try cat.run(parser)
-        case .list: try list.run(parser)
-        case .remote: try remote.run(parser)
-        case .run: try run.run(parser)
-        case .help: try help.run(parser)
-        case .update: try update.run(parser)
+    func exec() throws {
+        if let (subCommand, parser) = tuple {
+            switch subCommand {
+            case .blob: try blob.run(parser)
+            case .cat: try cat.run(parser)
+            case .list: try list.run(parser)
+            case .remote: try remote.run(parser)
+            case .run: try run.run(parser)
+            case .help: try help.run(parser)
+            case .update: try update.run(parser)
+            }
+        } else {
+            // TODO: interactive mode
+            help.run()
         }
-    } else {
-        // TODO: interactive mode
+    }
+
+    do {
+        try exec()
+    } catch {
+        queuedPrintlnError(error)
+        help.run()
     }
 }
 
