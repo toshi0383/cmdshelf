@@ -33,34 +33,12 @@ let cat = command(VaradicAliasArgument()) { (aliases) in
     }
 }
 
-func printHelpMessage() {
-    queuedPrintln("Usage:")
-    queuedPrintln("")
-    queuedPrintln("    $ cmdshelf")
-    queuedPrintln("")
-    queuedPrintln("Options:")
-    queuedPrintln("    -h, --help")
-    queuedPrintln("        Show this help message.")
-    queuedPrintln("        Type \(bold("cmdshelf help <sub-command>")) to see more detailed")
-    queuedPrintln("        manual page for each sub-commands.")
-    queuedPrintln("")
-    queuedPrintln("Sub-Commands:")
-    queuedPrintln("")
-    queuedPrintln("    + blob - Manage blob commands (type `cmdshelf blob` for usage)")
-    queuedPrintln("    + cat - concatenate and print commands")
-    queuedPrintln("    + list - Show all registered commands (use --path to print absolute paths)")
-    queuedPrintln("    + help - Show help message.")
-    queuedPrintln("    + remote - Manage remote commands (type `cmdshelf remote` for usage)")
-    queuedPrintln("    + run - Run command")
-    queuedPrintln("    + update - Update all cloned repositories")
-}
-
 let help = command(SubCommandArgument()) { (subCommand) in
     if let subCommand = subCommand {
         queuedPrintln(subCommand.helpMessage)
         return
     }
-    printHelpMessage()
+    queuedPrintln(SubCommand.help.helpMessage)
 }
 
 let list = command(
@@ -110,6 +88,7 @@ let c = command(SubCommandConvertibleArgument())
             }
         } else {
             // TODO: interactive mode
+            help.run()
         }
     }
 
@@ -117,7 +96,7 @@ let c = command(SubCommandConvertibleArgument())
         try exec()
     } catch {
         queuedPrintlnError(error)
-        printHelpMessage()
+        help.run()
     }
 }
 

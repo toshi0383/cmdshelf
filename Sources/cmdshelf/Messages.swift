@@ -27,17 +27,23 @@ extension SubCommand {
     }
 
     var helpMessage: String {
+        let cmdshelf = bold("cmdshelf")
+        let remoteDirPath = "~/.cmdshelf/remote"
 
-        let nameSection = """
-            \(bold("NAME"))
-                \(bold(self.rawValue)) -- \(self.shortDescription)
-            """
 
-        let headerAndNameSection = """
+        let headerSection = """
 
                                  Cmdshelf Manual
-        \(nameSection)
+        """
 
+        let nameSection = """
+        \(bold("NAME"))
+            \(bold(self.rawValue)) -- \(self.shortDescription)
+        """
+
+        let cmdshelfNameSection = """
+        \(bold("NAME"))
+            \(cmdshelf) -- Manage your scripts like a bookshelf.📚
         """
 
         let synopsis = bold("SYNOPSIS")
@@ -51,12 +57,14 @@ extension SubCommand {
 
         switch self {
         case .blob: return """
-            \(headerAndNameSection)
+            \(headerSection)
+            \(nameSection)
+
             \(synopsis)
                 `cmdshelf blob` <command> [<args>]
 
             \(description)
-                The `blob` subcommand manages blobs.
+                The \(bold("blob")) subcommand manages blobs.
 
             \(commands)
                 \(bold("add")) <name> <blob URL|local file path>
@@ -70,35 +78,44 @@ extension SubCommand {
 
             \(footerSection)
             """
+
         case .cat: return """
-            \(headerAndNameSection)
+            \(headerSection)
+            \(nameSection)
+
             \(synopsis)
                 cmdshelf cat [[<remoteName>:]<command>]
 
             \(description)
-                The `cat` subcommand reads commands script files sequentially,
+                The \(bold("cat")) subcommand reads commands script files sequentially,
                 writing them to the standard output.
 
             \(footerSection)
             """
+
         case .list: return """
-            \(headerAndNameSection)
+            \(headerSection)
+            \(nameSection)
+
             \(synopsis)
                 cmdshelf list [--path]
 
             \(description)
-                The `list` subcommand lists all commands from remotes and blobs.
-                `--path` prints absolute path to each commands.
+                The \(bold("list")) subcommand lists all commands from remotes and blobs.
+                \(bold("--path")) prints absolute path to each commands.
 
             \(footerSection)
             """
+
         case .remote: return """
-            \(headerAndNameSection)
+            \(headerSection)
+            \(nameSection)
+
             \(synopsis)
                 cmdshelf remote <command> [<args>]
 
             \(description):
-                The `remote` subcommand manages remotes.
+                The \(bold("remote")) subcommand manages remotes.
 
             \(commands):
                 \(bold("add")) <name> <git URL>
@@ -112,40 +129,89 @@ extension SubCommand {
 
             \(footerSection)
             """
+
         case .run: return """
-            \(headerAndNameSection)
+            \(headerSection)
+            \(nameSection)
+
             \(synopsis)
                 cmdshelf run [<remoteName>:]<command> [<args>]
 
             \(description)
-                The `run` subcommand receives command-alias and whitespace
+                The \(bold("run")) subcommand receives command-alias and whitespace
                 separated list of parameters.
 
             \(bold("AVOIDING NAMESPACE CONFLICT"))
-                The `run` subcommand picks-up first command matches the command name.
+                The \(bold("run")) subcommand picks-up first command matches the command name.
                 If you end-up with multiple same command names from different remotes,
                 add \(bold("<remoteName>:")) before the \(bold("<command>")).
                     e.g. cmdshelf run myRemote:echo-sd hello
 
             \(footerSection)
             """
+
         case .update:
-            let remoteDirPath = "~/.cmdshelf/remote"
             let removeInstruction = "rm -rf \(remoteDirPath)"
             return """
-            \(headerAndNameSection)
+            \(headerSection)
+            \(nameSection)
+
             \(synopsis)
                 cmdshelf update
 
             \(description)
-                The `update` subcommand updates all cloned repositories.
+                The \(bold("update")) subcommand updates all cloned repositories.
                 Cmdshelf automatically clones repositories under \(bold(remoteDirPath)).
                 Please run \(bold(removeInstruction)) and re-try update when it keeps
                 failing.
 
             \(footerSection)
             """
-        default: return ""
+
+        case .help: // Manual Page for cmdshelf itself.
+
+            let cmdshelfYmlPath = bold("~/.cmdshelf.yml")
+            let workspace = bold("WORKSPACE")
+            let options = bold("OPTIONS")
+            let subcommands = bold("SUB-COMMANDS")
+
+            return """
+            \(headerSection)
+            \(cmdshelfNameSection)
+
+            \(synopsis)
+                cmdshelf <sub-command> [<parameter>...]
+
+            \(description)
+                The \(cmdshelf) utility manages your remote scripts like a bookshelf.
+
+            \(options)
+                -h, --help
+                    Show this help message.
+                    Type \(bold("cmdshelf help <sub-command>")) to see more detailed
+                    manual page for each sub-commands.
+
+            \(subcommands)
+                \(bold("blob"))   - Manage blob commands.
+                \(bold("cat"))    - Concatenate and print sourcecodes of commands.
+                \(bold("help"))   - Show help message.
+                \(bold("list"))   - Show all registered commands.
+                \(bold("remote")) - Manage remote commands.
+                \(bold("run"))    - Execute command.
+                \(bold("update")) - Update cloned repositories.
+
+            \(workspace)
+                \(cmdshelfYmlPath)
+                    Your current configuration is stored here.
+                    \(cmdshelf) reads this file everytime it launches, writing on exit.
+                    Feel free to modify entries and run \(bold("cmdshelf update")) to keep in sync.
+
+                \(bold(remoteDirPath))
+                    All repositories are cloned under this directory.
+
+            \(footerSection)
+            """
+
         }
     }
 }
