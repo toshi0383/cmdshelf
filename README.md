@@ -1,9 +1,21 @@
 [![cmdshelf](https://github.com/toshi0383/assets/blob/master/cmdshelf/banner.png)](https://github.com/toshi0383/cmdshelf)
 
-cmdshelf integrates your team's inherited awesome handy scripts like a bookshelf.
-No need to deal with your `$PATH` any more.
+cmdshelf integrates your team's shared scripts like a bookshelf.  
+No need to deal with your `$PATH` any more.👋
+
+# Features
+
+- [x] Execute any remote/local scripts intuitively.
+- [x] No more `$PATH` configurations.
+- [x] Portable environment with `.cmdshelf.yml`.
+- [x] No quoting required for passing arguments and options.
+- [x] `stdout`, `stdin`, `stderr`
+- [x] The coolest manual page.
+
+<img src="https://github.com/toshi0383/assets/blob/master/cmdshelf/man-page.png" width="980" alt="man-page" />
 
 # Requirements
+
 ## macOS
 - Sierra
 - HighSierra
@@ -11,14 +23,42 @@ No need to deal with your `$PATH` any more.
 ## Linux and Windows
 - should work on Swift compatible distribution
 
-## Development
-- Xcode9+
-- Swift4+
+# Install
+## macOS
+### install.sh
+I've written install/release scripts for SwiftPM executable.  
+This should be the easiest way.
+```
+bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) toshi0383/cmdshelf
+```
 
-# What
-With cmdshelf, you can
-- execute any scripts intuitively without manually download and configuring `$PATH`.
-- store team's common scripts in a single configuration file called `.cmdshelf.yml`.
+### Build from source
+
+Please build from source-code if `install.sh` didn't work.
+
+- Clone this repo and run `swift build -c release`.  
+- Executable will be created at `.build/release/cmdshelf`.
+- `mv .build/release/cmdshelf /usr/local/bin/`
+
+## Linux
+### Build from source
+
+Please build from source code for Linux. You need Swift installed.
+
+- Clone this repo and run `swift build -c release`.
+- Executable will be created at `.build/release/cmdshelf`.
+- `mv .build/release/cmdshelf /usr/local/bin/`
+
+Here is the script I use on Bitrise CI, to install Swift and then cmdshelf.
+```bash
+#!/bin/bash
+set -e
+sudo apt-get -y install libcurl4-openssl-dev clang libicu-dev
+eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
+swiftenv install 3.1
+swift build -c release
+.build/release/cmdshelf --version
+```
 
 # How to use
 
@@ -158,51 +198,8 @@ $ cmdshelf run movies/movies inception # Run movies script from Bash-Snippets
 ==================================================
 ```
 
-# Install
-## macOS
-### install.sh
-I've written install/release scripts for SwiftPM executable.  
-This should be the easiest way.
-```
-bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) toshi0383/cmdshelf
-```
-
-### Build from source
-
-Please build from source-code if `install.sh` didn't work.
-
-- Clone this repo and run `swift build -c release`.  
-- Executable will be created at `.build/release/cmdshelf`.
-- `mv .build/release/cmdshelf /usr/local/bin/`
-
-## Linux
-### Build from source
-
-Please build from source code for Linux. You need Swift installed.
-
-- Clone this repo and run `swift build -c release`.
-- Executable will be created at `.build/release/cmdshelf`.
-- `mv .build/release/cmdshelf /usr/local/bin/`
-
-Here is the script I use on Bitrise CI, to install Swift and then cmdshelf.
-```bash
-#!/bin/bash
-set -e
-sudo apt-get -y install libcurl4-openssl-dev clang libicu-dev
-eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
-swiftenv install 3.1
-swift build -c release
-.build/release/cmdshelf --version
-```
-
 # Limitation on Linux
 `cmdshelf` cannot handle `stdin` on Linux. This is rather Foundation's problem than cmdshelf's.
-
-# TODO
-- Cache feature for blob
-- Support Makefile...?
-- Branch support for remote
-- Write Tests
 
 # Contribute
 Any contribution is welcomed.
@@ -212,6 +209,10 @@ To start developing, clone and run following.
 ```
 make bootstrap
 ```
+
+# Development
+- Xcode9+
+- Swift4+
 
 # Special Thanks to
 - My wife for creating a daruma icon.
