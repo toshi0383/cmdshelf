@@ -54,16 +54,17 @@ let run = command(AliasParameterArgument()) { (aliasParam) in
     let config = try Configuration()
     let alias = aliasParam.alias.alias
     let remoteName = aliasParam.alias.remoteName
-    let parameter = aliasParam.parameter
+    let parameters = aliasParam.parameters
     // Search in blobs and remote
     guard let context = config.getContexts(for: alias, remoteName: remoteName).first else {
         queuedPrintlnError(Message.noSuchCommand(aliasParam.alias.originalValue))
         exit(1)
     }
+    let singleQuoted = parameters.map { "\'\($0)\'" }.joined(separator: " ")
     if context.location.hasPrefix("curl ") {
-        shellOut(to: "bash <(\(context.location))", argument: parameter)
+        shellOut(to: "bash <(\(context.location))", argument: singleQuoted)
     } else {
-        shellOut(to: context.location, argument: parameter)
+        shellOut(to: context.location, argument: singleQuoted)
     }
 }
 

@@ -38,7 +38,7 @@ echo Arguments tests started
 before_each
 printf '#!/bin/bash\necho $#' > 001.sh && chmod +x 001.sh
 $CMDSHELF blob add _001.sh 001.sh
-if [ 3 -ne $($CMDSHELF run "_001.sh a b c") ];then
+if [ 3 -ne $($CMDSHELF run _001.sh a b c) ];then
     echo 001 FAILED
     STATUS=1
 fi
@@ -88,6 +88,31 @@ then
     STATUS=1
 fi
 
+## 005: `run` passes each parameters correctly
+before_each
+
+$CMDSHELF remote add _cmdshelf-remote https://toshi0383@bitbucket.org/toshi0383/cmdshelf-remote-test.git
+TEST_005_SH=~/.cmdshelf/remote/_cmdshelf-remote/run-parameters-test.sh
+cat > $TEST_005_SH << EOF
+#!/bin/bash
+echo \$1
+echo \$2
+echo \$3
+echo \$4
+echo \$5
+echo \$6
+EOF
+chmod +x $TEST_005_SH
+
+TMP_005=$(mktemp)
+$CMDSHELF run $TEST_005_SH 001a 002b '003cd ef' '004\"&*><hello' '005\\' 006world > $TMP_005
+if ! diff fixtures/test-005.expected $TMP_005
+then
+    echo 005 FAILED
+    STATUS=1
+fi
+
+rm $TMP_005
 after_all
 
 exit $STATUS
