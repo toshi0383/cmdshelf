@@ -17,21 +17,18 @@ private class AliasParser {
         // Get "remote:my/script" part.
         //
         // NOTE:
-        // - if `string` is "hello.sh a b", then parameters a and b are ignored.
         // - `"".components(separatedBy: " ").count` is 1, so force unwrap is safe.
-        let _alias  = string.components(separatedBy: " ").first!
-
         let alias: String
         let remoteName: String?
-        if _alias.contains(":") {
-            remoteName = _alias.components(separatedBy: ":").first!
-            alias = _alias.components(separatedBy: ":").dropFirst().joined()
+        if string.contains(":") {
+            remoteName = string.components(separatedBy: ":").first!
+            alias = string.components(separatedBy: ":").dropFirst().joined()
         } else {
-            alias = _alias
+            alias = string
             remoteName = nil
         }
 
-        return Alias(alias: alias, remoteName: remoteName, originalValue: _alias)
+        return Alias(alias: alias, remoteName: remoteName, originalValue: string)
     }
 }
 

@@ -50,8 +50,6 @@ echo Remote tests started
 
 ## 001: `run` detects remote name correctly
 before_each
-$CMDSHELF remote add _toshi0383 https://github.com/toshi0383/scripts.git
-$CMDSHELF remote add _cmdshelf-remote https://toshi0383@bitbucket.org/toshi0383/cmdshelf-remote-test.git
 if [ "dummy" != "$($CMDSHELF run _cmdshelf-remote:swiftpm/install.sh)" ];then
     echo 001 FAILED
     STATUS=1
@@ -59,8 +57,6 @@ fi
 
 ## 002: `run` detects remote name correctly when added order is different
 before_each
-$CMDSHELF remote add _cmdshelf-remote https://toshi0383@bitbucket.org/toshi0383/cmdshelf-remote-test.git
-$CMDSHELF remote add _toshi0383 https://github.com/toshi0383/scripts.git
 if [ "dummy" != "$($CMDSHELF run _cmdshelf-remote:swiftpm/install.sh)" ];then
     echo 002 FAILED
     STATUS=1
@@ -68,8 +64,6 @@ fi
 
 ## 003: `cat` detects remote name correctly
 before_each
-$CMDSHELF remote add _toshi0383 https://github.com/toshi0383/scripts.git
-$CMDSHELF remote add _cmdshelf-remote https://toshi0383@bitbucket.org/toshi0383/cmdshelf-remote-test.git
 $CMDSHELF cat _cmdshelf-remote:swiftpm/install.sh > a
 if ! diff a $($CMDSHELF list --path | grep _cmdshelf-remote/swiftpm/install.sh)
 then
@@ -79,8 +73,6 @@ fi
 
 ## 004: `cat` detects remote name correctly when added order is different
 before_each
-$CMDSHELF remote add _cmdshelf-remote https://toshi0383@bitbucket.org/toshi0383/cmdshelf-remote-test.git
-$CMDSHELF remote add _toshi0383 https://github.com/toshi0383/scripts.git
 $CMDSHELF cat _cmdshelf-remote:swiftpm/install.sh > a
 if ! diff a $($CMDSHELF list --path | grep _cmdshelf-remote/swiftpm/install.sh)
 then
@@ -90,8 +82,6 @@ fi
 
 ## 005: `run` passes each parameters correctly
 before_each
-
-$CMDSHELF remote add _cmdshelf-remote https://toshi0383@bitbucket.org/toshi0383/cmdshelf-remote-test.git
 TEST_005_SH=~/.cmdshelf/remote/_cmdshelf-remote/run-parameters-test.sh
 cat > $TEST_005_SH << EOF
 #!/bin/bash
@@ -113,6 +103,30 @@ then
 fi
 
 rm $TMP_005
+
+## 006: `run` treats whole quoted arguments as an alias
+before_each
+
+TEST_006_EXPECTED="cmdshelf: ${HOME}/.cmdshelf/remote/_cmdshelf-remote/006.sh 001a 002b: No such command"
+TEST_006_SH=~/.cmdshelf/remote/_cmdshelf-remote/006.sh
+printf "#!/bin/bash\necho \$1" > $TEST_006_SH
+chmod +x $TEST_006_SH
+
+TMP_006=$(mktemp)
+
+$CMDSHELF run "$TEST_006_SH 001a 002b" 2> $TMP_006
+
+if [[ "${TEST_006_EXPECTED}" =~ "$(cat $TMP_006)" ]]
+then
+    echo "${TEST_006_EXPECTED}"
+    echo "$(cat $TMP_006)"
+    echo 006 FAILED
+    STATUS=1
+fi
+
+rm $TMP_006
+
+# Cleanup
 after_all
 
 exit $STATUS
