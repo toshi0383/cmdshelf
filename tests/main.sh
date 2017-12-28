@@ -82,7 +82,7 @@ fi
 
 ## 005: `run` passes each parameters correctly
 before_each
-TEST_005_SH=~/.cmdshelf/remote/_cmdshelf-remote/run-parameters-test.sh
+TEST_005_SH=~/.cmdshelf/remote/_cmdshelf-remote/005.sh
 cat > $TEST_005_SH << EOF
 #!/bin/bash
 echo \$1
@@ -95,14 +95,14 @@ EOF
 chmod +x $TEST_005_SH
 
 TMP_005=$(mktemp)
-$CMDSHELF run $TEST_005_SH 001a 002b '003cd ef' '004\"&*><hello' '005\\' 006world > $TMP_005
+$CMDSHELF run 005.sh 001a 002b '003cd ef' '004\"&*><hello' '005\\' 006world > $TMP_005
 if ! diff fixtures/test-005.expected $TMP_005
 then
     echo 005 FAILED
     STATUS=1
 fi
 
-rm $TMP_005
+rm $TMP_005 $TEST_005_SH
 
 ## 006: `run` treats whole quoted arguments as an alias
 before_each
@@ -114,9 +114,9 @@ chmod +x $TEST_006_SH
 
 TMP_006=$(mktemp)
 
-$CMDSHELF run "$TEST_006_SH 001a 002b" 2> $TMP_006
+$CMDSHELF run "006.sh 001a 002b" 2> $TMP_006
 
-if [[ "${TEST_006_EXPECTED}" =~ "$(cat $TMP_006)" ]]
+if [[ "$(cat $TMP_006)" =~ "${TEST_006_EXPECTED}" ]]
 then
     echo "${TEST_006_EXPECTED}"
     echo "$(cat $TMP_006)"
@@ -124,7 +124,7 @@ then
     STATUS=1
 fi
 
-rm $TMP_006
+rm $TMP_006 $TEST_006_SH
 
 # Cleanup
 after_all
