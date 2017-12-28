@@ -5,12 +5,12 @@ No need to deal with your `$PATH` any more.👋
 
 # Features
 
-- [x] Execute any remote/local scripts intuitively.
-- [x] No more `$PATH` configurations.
-- [x] Portable environment with `.cmdshelf.yml`.
-- [x] No quoting required for passing arguments and options.
-- [x] `stdout`, `stdin`, `stderr`
-- [x] The coolest manual page.
+- ✅ Execute any remote/local scripts intuitively.
+- ✅ No more `$PATH` configurations.
+- ✅ Portable environment with `.cmdshelf.yml`.
+- ✅ No quoting required for passing arguments and options.
+- ✅ `stdout`, `stdin`, `stderr`
+- ✅ The coolest manual page.
 
 <img src="https://github.com/toshi0383/assets/blob/master/cmdshelf/man-page.png" width="980" alt="man-page" />
 
