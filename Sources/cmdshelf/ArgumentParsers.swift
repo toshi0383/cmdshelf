@@ -13,9 +13,14 @@ private class AliasParser {
         guard !string.isEmpty else {
             return nil
         }
+
         // Get "remote:my/script" part.
-        // `"".components(separatedBy: " ").count` is 1, so force unwrap.
+        //
+        // NOTE:
+        // - if `string` is "hello.sh a b", then parameters a and b are ignored.
+        // - `"".components(separatedBy: " ").count` is 1, so force unwrap is safe.
         let _alias  = string.components(separatedBy: " ").first!
+
         let alias: String
         let remoteName: String?
         if _alias.contains(":") {
@@ -25,6 +30,7 @@ private class AliasParser {
             alias = _alias
             remoteName = nil
         }
+
         return Alias(alias: alias, remoteName: remoteName, originalValue: _alias)
     }
 }
