@@ -13,19 +13,22 @@ private class AliasParser {
         guard !string.isEmpty else {
             return nil
         }
+
         // Get "remote:my/script" part.
-        // `"".components(separatedBy: " ").count` is 1, so force unwrap.
-        let _alias  = string.components(separatedBy: " ").first!
+        //
+        // NOTE:
+        // - `"".components(separatedBy: " ").count` is 1, so force unwrap is safe.
         let alias: String
         let remoteName: String?
-        if _alias.contains(":") {
-            remoteName = _alias.components(separatedBy: ":").first!
-            alias = _alias.components(separatedBy: ":").dropFirst().joined()
+        if string.contains(":") {
+            remoteName = string.components(separatedBy: ":").first!
+            alias = string.components(separatedBy: ":").dropFirst().joined()
         } else {
-            alias = _alias
+            alias = string
             remoteName = nil
         }
-        return Alias(alias: alias, remoteName: remoteName, originalValue: _alias)
+
+        return Alias(alias: alias, remoteName: remoteName, originalValue: string)
     }
 }
 
@@ -40,19 +43,18 @@ struct VaradicAliasArgument: ArgumentDescriptor {
 }
 
 struct AliasParameterArgument: ArgumentDescriptor {
-    typealias ValueType = (alias: Alias, parameter: String?)
+    typealias ValueType = (alias: Alias, parameters: [String])
     let name: String = "\"\(Message.COMMAND) [parameter ...]\""
     let description: String? = nil
     let type: ArgumentType = .argument
     func parse(_ parser: ArgumentParser) throws -> ValueType {
-        guard let string = parser.shiftArgument() else {
+        guard let string = parser.shift() else {
             throw ArgumentError.missingValue(argument: name)
         }
-        let splitted = string.split(separator: " ")
-        guard let alias = AliasParser.parse(String(splitted.first!)) else {
+        guard let alias = AliasParser.parse(string) else {
             throw ArgumentError.missingValue(argument: "COMMAND")
         }
-        return (alias, (splitted.dropFirst().map(String.init) + parser.shiftAll()).joined(separator: " "))
+        return (alias, parser.shiftAll())
     }
 }
 
