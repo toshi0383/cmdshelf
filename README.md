@@ -57,7 +57,7 @@ Here is the script I use on Bitrise CI, to install Swift and then cmdshelf.
 set -e
 sudo apt-get -y install libcurl4-openssl-dev clang libicu-dev
 eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
-swiftenv install 3.1
+swiftenv install 4.0
 swift build -c release
 .build/release/cmdshelf --version
 ```
