@@ -5,6 +5,20 @@ import Reporter
 
 let version = "0.8.0"
 
+//
+// - MARK: Setup
+//
+do {
+    var env = ProcessInfo.processInfo.environment
+
+    // Disable terminal prompts in git. This will make git error out and return
+    // when it needs a user/pass etc instead of hanging the terminal (SR-3981).
+    env["GIT_TERMINAL_PROMPT"] = "0"
+}
+
+//
+// - MARK: Execution
+//
 let blob = BlobCommand()
 
 let cat = command(VaradicAliasArgument()) { (aliases) in
