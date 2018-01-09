@@ -34,6 +34,11 @@ This should be the easiest way.
 bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) toshi0383/cmdshelf
 ```
 
+### Using [Mint](https://github.com/yonaskolb/Mint)
+```
+mint install toshi0383/cmdshelf
+```
+
 ### Build from source
 
 Please build from source-code if `install.sh` didn't work.
