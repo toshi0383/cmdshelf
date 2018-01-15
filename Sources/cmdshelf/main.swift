@@ -23,7 +23,7 @@ let blob = BlobCommand()
 
 let cat = command(VaradicAliasArgument()) { (aliases) in
     if aliases.isEmpty {
-        shellOut(to: "cat")
+        exit(shellOut(to: "cat"))
     } else {
         let config = try Configuration()
         config.cloneRemotesIfNeeded()
@@ -36,15 +36,23 @@ let cat = command(VaradicAliasArgument()) { (aliases) in
                 continue
             }
             if context.location.hasPrefix("curl ") {
-                shellOut(to: context.location)
+                if shellOut(to: context.location) > 0 {
+                    failure = true
+                }
             } else {
-                shellOut(to: "cat \(context.location)")
+                if shellOut(to: "cat \(context.location)") > 0 {
+                    failure = true
+                }
             }
         }
         if failure {
-            exit(1)
+            throw CmdshelfError()
         }
     }
+}
+
+func printHelpMessage() {
+    queuedPrintln(SubCommand.help.helpMessage)
 }
 
 let help = command(SubCommandArgument()) { (subCommand) in
@@ -52,7 +60,7 @@ let help = command(SubCommandArgument()) { (subCommand) in
         queuedPrintln(subCommand.helpMessage)
         return
     }
-    queuedPrintln(SubCommand.help.helpMessage)
+    printHelpMessage()
 }
 
 let list = command(
@@ -72,13 +80,13 @@ let run = command(AliasParameterArgument()) { (aliasParam) in
     // Search in blobs and remote
     guard let context = config.getContexts(for: alias, remoteName: remoteName).first else {
         queuedPrintlnError(Message.noSuchCommand(aliasParam.alias.originalValue))
-        exit(1)
+        throw CmdshelfError()
     }
     let singleQuoted = parameters.map { "\'\($0)\'" }.joined(separator: " ")
     if context.location.hasPrefix("curl ") {
-        shellOut(to: "bash <(\(context.location))", argument: singleQuoted)
+        exit(shellOut(to: "bash <(\(context.location))", argument: singleQuoted))
     } else {
-        shellOut(to: context.location, argument: singleQuoted)
+        exit(shellOut(to: context.location, argument: singleQuoted))
     }
 }
 
@@ -109,9 +117,16 @@ let c = command(SubCommandConvertibleArgument())
 
     do {
         try exec()
+
+    } catch let error as CmdshelfError {
+        if let msg = error.message {
+            queuedPrintlnError(msg)
+        }
+        exit(1)
+
     } catch {
         queuedPrintlnError(error)
-        help.run()
+        exit(1)
     }
 }
 

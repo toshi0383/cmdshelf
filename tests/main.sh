@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# WARNING!: currently this test modifies your local environment
+#
 STATUS=0
 set +e
 
@@ -125,6 +128,51 @@ then
 fi
 
 rm $TMP_006 $TEST_006_SH
+
+## 007: [run] exit status code
+before_each
+
+$CMDSHELF run no-such-command 2> /dev/null
+exit_status=$?
+
+if [ $exit_status -ne 1 ]
+then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 007 FAILED
+    STATUS=1
+fi
+
+## 008: [cat] exit status code
+before_each
+
+$CMDSHELF cat nsc01 nsc02 2> /dev/null
+exit_status=$?
+
+if [ $exit_status -ne 1 ]
+then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 008 FAILED
+    STATUS=1
+fi
+
+## 009: [run] underlying exit status code
+before_each
+
+TEST_009_SH=~/.cmdshelf/remote/_cmdshelf-remote/009.sh
+printf "#!/bin/bash\nexit 1" > $TEST_009_SH
+chmod +x $TEST_009_SH
+
+$CMDSHELF run 009.sh
+exit_status=$?
+
+if [ $exit_status -ne 1 ]
+then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 009 FAILED
+    STATUS=1
+fi
+
+rm $TEST_009_SH
 
 # Cleanup
 after_all

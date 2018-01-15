@@ -1,5 +1,8 @@
 ## master
 ##### Bugfix & Breaking
+* [fixed] set error status code on error [#52](https://github.com/toshi0383/cmdshelf/pull/52)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 * [fixed] Quoted parameter is unquoted [#49](https://github.com/toshi0383/cmdshelf/issues/49)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
   [#50](https://github.com/toshi0383/cmdshelf/issues/50)  
