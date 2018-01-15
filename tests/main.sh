@@ -126,6 +126,19 @@ fi
 
 rm $TMP_006 $TEST_006_SH
 
+## 007: exit status code
+before_each
+
+$CMDSHELF run no-such-command 2> /dev/null
+exit_status=$?
+
+if [ $exit_status -ne 1 ]
+then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 007 FAILED
+    STATUS=1
+fi
+
 # Cleanup
 after_all
 
