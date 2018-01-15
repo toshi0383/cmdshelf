@@ -1,4 +1,4 @@
-## master
+## 0.9.0
 ##### Bugfix & Breaking
 * [fixed] set error status code on error [#52](https://github.com/toshi0383/cmdshelf/pull/52)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
@@ -8,7 +8,7 @@
   [#50](https://github.com/toshi0383/cmdshelf/issues/50)  
   **Breaking**: This changes the way subcommand is evaluated. Double/Single quoted alias parameter argument does not work any more.
 
-## 0.9.0
+## 0.8.0
 ##### Enhancements
 * No need to quote command with parameters  
   [Toshihiro Suzuki](https://github.com/toshi0383)

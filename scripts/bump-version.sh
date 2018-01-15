@@ -1,4 +1,5 @@
 #!/bin/bash
 VERSION=${1:?}
 CURRENT=${2:-`cmdshelf --version`}
-git grep -l $CURRENT | xargs sed -i "" -e "s/${CURRENT}/${VERSION}/g"
+sed -i "" -e "s/master/${VERSION}/" CHANGELOG.md
+git grep -l $CURRENT | grep -v CHANGELOG.md | xargs sed -i "" -e "s/${CURRENT}/${VERSION}/g"
