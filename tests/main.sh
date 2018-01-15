@@ -139,6 +139,19 @@ then
     STATUS=1
 fi
 
+## 010: exit status code
+before_each
+
+$CMDSHELF cat nsc01 nsc02 2> /dev/null
+exit_status=$?
+
+if [ $exit_status -ne 1 ]
+then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 010 FAILED
+    STATUS=1
+fi
+
 # Cleanup
 after_all
 
