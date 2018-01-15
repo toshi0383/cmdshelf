@@ -139,7 +139,7 @@ then
     STATUS=1
 fi
 
-## 010: exit status code
+## 008: exit status code
 before_each
 
 $CMDSHELF cat nsc01 nsc02 2> /dev/null
@@ -148,9 +148,28 @@ exit_status=$?
 if [ $exit_status -ne 1 ]
 then
     echo Exit code is expected to be 1 but was $exit_status
-    echo 010 FAILED
+    echo 008 FAILED
     STATUS=1
 fi
+
+## 009: [run] underlying exit status code
+before_each
+
+TEST_009_SH=~/.cmdshelf/remote/_cmdshelf-remote/009.sh
+printf "#!/bin/bash\nexit 1" > $TEST_009_SH
+chmod +x $TEST_009_SH
+
+$CMDSHELF run 009.sh
+exit_status=$?
+
+if [ $exit_status -ne 1 ]
+then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 009 FAILED
+    STATUS=1
+fi
+
+rm $TEST_009_SH
 
 # Cleanup
 after_all

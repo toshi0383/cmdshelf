@@ -23,7 +23,7 @@ let blob = BlobCommand()
 
 let cat = command(VaradicAliasArgument()) { (aliases) in
     if aliases.isEmpty {
-        shellOut(to: "cat")
+        exit(shellOut(to: "cat"))
     } else {
         let config = try Configuration()
         config.cloneRemotesIfNeeded()
@@ -36,9 +36,13 @@ let cat = command(VaradicAliasArgument()) { (aliases) in
                 continue
             }
             if context.location.hasPrefix("curl ") {
-                shellOut(to: context.location)
+                if shellOut(to: context.location) > 0 {
+                    failure = true
+                }
             } else {
-                shellOut(to: "cat \(context.location)")
+                if shellOut(to: "cat \(context.location)") > 0 {
+                    failure = true
+                }
             }
         }
         if failure {
@@ -80,9 +84,9 @@ let run = command(AliasParameterArgument()) { (aliasParam) in
     }
     let singleQuoted = parameters.map { "\'\($0)\'" }.joined(separator: " ")
     if context.location.hasPrefix("curl ") {
-        shellOut(to: "bash <(\(context.location))", argument: singleQuoted)
+        exit(shellOut(to: "bash <(\(context.location))", argument: singleQuoted))
     } else {
-        shellOut(to: context.location, argument: singleQuoted)
+        exit(shellOut(to: context.location, argument: singleQuoted))
     }
 }
 
