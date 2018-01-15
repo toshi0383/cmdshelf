@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# WARNING!: currently this test modifies your local environment
+#
 STATUS=0
 set +e
 
