@@ -126,7 +126,7 @@ fi
 
 rm $TMP_006 $TEST_006_SH
 
-## 007: exit status code
+## 007: [run] exit status code
 before_each
 
 $CMDSHELF run no-such-command 2> /dev/null
@@ -139,7 +139,7 @@ then
     STATUS=1
 fi
 
-## 008: exit status code
+## 008: [cat] exit status code
 before_each
 
 $CMDSHELF cat nsc01 nsc02 2> /dev/null
