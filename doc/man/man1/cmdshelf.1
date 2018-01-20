@@ -1,0 +1,31 @@
+.TH "CMDSHELF" "1" "January 2018" "cmdshelf 0.9.0" "Cmdshelf Manual"
+.SH "NAME"
+\fBcmdshelf\fR - Manage your scripts like a bookshelf.
+.SH "SYNOPSIS"
+\fBcmdshelf\fR <\fBsub-command\fR> \fB...\fR
+.SH "OPTIONS"
+.TP
+\-h, \-\-help
+Show this help message. Type
+.B cmdshelf help sub-command
+to see more detailed manual page for each sub-command.
+.SH "SUB-COMMANDS"
+.SS blob
+Manage blob commands.
+.SS cat
+Concatenate and print sourcecodes of commands.
+.SS help
+Show help message.
+.SS list
+Show all registered commands.
+.SS remote
+Manage remote commands.
+.SS run
+Execute command.
+.SS update
+Update cloned repositories.
+.SH "WORKSPACE"
+.SS ~/.cmdshelf.yml
+Your current configuration is stored here. \fBcmdshelf\fR reads this file everytime it launches, writing on exit. Feel free to modify entries and run cmdshelf update to keep in sync.
+.SS ~/.cmdshelf/remote
+All repositories are cloned under this directory.
