@@ -1,3 +1,8 @@
+## master
+##### Enhancements
+* Add man1/cmdshelf.1 manual page [#54](https://github.com/toshi0383/cmdshelf/pull/54)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 0.9.0
 ##### Bugfix & Breaking
 * [fixed] set error status code on error [#52](https://github.com/toshi0383/cmdshelf/pull/52)  
