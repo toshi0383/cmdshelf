@@ -14,7 +14,7 @@ No need to deal with your `$PATH` any more.👋
 
 <img src="https://github.com/toshi0383/assets/blob/master/cmdshelf/man-page.png" width="980" alt="man-page" />
 
-You can see detailed document [here](doc/getting-started.md) or type `cmdshelf help`.
+You can see detailed document [here](doc/getting-started.md), or type `man cmdshelf`.
 
 # Requirements
 
