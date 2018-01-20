@@ -3,9 +3,9 @@
 import Foundation
 import PackageDescription
 
-var isDevelopment: Bool {
-	return ProcessInfo.processInfo.environment["SWIFTPM_DEVELOPMENT"] == "YES"
-}
+// var isDevelopment: Bool {
+// 	return ProcessInfo.processInfo.environment["CMDSHELF_SWIFTPM_DEVELOPMENT"] == "YES"
+// }
 
 let package = Package(
     name: "cmdshelf",
