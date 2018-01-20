@@ -1,4 +1,4 @@
-## master
+## 0.9.1
 ##### Enhancements
 * Add man1/cmdshelf.1 manual page [#54](https://github.com/toshi0383/cmdshelf/pull/54)  
   [Toshihiro Suzuki](https://github.com/toshi0383)

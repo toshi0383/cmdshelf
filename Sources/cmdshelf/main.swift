@@ -3,7 +3,7 @@ import PathKit
 import Foundation
 import Reporter
 
-let version = "0.9.0"
+let version = "0.9.1"
 
 //
 // - MARK: Setup
