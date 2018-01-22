@@ -90,6 +90,10 @@ enum SubCommand: String {
             return nil
         }
     }
+
+    var possiblyHasManPage: Bool {
+        return [.list].contains(self)
+    }
 }
 
 struct SubCommandConvertibleArgument: ArgumentDescriptor {
