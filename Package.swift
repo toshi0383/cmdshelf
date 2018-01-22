@@ -1,4 +1,5 @@
-// swift-tools-version:3.1
+// swift-tools-version:4.0
+// The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import Foundation
 import PackageDescription
@@ -9,15 +10,27 @@ import PackageDescription
 
 let package = Package(
     name: "cmdshelf",
+    products: [
+        .executable(name: "cmdshelf", targets: ["cmdshelf"]),
+        .library(name: "Poxis", targets: ["Poxis"]),
+    ],
     dependencies: {
         let deps: [Package.Dependency] = [
-            .Package(url: "https://github.com/toshi0383/Commander.git", majorVersion: 0),
-            .Package(url: "https://github.com/toshi0383/PathKit.git", majorVersion: 0),
-            .Package(url: "https://github.com/toshi0383/Reporter.git", majorVersion: 0),
-            .Package(url: "https://github.com/jpsim/Yams.git", majorVersion: 0)
+            .package(url: "https://github.com/toshi0383/Commander.git", from: "0.9.0"),
+            .package(url: "https://github.com/toshi0383/PathKit.git", from: "0.8.0"),
+            .package(url: "https://github.com/toshi0383/Reporter.git", from: "0.3.2"),
+            .package(url: "https://github.com/jpsim/Yams.git", from: "0.5.0")
         ]
         return deps
     }(),
-    exclude: ["Resources/SourceryTemplates"]
+    targets: [
+        .target(name: "cmdshelf", dependencies: [
+            "Commander",
+            "PathKit",
+            "Poxis",
+            "Reporter",
+            "Yams",
+        ]),
+        .target(name: "Poxis", dependencies: [])
+    ]
 )
-
