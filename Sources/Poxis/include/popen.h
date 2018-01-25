@@ -18,6 +18,5 @@
 
 FILE *poxis_popen(const char *cmdstring, const char *type);
 int poxis_pclose(FILE *fp);
-long open_max(void);
 
 #endif /* popen_h */

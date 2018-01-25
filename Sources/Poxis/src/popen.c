@@ -1,4 +1,5 @@
-#include "include.h"
+#include "popen.h"
+#include "Private.h"
 
 /*
  * Pointer to array allocated at run-time.
