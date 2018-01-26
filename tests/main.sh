@@ -21,7 +21,7 @@ before_each() {
     rm ~/.cmdshelf.yml
     $CMDSHELF remote add _toshi0383 https://github.com/toshi0383/scripts.git
     $CMDSHELF remote add _cmdshelf-remote https://toshi0383@bitbucket.org/toshi0383/cmdshelf-remote-test.git
-    $CMDSHELF run a 2> /dev/null # Assuming `~/.cmshelf/remote` is cached once updated.
+    $CMDSHELF run a 2> /dev/null # trigger clone repos under `~/.cmshelf/remote`
     # rm -rf ~/.cmdshelf
     # $CMDSHELF update
 }

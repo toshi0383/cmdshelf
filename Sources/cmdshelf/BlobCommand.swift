@@ -1,6 +1,5 @@
 import Commander
 import Foundation
-import PathKit
 import Reporter
 
 class BlobCommand: Group {
@@ -17,9 +16,12 @@ class BlobCommand: Group {
             Argument<String>("URL", description: "script URL")
         ) { (name, url) in
             let config = try Configuration()
-            let path = Path(url)
-            if path.exists {
-                config.cmdshelfYml.blobs.append(Blob(name: name, localPath: path.absolute().description))
+            if fm.fileExists(atPath: url) {
+                var path = url.standardizingPath
+                if !url.starts(with: "/") {
+                    path = "\(fm.currentDirectoryPath)/\(path)"
+                }
+                config.cmdshelfYml.blobs.append(Blob(name: name, localPath: path))
             } else {
                 config.cmdshelfYml.blobs.append(Blob(name: name, url: url))
             }

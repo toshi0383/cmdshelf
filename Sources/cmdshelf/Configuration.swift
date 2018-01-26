@@ -1,55 +1,72 @@
 import Foundation
-import PathKit
 import Reporter
 import Yams
 
 enum Const {
-    fileprivate static let ymlPath = Path("~/.cmdshelf.yml").absolute()
-    private static let workspacePath = Path("~/.cmdshelf").absolute()
-    fileprivate static let remoteWorkspacePath = Const.workspacePath + "remote"
+    fileprivate static let ymlPath = "~/.cmdshelf.yml".standardizingPath
+    private static let workspacePath = "~/.cmdshelf".standardizingPath
+    fileprivate static let remoteWorkspacePath = "\(Const.workspacePath)/remote"
 }
 
 enum DisplayType: String {
     case alias, absolutePath
 }
 
+internal let fm = FileManager.default
+
 class Configuration {
-    var remoteWorkspacePath: Path {
+
+    var remoteWorkspacePath: String {
         return Const.remoteWorkspacePath
     }
+
     var cmdshelfYml: CmdshelfYaml = .init() {
         didSet {
             writeYml()
         }
     }
+
     private func writeYml() {
         do {
             let node = try cmdshelfYml.represented()
             let string = try Yams.serialize(node: node)
-            try Const.ymlPath.write(string)
+            try string.write(toFile: Const.ymlPath, atomically: true, encoding: .utf8)
         } catch {
             queuedPrintlnError(error)
         }
     }
+
     init() throws {
-        if Const.ymlPath.exists {
-            guard Const.ymlPath.isFile else {
-                throw CmdshelfError("\(Const.ymlPath.description) is expected to be a file but is not. Please remove or rename existing file or directory.")
+        if fm.fileExists(atPath: Const.ymlPath) {
+            guard fm.isReadableFile(atPath: Const.ymlPath) else {
+                throw CmdshelfError("""
+                    \(Const.ymlPath) is expected to be a file but is not. Please remove or rename existing file or directory.
+                    """)
             }
-            let url = URL(fileURLWithPath: Const.ymlPath.description)
+
+            let url = URL(fileURLWithPath: Const.ymlPath)
             let data = try String(contentsOfFile: url.path, encoding: .utf8)
+
             guard let yml = try Yams.load(yaml: data) as? [String: Any] else {
-                throw CmdshelfError("Failed to load \(Const.ymlPath.description).")
+                throw CmdshelfError("Failed to load \(Const.ymlPath).")
             }
+
             if let remote = yml["remote"] as? [String: [String: String]] {
                 for (name, dictionary) in remote {
                     if let url = dictionary["url"] {
-                        cmdshelfYml.remotes.append(Repository(name: name, url: url, tag: dictionary["tag"], branch: dictionary["branch"]))
+                        let repository = Repository(name: name,
+                                                    url: url,
+                                                    tag: dictionary["tag"],
+                                                    branch: dictionary["branch"])
+                        cmdshelfYml.remotes.append(repository)
                     }
                 }
             }
+
             if let blob = yml["blob"] as? [String: [String: String]] {
+
                 for (name, dictionary) in blob {
+
                     if let url = dictionary["url"] {
                         cmdshelfYml.blobs.append(Blob(name: name, url: url))
                     } else if let localPath = dictionary["localPath"] {
@@ -59,15 +76,22 @@ class Configuration {
             }
         }
     }
+
     func cloneRemotesIfNeeded() {
         cloneURLIfNeeded(workspacePath: Const.remoteWorkspacePath, repositories: cmdshelfYml.remotes)
     }
-    private func cloneURLIfNeeded(workspacePath: Path, repositories: [Repository]) {
+
+    private func cloneURLIfNeeded(workspacePath: String, repositories: [Repository]) {
         for repo in repositories {
-            let workspace = workspacePath + repo.name
-            if workspace.isDirectory == false {
+
+            let workspace = "\(workspacePath)/\(repo.name)"
+
+            if !fm.isDirectory(workspace) {
+
                 queuedPrint("[\(repo.name)] Cloning ... ")
-                let status = silentShellOut(to: "git clone \(repo.url) \(workspace.description)")
+
+                let status = silentShellOut(to: "git clone \(repo.url) \(workspace)")
+
                 if status != 0 {
                     queuedPrintlnError("error")
                 } else {
@@ -76,12 +100,18 @@ class Configuration {
             }
         }
     }
+
     func updateRemotes() {
+
         for repo in cmdshelfYml.remotes {
-            let workspace = Const.remoteWorkspacePath + repo.name
-            if workspace.isDirectory {
+            let workspace = "\(Const.remoteWorkspacePath)/\(repo.name)"
+
+            if fm.isDirectory(workspace) {
+
                 queuedPrint("[\(repo.name)] Updating ... ")
-                let status = silentShellOut(to: "cd \(workspace.description) && git fetch origin master && git checkout origin/master")
+
+                let status = silentShellOut(to: "cd \(workspace) && git fetch origin master && git checkout origin/master")
+
                 if status != 0 {
                     queuedPrintlnError("error")
                 } else {
@@ -99,24 +129,31 @@ class Configuration {
                     return true
                 }
             }
-            .map { Const.remoteWorkspacePath + $0.name + alias }
-            .filter { $0.isExecutable }
+            .map { "\(Const.remoteWorkspacePath)/\($0.name)/\(alias)" }
+            .filter(fm.isExecutableFile(atPath:))
             .first
-            .map { Context(location: $0.absolute().description) }
+            .map { Context(location: $0) }
     }
 
     func displayNames(for remoteName: String, type: DisplayType) throws -> [String] {
-        let repoPath = Const.remoteWorkspacePath + remoteName
-        func _convert(path: Path) -> String {
-            return type == .alias ?
-                path.description.substring(from: (repoPath.description + "/").endIndex) :
-                path.absolute().description
+        let repoPath = "\(Const.remoteWorkspacePath)/\(remoteName)"
+        func _convert(path: String) -> String {
+            if type == .alias {
+                if let upperBound = path.range(of: repoPath + "/")?.upperBound {
+                    return String(path[upperBound..<path.endIndex])
+                } else {
+                    fatalError("Could not construct correct path name to display.")
+                }
+            }
+            return path
         }
-        return try repoPath.recursiveChildren()
+
+        return try fm.subpathsOfDirectory(atPath: repoPath)
+            .map { "\(repoPath)/\($0)" }
             .filter {
-                $0.isExecutable
-                    && $0.isDirectory == false
-                    && $0.components.contains(".git") == false
+                fm.isExecutableFile(atPath: $0)
+                    && !fm.isDirectory($0)
+                    && !$0.components(separatedBy: "/").contains(".git")
             }
             .map(_convert)
     }

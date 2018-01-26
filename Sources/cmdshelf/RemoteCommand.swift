@@ -1,5 +1,4 @@
 import Commander
-import PathKit
 import Foundation
 import Reporter
 
