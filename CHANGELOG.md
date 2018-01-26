@@ -1,3 +1,11 @@
+## master
+##### Enhancements
+* Open man-pager on `help list` [#57](https://github.com/toshi0383/cmdshelf/pull/57)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
+* Add man1/cmdshelf-list.1 manual page [#56](https://github.com/toshi0383/cmdshelf/pull/56)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 0.9.1
 ##### Enhancements
 * Add man1/cmdshelf.1 manual page [#54](https://github.com/toshi0383/cmdshelf/pull/54)  

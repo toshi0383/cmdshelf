@@ -57,7 +57,13 @@ func printHelpMessage() {
 
 let help = command(SubCommandArgument()) { (subCommand) in
     if let subCommand = subCommand {
-        queuedPrintln(subCommand.helpMessage)
+        if subCommand.possiblyHasManPage {
+            if spawnPager(cmdString: "man cmdshelf-\(subCommand.rawValue)") != 0 {
+                queuedPrintln(subCommand.helpMessage)
+            }
+        } else {
+            queuedPrintln(subCommand.helpMessage)
+        }
         return
     }
     printHelpMessage()
