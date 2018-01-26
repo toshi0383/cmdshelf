@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import ObjectiveC
 
 extension String {
     var standardizingPath: String {
