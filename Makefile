@@ -1,9 +1,8 @@
 .PHONY = clean update build test bootstrap
 SOURCERY ?= sourcery # Please install appropriate version on your own.
-PARAM = CMDSHELF_SWIFTPM_DEVELOPMENT=YES
 
 test:
-	$(PARAM) swift build
+	swift build
 	./tests/main.sh
 
 clean:
@@ -11,13 +10,13 @@ clean:
 	rm Package.resolved
 
 update:
-	$(PARAM) swift package update
+	swift package update
 
 build:
-	$(PARAM) swift build
+	swift build
 
 bootstrap: build
-	$(PARAM) swift package generate-xcodeproj
+	swift package generate-xcodeproj
 
 # Needs toshi0383/scripts to be added to cmdshelf's remote
 install:
@@ -26,4 +25,4 @@ install:
 release:
 	rm -rf .build/release
 	swift build -c release -Xswiftc -static-stdlib
-	cmdshelf run swiftpm/release.sh cmdshelf libCYaml.dylib
+	cmdshelf run swiftpm/release.sh cmdshelf
