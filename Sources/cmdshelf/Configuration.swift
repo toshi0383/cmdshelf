@@ -16,7 +16,7 @@ internal let fm = FileManager.default
 
 class Configuration {
 
-    var remoteWorkspacePath: Path {
+    var remoteWorkspacePath: String {
         return Const.remoteWorkspacePath
     }
 
@@ -81,7 +81,7 @@ class Configuration {
         cloneURLIfNeeded(workspacePath: Const.remoteWorkspacePath, repositories: cmdshelfYml.remotes)
     }
 
-    private func cloneURLIfNeeded(workspacePath: Path, repositories: [Repository]) {
+    private func cloneURLIfNeeded(workspacePath: String, repositories: [Repository]) {
         for repo in repositories {
 
             let workspace = "\(workspacePath)/\(repo.name)"
@@ -137,7 +137,7 @@ class Configuration {
 
     func displayNames(for remoteName: String, type: DisplayType) throws -> [String] {
         let repoPath = "\(Const.remoteWorkspacePath)/\(remoteName)"
-        func _convert(path: Path) -> String {
+        func _convert(path: String) -> String {
             if type == .alias {
                 if let upperBound = path.range(of: repoPath + "/")?.upperBound {
                     return String(path[upperBound..<path.endIndex])
