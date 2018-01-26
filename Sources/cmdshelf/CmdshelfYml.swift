@@ -1,5 +1,4 @@
 import Foundation
-import PathKit
 import Yams
 
 private func repositoriesToDictionary(_ repositories: [Repository]) -> [String: [String: String]] {

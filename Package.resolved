@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "PathKit",
-        "repositoryURL": "https://github.com/toshi0383/PathKit.git",
-        "state": {
-          "branch": null,
-          "revision": "9be2dd407432c035b89698d49659a4aa117ac8e0",
-          "version": "0.8.2"
-        }
-      },
-      {
         "package": "Reporter",
         "repositoryURL": "https://github.com/toshi0383/Reporter.git",
         "state": {

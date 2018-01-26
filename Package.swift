@@ -17,7 +17,6 @@ let package = Package(
     dependencies: {
         let deps: [Package.Dependency] = [
             .package(url: "https://github.com/toshi0383/Commander.git", from: "0.9.0"),
-            .package(url: "https://github.com/toshi0383/PathKit.git", from: "0.8.0"),
             .package(url: "https://github.com/toshi0383/Reporter.git", from: "0.3.2"),
             .package(url: "https://github.com/jpsim/Yams.git", from: "0.5.0")
         ]
@@ -26,7 +25,6 @@ let package = Package(
     targets: [
         .target(name: "cmdshelf", dependencies: [
             "Commander",
-            "PathKit",
             "Poxis",
             "Reporter",
             "Yams",
