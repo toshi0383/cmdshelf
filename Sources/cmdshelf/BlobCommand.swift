@@ -17,14 +17,9 @@ class BlobCommand: Group {
         ) { (name, url) in
             let config = try Configuration()
             if fm.fileExists(atPath: url) {
-                var path: String
-                if url.starts(with: "/") {
-                    path = url.standardizingPath
-                } else {
-                    path = "\(url)".standardizingPath
-                    if !path.starts(with: "/") {
-                        path = "\(fm.currentDirectoryPath)/\(path)"
-                    }
+                var path = url.standardizingPath
+                if !url.starts(with: "/") {
+                    path = "\(fm.currentDirectoryPath)/\(path)"
                 }
                 config.cmdshelfYml.blobs.append(Blob(name: name, localPath: path))
             } else {

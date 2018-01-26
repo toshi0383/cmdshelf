@@ -40,7 +40,7 @@ class Configuration {
         if fm.fileExists(atPath: Const.ymlPath) {
             guard fm.isReadableFile(atPath: Const.ymlPath) else {
                 throw CmdshelfError("""
-                    \(Const.ymlPath.description) is expected to be a file but is not. Please remove or rename existing file or directory.
+                    \(Const.ymlPath) is expected to be a file but is not. Please remove or rename existing file or directory.
                     """)
             }
 
@@ -48,7 +48,7 @@ class Configuration {
             let data = try String(contentsOfFile: url.path, encoding: .utf8)
 
             guard let yml = try Yams.load(yaml: data) as? [String: Any] else {
-                throw CmdshelfError("Failed to load \(Const.ymlPath.description).")
+                throw CmdshelfError("Failed to load \(Const.ymlPath).")
             }
 
             if let remote = yml["remote"] as? [String: [String: String]] {
@@ -110,7 +110,7 @@ class Configuration {
 
                 queuedPrint("[\(repo.name)] Updating ... ")
 
-                let status = silentShellOut(to: "cd \(workspace.description) && git fetch origin master && git checkout origin/master")
+                let status = silentShellOut(to: "cd \(workspace) && git fetch origin master && git checkout origin/master")
 
                 if status != 0 {
                     queuedPrintlnError("error")
