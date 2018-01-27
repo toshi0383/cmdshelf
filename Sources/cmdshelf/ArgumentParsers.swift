@@ -15,6 +15,7 @@ final class ArgumentParser {
         self.remainder = args
     }
 
+    @discardableResult
     func shift() -> String? {
         if remainder.isEmpty {
             return nil
@@ -22,6 +23,7 @@ final class ArgumentParser {
         return remainder.removeFirst()
     }
 
+    @discardableResult
     func shiftAll() -> [String] {
         let r = remainder
         remainder = []

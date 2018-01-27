@@ -18,9 +18,9 @@ do {
 // - MARK: Execution
 //
 let arguments = CommandLine.arguments.dropFirst().map { $0 }
-let parser = ArgumentParser(args: arguments)
 
-func runHelpCommand() {
+func runHelpCommand(_ parser: ArgumentParser) {
+
     do {
         try HelpCommand.run(parser)
     } catch {
@@ -28,19 +28,22 @@ func runHelpCommand() {
     }
 }
 
+let parser = ArgumentParser(args: arguments)
+
 if arguments.isEmpty {
 
     // TODO: interactive mode
-    runHelpCommand()
+    runHelpCommand(parser)
     exit(0)
 }
 
 if let fst = arguments.first, ["-h", "--help"].contains(fst) {
-    runHelpCommand()
+    parser.shiftAll()
+    runHelpCommand(parser)
     exit(0)
 }
 
-if let version = arguments.first, version == "--version" {
+if let _version = arguments.first, _version == "--version" {
     queuedPrintln(version)
     exit(0)
 }

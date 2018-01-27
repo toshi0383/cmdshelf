@@ -21,7 +21,7 @@ final class BlobCommand: Command {
     static func run(_ parser: ArgumentParser) throws {
         guard let string = parser.shift(),
             let subCommand = RemoteCommand.SubCommand(rawValue: string) else {
-                throw CmdshelfError("Invalid arguments. Pass a correct arguments for `remote`.")
+                throw CmdshelfError("Invalid arguments. Pass a correct arguments for `blob`.")
         }
 
         switch subCommand {
@@ -31,7 +31,7 @@ final class BlobCommand: Command {
 
         case .add:
             guard let name = parser.shift(), let url = parser.shift() else {
-                throw CmdshelfError("Invalid arguments. Pass a correct arguments for `remote add`.")
+                throw CmdshelfError("Invalid arguments. Pass a correct arguments for `blob add`.")
             }
 
             let config = try Configuration()
@@ -47,7 +47,7 @@ final class BlobCommand: Command {
 
         case .remove:
             guard let name = parser.shift() else {
-                throw CmdshelfError("Invalid arguments. Pass a correct arguments for `remote remove`.")
+                throw CmdshelfError("Invalid arguments. Pass a correct arguments for `blob remove`.")
             }
             let config = try Configuration()
             config.cmdshelfYml.removeBlob(name: name)
