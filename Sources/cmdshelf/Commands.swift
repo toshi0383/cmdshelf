@@ -100,7 +100,9 @@ final class CatCommand: Command {
 final class HelpCommand: Command {
     static func run(_ parser: ArgumentParser) throws {
         if parser.remainder.isEmpty {
-            queuedPrintln(SubCommand.help.helpMessage)
+            if spawnPager(cmdString: "man cmdshelf") != 0 {
+                queuedPrintln(SubCommand.help.helpMessage)
+            }
             return
         }
         let subCommand = try SubCommandArgument().parse(parser)
