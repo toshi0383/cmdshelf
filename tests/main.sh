@@ -202,6 +202,17 @@ if [ $exit_status -ne 0 ];then
     STATUS=1
 fi
 
+## 012: [--help] execution succeeds
+before_each
+$CMDSHELF --help > /dev/null
+exit_status=$?
+
+if [ $exit_status -ne 0 ];then
+    echo Exit code is expected to be 0 but was $exit_status
+    echo 012 FAILED
+    STATUS=1
+fi
+
 # Cleanup
 after_all
 
