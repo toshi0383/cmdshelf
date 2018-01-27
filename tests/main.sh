@@ -37,12 +37,12 @@ before_all
 ###
 echo Arguments tests started
 
-## 001: Passes parameters correctly
+## 000: Passes parameters correctly
 before_each
 printf '#!/bin/bash\necho $#' > 001.sh && chmod +x 001.sh
 $CMDSHELF blob add _001.sh 001.sh
 if [ 3 -ne $($CMDSHELF run _001.sh a b c) ];then
-    echo 001 FAILED
+    echo 000 FAILED
     STATUS=1
 fi
 
@@ -173,6 +173,34 @@ then
 fi
 
 rm $TEST_009_SH
+
+## 010: [list] execution succeeds
+before_each
+$CMDSHELF list > /dev/null
+exit_status=$?
+
+if [ $exit_status -ne 0 ];then
+    echo Exit code is expected to be 0 but was $exit_status
+    echo 010 FAILED
+    STATUS=1
+fi
+
+## 011: [--version] execution succeeds
+before_each
+VERSION=$($CMDSHELF --version)
+exit_status=$?
+
+if [ "${VERSION}" != "0.9.2" ];then
+    echo \-\-version printed invalid value: $VERSION
+    echo 011 FAILED
+    STATUS=1
+fi
+
+if [ $exit_status -ne 0 ];then
+    echo Exit code is expected to be 0 but was $exit_status
+    echo 011 FAILED
+    STATUS=1
+fi
 
 # Cleanup
 after_all
