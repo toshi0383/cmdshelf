@@ -1,4 +1,3 @@
-import Commander
 import Foundation
 import Reporter
 
@@ -6,6 +5,30 @@ struct Alias {
     let alias: String
     let remoteName: String?
     let originalValue: String
+}
+
+final class ArgumentParser {
+
+    var remainder: [String]
+
+    init(args: [String]) {
+        self.remainder = args
+    }
+
+    func shift() -> String? {
+        return remainder.removeFirst()
+    }
+
+    func shiftAll() -> [String] {
+        let r = remainder
+        remainder = []
+        return r
+    }
+}
+
+protocol ArgumentDescriptor {
+    associatedtype ValueType
+    func parse(_ parser: ArgumentParser) throws -> ValueType
 }
 
 private class AliasParser {
@@ -32,27 +55,22 @@ private class AliasParser {
     }
 }
 
-struct VaradicAliasArgument: ArgumentDescriptor {
-    typealias ValueType = [Alias]
-    let name: String = "[\(Message.COMMAND) ...]"
-    let description: String? = nil
-    let type: ArgumentType = .argument
-    func parse(_ parser: ArgumentParser) throws -> ValueType {
+final class VaradicAliasArgument: ArgumentDescriptor {
+    func parse(_ parser: ArgumentParser) throws -> [Alias] {
         return parser.shiftAll().flatMap(AliasParser.parse)
     }
 }
 
-struct AliasParameterArgument: ArgumentDescriptor {
+final class AliasParameterArgument: ArgumentDescriptor {
+
     typealias ValueType = (alias: Alias, parameters: [String])
-    let name: String = "\"\(Message.COMMAND) [parameter ...]\""
-    let description: String? = nil
-    let type: ArgumentType = .argument
+
     func parse(_ parser: ArgumentParser) throws -> ValueType {
         guard let string = parser.shift() else {
-            throw ArgumentError.missingValue(argument: name)
+            throw CmdshelfError("invalid arguments")
         }
         guard let alias = AliasParser.parse(string) else {
-            throw ArgumentError.missingValue(argument: "COMMAND")
+            throw CmdshelfError("invalid arguments")
         }
         return (alias, parser.shiftAll())
     }
@@ -60,70 +78,23 @@ struct AliasParameterArgument: ArgumentDescriptor {
 
 struct SubCommandArgument: ArgumentDescriptor {
 
-    typealias ValueType = SubCommand?
-
-    let name: String = "\"[subcommand]\""
-    let description: String? = "A SubCommand of cmdshelf e.g. \"run\""
-    let type: ArgumentType = .argument
-
-    func parse(_ parser: ArgumentParser) throws -> ValueType {
-        if let string = parser.shiftArgument() {
-            if let subCommand = SubCommand(rawValue: string) {
-                return subCommand
-            } else {
-                throw ArgumentError.invalidType(value: string, type: "SubCommand", argument: nil)
-            }
+    func parse(_ parser: ArgumentParser) throws -> SubCommand {
+        guard let string = parser.shift() else {
+            throw CmdshelfError("missing argument for SubCommand.")
+        }
+        if let subCommand = SubCommand(rawValue: string) {
+            return subCommand
         } else {
-            return nil
+            throw CmdshelfError("invalid argument: \(string)\nPass a correct SubCommand name.")
         }
     }
 }
 
 enum SubCommand: String {
+
     case run, list, remote, blob, cat, update, help
-    init?(string: String) {
-        if let v = SubCommand(rawValue: string) {
-            self = v
-        } else if ["-h", "--help"].contains(string) {
-            self = .help
-        } else {
-            return nil
-        }
-    }
 
     var possiblyHasManPage: Bool {
         return [.list].contains(self)
-    }
-}
-
-struct SubCommandConvertibleArgument: ArgumentDescriptor {
-
-    typealias ValueType = (SubCommand, parser: ArgumentParser)?
-
-    let name: String = "\"\(Message.COMMAND) [parameter ...]\""
-    let description: String? = nil
-    let type: ArgumentType = .argument
-
-    func parse(_ parser: ArgumentParser) throws -> ValueType {
-        if let string = parser.shift() {
-            if let subCommand = SubCommand(string: string) {
-                return (subCommand, parser)
-            } else {
-                throw ArgumentError.invalidType(value: string, type: "SubCommand", argument: nil)
-            }
-        } else {
-            return nil
-        }
-    }
-}
-
-// MARK: - Commander extension
-extension ArgumentParser {
-    func shiftAll() -> [String] {
-        let _remainder = remainder
-        for _ in remainder {
-            _ = shift()
-        }
-        return _remainder
     }
 }
