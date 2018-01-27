@@ -1,4 +1,3 @@
-import Commander
 import Foundation
 import Reporter
 
@@ -18,121 +17,54 @@ do {
 //
 // - MARK: Execution
 //
-let blob = BlobCommand()
+let arguments = CommandLine.arguments.dropFirst().map { $0 }
+let parser = ArgumentParser(args: arguments)
 
-let cat = command(VaradicAliasArgument()) { (aliases) in
-    if aliases.isEmpty {
-        exit(shellOut(to: "cat"))
-    } else {
-        let config = try Configuration()
-        config.cloneRemotesIfNeeded()
-        var failure = false
-        for alias in aliases {
-            // Search in blobs and remote
-            guard let context = config.getContexts(for: alias.alias, remoteName: alias.remoteName).first else {
-                queuedPrintlnError(Message.noSuchCommand(alias.originalValue))
-                failure = true
-                continue
-            }
-            if context.location.hasPrefix("curl ") {
-                if shellOut(to: context.location) > 0 {
-                    failure = true
-                }
-            } else {
-                if shellOut(to: "cat \(context.location)") > 0 {
-                    failure = true
-                }
-            }
-        }
-        if failure {
-            throw CmdshelfError()
-        }
-    }
-}
-
-func printHelpMessage() {
-    queuedPrintln(SubCommand.help.helpMessage)
-}
-
-let help = command(SubCommandArgument()) { (subCommand) in
-    if let subCommand = subCommand {
-        if subCommand.possiblyHasManPage {
-            if spawnPager(cmdString: "man cmdshelf-\(subCommand.rawValue)") != 0 {
-                queuedPrintln(subCommand.helpMessage)
-            }
-        } else {
-            queuedPrintln(subCommand.helpMessage)
-        }
-        return
-    }
-    printHelpMessage()
-}
-
-let list = command(
-    Flag("path", default: false, disabledName: "", description: "display absolute path instead of command name alias")
-) { isPath in
-    let config = try Configuration()
-    try config.printAllCommands(displayType: isPath ? .absolutePath : .alias)
-}
-
-let remote = RemoteCommand()
-
-let run = command(AliasParameterArgument()) { (aliasParam) in
-    let config = try Configuration()
-    let alias = aliasParam.alias.alias
-    let remoteName = aliasParam.alias.remoteName
-    let parameters = aliasParam.parameters
-    // Search in blobs and remote
-    guard let context = config.getContexts(for: alias, remoteName: remoteName).first else {
-        queuedPrintlnError(Message.noSuchCommand(aliasParam.alias.originalValue))
-        throw CmdshelfError()
-    }
-    let singleQuoted = parameters.map { "\'\($0)\'" }.joined(separator: " ")
-    if context.location.hasPrefix("curl ") {
-        exit(shellOut(to: "bash <(\(context.location))", argument: singleQuoted))
-    } else {
-        exit(shellOut(to: context.location, argument: singleQuoted))
-    }
-}
-
-let update = command() {
-    let config = try Configuration()
-    config.cloneRemotesIfNeeded()
-    config.updateRemotes()
-}
-
-let c = command(SubCommandConvertibleArgument())
-{ (tuple) in
-    func exec() throws {
-        if let (subCommand, parser) = tuple {
-            switch subCommand {
-            case .blob: try blob.run(parser)
-            case .cat: try cat.run(parser)
-            case .list: try list.run(parser)
-            case .remote: try remote.run(parser)
-            case .run: try run.run(parser)
-            case .help: try help.run(parser)
-            case .update: try update.run(parser)
-            }
-        } else {
-            // TODO: interactive mode
-            help.run()
-        }
-    }
-
+func runHelpCommand() {
     do {
-        try exec()
-
-    } catch let error as CmdshelfError {
-        if let msg = error.message {
-            queuedPrintlnError(msg)
-        }
-        exit(1)
-
+        try HelpCommand.run(parser)
     } catch {
         queuedPrintlnError(error)
-        exit(1)
     }
 }
 
-c.run(version)
+if arguments.isEmpty {
+
+    // TODO: interactive mode
+    runHelpCommand()
+    exit(0)
+}
+
+if let fst = arguments.first, ["-h", "--help"].contains(fst) {
+    runHelpCommand()
+    exit(0)
+}
+
+if let version = arguments.first, version == "--version" {
+    queuedPrintln(version)
+    exit(0)
+}
+
+do {
+    let subCommand = try SubCommandArgument().parse(parser)
+
+    switch subCommand {
+    case .blob: try BlobCommand.run(parser)
+    case .cat: try CatCommand.run(parser)
+    case .list: try ListCommand.run(parser)
+    case .remote: try RemoteCommand.run(parser)
+    case .run: try RunCommand.run(parser)
+    case .help: try HelpCommand.run(parser)
+    case .update: try UpdateCommand.run(parser)
+    }
+
+} catch let error as CmdshelfError {
+    if let msg = error.message {
+        queuedPrintlnError(msg)
+    }
+    exit(1)
+
+} catch {
+    queuedPrintlnError(error)
+    exit(1)
+}
