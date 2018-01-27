@@ -16,6 +16,9 @@ final class ArgumentParser {
     }
 
     func shift() -> String? {
+        if remainder.isEmpty {
+            return nil
+        }
         return remainder.removeFirst()
     }
 
