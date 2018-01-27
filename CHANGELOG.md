@@ -1,4 +1,4 @@
-## master
+## 0.9.2
 ##### Enhancements
 * Open man-pager on `help list` [#57](https://github.com/toshi0383/cmdshelf/pull/57)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
