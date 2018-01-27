@@ -1,3 +1,9 @@
+## master
+##### Bugfix
+* fix crash on empty runner [#61](https://github.com/toshi0383/cmdshelf/pull/61)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
+
 ## 0.9.2
 ##### Enhancements
 * Open man-pager on `help list` [#57](https://github.com/toshi0383/cmdshelf/pull/57)  
