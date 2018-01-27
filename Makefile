@@ -1,5 +1,6 @@
 .PHONY = clean update build test bootstrap
 SOURCERY ?= sourcery # Please install appropriate version on your own.
+CMDSHELF ?= cmdshelf
 
 test:
 	swift build
@@ -20,9 +21,9 @@ bootstrap: build
 
 # Needs toshi0383/scripts to be added to cmdshelf's remote
 install:
-	cmdshelf run swiftpm/install.sh toshi0383/cmdshelf
+	$(CMDSHELF) run swiftpm/install.sh toshi0383/cmdshelf
 
 release:
 	rm -rf .build/release
 	swift build -c release -Xswiftc -static-stdlib
-	cmdshelf run swiftpm/release.sh cmdshelf
+	$(CMDSHELF) run swiftpm/release.sh cmdshelf
