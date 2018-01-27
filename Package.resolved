@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "Commander",
-        "repositoryURL": "https://github.com/toshi0383/Commander.git",
-        "state": {
-          "branch": null,
-          "revision": "847902e4c846edc6a43963c10af63582957287ef",
-          "version": "0.9.4"
-        }
-      },
-      {
         "package": "Reporter",
         "repositoryURL": "https://github.com/toshi0383/Reporter.git",
         "state": {
