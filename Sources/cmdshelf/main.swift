@@ -40,7 +40,7 @@ if let fst = arguments.first, ["-h", "--help"].contains(fst) {
     exit(0)
 }
 
-if let version = arguments.first, version == "--version" {
+if let _version = arguments.first, _version == "--version" {
     queuedPrintln(version)
     exit(0)
 }
