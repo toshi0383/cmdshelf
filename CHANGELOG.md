@@ -1,4 +1,4 @@
-## master
+## 0.9.3
 ##### Bugfix
 * fix crash on empty runner [#61](https://github.com/toshi0383/cmdshelf/pull/61)  
   [Toshihiro Suzuki](https://github.com/toshi0383)

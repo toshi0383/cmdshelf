@@ -190,7 +190,7 @@ before_each
 VERSION=$($CMDSHELF --version)
 exit_status=$?
 
-if [ "${VERSION}" != "0.9.2" ];then
+if [ "${VERSION}" != "0.9.3" ];then
     echo \-\-version printed invalid value: $VERSION
     echo 011 FAILED
     STATUS=1
