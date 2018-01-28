@@ -57,6 +57,7 @@ final class BlobCommand: Command {
 }
 
 final class CatCommand: Command {
+
     static func run(_ parser: ArgumentParser) throws {
         let aliases = try VaradicAliasArgument().parse(parser)
 
