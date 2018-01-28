@@ -1,11 +1,24 @@
 import Foundation
 import Reporter
 
+// - MARK: Argument Types
+
 struct Alias {
     let alias: String
     let remoteName: String?
     let originalValue: String
 }
+
+enum SubCommand: String {
+
+    case run, list, remote, blob, cat, update, help
+
+    var possiblyHasManPage: Bool {
+        return [.list].contains(self)
+    }
+}
+
+// - MARK: ArgumentParser
 
 final class ArgumentParser {
 
@@ -31,44 +44,42 @@ final class ArgumentParser {
     }
 }
 
+// - MARK: ArgumentDescriptor
+
+/// ArgumetDescriptor parses values from given ArgumentParser
+/// and convert them to associated ValueType.
 protocol ArgumentDescriptor {
     associatedtype ValueType
     func parse(_ parser: ArgumentParser) throws -> ValueType
 }
 
-private class AliasParser {
-    static func parse(_ string: String) -> Alias? {
-        guard !string.isEmpty else {
-            return nil
-        }
-
-        // Get "remote:my/script" part.
-        //
-        // NOTE:
-        // - `"".components(separatedBy: " ").count` is 1, so force unwrap is safe.
-        let alias: String
-        let remoteName: String?
-        if string.contains(":") {
-            remoteName = string.components(separatedBy: ":").first!
-            alias = string.components(separatedBy: ":").dropFirst().joined()
-        } else {
-            alias = string
-            remoteName = nil
-        }
-
-        return Alias(alias: alias, remoteName: remoteName, originalValue: string)
-    }
-}
-
-final class VaradicAliasArgument: ArgumentDescriptor {
-    func parse(_ parser: ArgumentParser) throws -> [Alias] {
-        return parser.shiftAll().flatMap(AliasParser.parse)
-    }
-}
-
 final class AliasParameterArgument: ArgumentDescriptor {
 
     typealias ValueType = (alias: Alias, parameters: [String])
+
+    final class AliasParser {
+        static func parse(_ string: String) -> Alias? {
+            guard !string.isEmpty else {
+                return nil
+            }
+
+            // Get "remote:my/script" part.
+            //
+            // NOTE:
+            // - `"".components(separatedBy: " ").count` is 1, so force unwrap is safe.
+            let alias: String
+            let remoteName: String?
+            if string.contains(":") {
+                remoteName = string.components(separatedBy: ":").first!
+                alias = string.components(separatedBy: ":").dropFirst().joined()
+            } else {
+                alias = string
+                remoteName = nil
+            }
+
+            return Alias(alias: alias, remoteName: remoteName, originalValue: string)
+        }
+    }
 
     func parse(_ parser: ArgumentParser) throws -> ValueType {
         guard let string = parser.shift() else {
@@ -81,7 +92,13 @@ final class AliasParameterArgument: ArgumentDescriptor {
     }
 }
 
-struct SubCommandArgument: ArgumentDescriptor {
+final class VaradicAliasArgument: ArgumentDescriptor {
+    func parse(_ parser: ArgumentParser) throws -> [Alias] {
+        return parser.shiftAll().flatMap(AliasParameterArgument.AliasParser.parse)
+    }
+}
+
+final class SubCommandArgument: ArgumentDescriptor {
 
     func parse(_ parser: ArgumentParser) throws -> SubCommand {
         guard let string = parser.shift() else {
@@ -92,14 +109,5 @@ struct SubCommandArgument: ArgumentDescriptor {
         } else {
             throw CmdshelfError("invalid argument: \(string)\nPass a correct SubCommand name.")
         }
-    }
-}
-
-enum SubCommand: String {
-
-    case run, list, remote, blob, cat, update, help
-
-    var possiblyHasManPage: Bool {
-        return [.list].contains(self)
     }
 }
