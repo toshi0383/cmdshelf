@@ -7,6 +7,7 @@ No need to deal with your `$PATH` any more.👋
 
 - ✅ Execute any remote/local scripts intuitively.
 - ✅ No more `$PATH` configurations.
+- ✅ Use better names for commands with directory name space. (e.g. `cmdshelf run swiftpm/install.sh`)`
 - ✅ Portable environment with `.cmdshelf.yml`.
 - ✅ No quoting required for passing arguments and options.
 - ✅ `stdout`, `stdin`, `stderr`
