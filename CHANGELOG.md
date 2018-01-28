@@ -1,3 +1,8 @@
+## master
+##### Enhancement
+* improve `update` command output [#63](https://github.com/toshi0383/cmdshelf/pull/63)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 0.9.3
 ##### Bugfix
 * fix crash on empty runner [#61](https://github.com/toshi0383/cmdshelf/pull/61)  
