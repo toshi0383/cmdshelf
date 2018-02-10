@@ -1,17 +1,14 @@
 [![cmdshelf](https://github.com/toshi0383/assets/blob/master/cmdshelf/banner.png)](https://github.com/toshi0383/cmdshelf)
 
-cmdshelf integrates your team's shared scripts like a bookshelf.  
-No need to deal with your `$PATH` any more.👋
+cmdshelf is a new way of scripting.😎
 
-# Features
-
-- ✅ Execute any remote/local scripts intuitively.
-- ✅ No more `$PATH` configurations.
-- ✅ Use better names for commands with directory name space. (e.g. `cmdshelf run swiftpm/install.sh`)`
-- ✅ Portable environment with `.cmdshelf.yml`.
-- ✅ No quoting required for passing arguments and options.
+- ✅ Seperate name space using directories (e.g. `swiftpm/install.sh` `your/tool/install.sh`)`
+- ✅ No more `$PATH` configurations
 - ✅ `stdout`, `stdin`, `stderr`
-- ✅ The coolest manual page.
+- ✅ No quoting required for arguments. (just like `swift run`)
+- ✅ The coolest manual page
+- ✅ Portable environment (`.cmdshelf.yml`)
+- ✅ Execute any remote/local executables.
 
 <img src="https://github.com/toshi0383/assets/blob/master/cmdshelf/man-page.png" width="980" alt="man-page" />
 
