@@ -66,7 +66,7 @@ swift build -c release
 ```
 
 # Limitation on Linux
-`cmdshelf` cannot handle `stdin` on Linux. This is rather Foundation's problem than cmdshelf's.
+`cmdshelf` cannot handle `stdin` on Linux. [#65](https://github.com/toshi0383/cmdshelf/issues/65)
 
 # Contribute
 Any contribution is welcomed.
