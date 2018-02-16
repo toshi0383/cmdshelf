@@ -1,4 +1,4 @@
-## master
+## 0.9.4
 ##### Enhancement
 * Add missing man-pages [#67](https://github.com/toshi384/cmdshelf/pull/67)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
