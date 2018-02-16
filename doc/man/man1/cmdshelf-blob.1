@@ -2,14 +2,20 @@
 .SH "NAME"
 cmdshelf-blob - Manage blobs
 .SH "SYNOPSIS"
-\fBcmdshelf blob\fR <command> [<args>]
+.sp
+.nf
+\fBcmdshelf blob add\fR <name> <url>
+\fBcmdshelf blob list\fR
+\fBcmdshelf blob remove\fR <name>
+.fi
+.sp
 .SH "DESCRIPTION"
 .TP
 The blob subcommand manages blobs.
 .SH "SUB-COMMANDS"
-.SS add <name> <url>
+.SS add
 Add a blob named <name> at <url>. <url> can be a network URL or a local filepath.
-.SS list
+.SS list, ls
 List blobs.
-.SS remove <name>
+.SS remove, rm
 Remove the blob named <name>.
