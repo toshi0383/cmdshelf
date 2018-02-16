@@ -12,6 +12,19 @@ struct Alias {
 enum SubCommand: String {
 
     case blob, cat, help, list, remote, run, update
+
+    init?(string: String) {
+        if let v = SubCommand(rawValue: string) {
+            self = v
+        } else {
+            switch string {
+            case "ls":
+                self = .list
+            default:
+                return nil
+            }
+        }
+    }
 }
 
 // - MARK: ArgumentParser
@@ -100,10 +113,10 @@ final class SubCommandArgument: ArgumentDescriptor {
         guard let string = parser.shift() else {
             throw CmdshelfError("missing argument for SubCommand.")
         }
-        if let subCommand = SubCommand(rawValue: string) {
+        if let subCommand = SubCommand(string: string) {
             return subCommand
         } else {
-            throw CmdshelfError("invalid argument: \(string)\nPass a correct SubCommand name.")
+            throw CmdshelfError("invalid subcommand: \(string)")
         }
     }
 }

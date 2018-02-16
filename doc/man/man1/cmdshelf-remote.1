@@ -2,14 +2,20 @@
 .SH "NAME"
 cmdshelf-remote - Manage set of tracked repositories
 .SH "SYNOPSIS"
-\fBcmdshelf remote\fR <command> [<args>]
+.sp
+.nf
+\fBcmdshelf remote add\fR <name> <url>
+\fBcmdshelf remote list\fR
+\fBcmdshelf remote remove\fR <name>
+.fi
+.sp
 .SH "DESCRIPTION"
 .TP
 Manage the set of repositories ("remotes").
 .SH "SUB-COMMANDS"
-.SS add <name> <url>
+.SS add
 Adds a remote named <name> for the repository at <url>.
-.SS list
+.SS list, ls
 List tracked remotes.
-.SS remove <name>
-Remove the remote named <name>. This won't remove the cloned local repository. Clean on your own if needed.
+.SS remove, rm
+Remove the remote named <name>. This won't remove the local repository. Clean on your own if needed.

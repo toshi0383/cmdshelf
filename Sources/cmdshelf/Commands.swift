@@ -16,6 +16,21 @@ final class BlobCommand: Command {
 
     enum SubCommand: String {
         case list, add, remove
+
+        init?(string: String) {
+            if let v = SubCommand(rawValue: string) {
+                self = v
+            } else {
+                switch string {
+                case "ls":
+                    self = .list
+                case "rm":
+                    self = .remove
+                default:
+                    return nil
+                }
+            }
+        }
     }
 
     static func run(_ parser: ArgumentParser) throws {
@@ -149,12 +164,29 @@ final class RemoteCommand: Command {
 
     enum SubCommand: String {
         case list, add, remove
+
+        init?(string: String) {
+            if let v = SubCommand(rawValue: string) {
+                self = v
+            } else {
+                switch string {
+                case "ls":
+                    self = .list
+                case "rm":
+                    self = .remove
+                default:
+                    return nil
+                }
+            }
+        }
     }
 
     static func run(_ parser: ArgumentParser) throws {
-        guard let string = parser.shift(),
-            let subCommand = RemoteCommand.SubCommand(rawValue: string) else {
-                throw CmdshelfError("Invalid arguments. Pass a correct arguments for `remote`.")
+        guard let string = parser.shift() else {
+            throw CmdshelfError("missing argument for `remote`")
+        }
+        guard let subCommand = RemoteCommand.SubCommand(string: string) else {
+            throw CmdshelfError("invalid subcommand for `remote`: \(string)")
         }
 
         switch subCommand {
