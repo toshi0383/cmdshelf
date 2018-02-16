@@ -1,0 +1,15 @@
+.TH "CMDSHELF-REMOTE" "1" "February 2018" "cmdshelf 0.9.3" "Cmdshelf Manual"
+.SH "NAME"
+cmdshelf-remote - Manage set of tracked repositories
+.SH "SYNOPSIS"
+\fIcmdshelf remote\fR <command> [<args>]
+.SH "DESCRIPTION"
+.TP
+Manage the set of repositories ("remotes").
+.SH "SUB-COMMANDS"
+.SS add <name> <url>
+Adds a remote named <name> for the repository at <url>.
+.SS list
+List tracked remotes.
+.SS remove <name>
+Remove the remote named <name>. This won't remove the cloned local repository. Clean on your own if needed.
