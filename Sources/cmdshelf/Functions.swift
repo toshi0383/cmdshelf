@@ -51,7 +51,7 @@ func spawnPager(cmdString: String) -> Int32 {
     guard let fpin = poxis_popen(cmdString, "r") else {
         return 1
     }
-    guard let fpout = poxis_popen("more", "w") else {
+    guard let fpout = poxis_popen("${PAGER:-more}", "w") else {
         return 1
     }
     var line: [Int8] = []
