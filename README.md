@@ -2,7 +2,7 @@
 
 cmdshelf is a new way of scripting.😎
 
-- ✅ Seperate name space using directories (e.g. `swiftpm/install.sh` `your/tool/install.sh`)`
+- ✅ Seperate name space using directories (e.g. `swiftpm/install.sh` `your/tool/install.sh`)
 - ✅ No more `$PATH` configurations
 - ✅ `stdout`, `stdin`, `stderr`
 - ✅ No quoting required for arguments. (just like `swift run`)
@@ -10,18 +10,14 @@ cmdshelf is a new way of scripting.😎
 - ✅ Portable environment (`.cmdshelf.yml`)
 - ✅ Execute any remote/local executables.
 
-<img src="https://github.com/toshi0383/assets/blob/master/cmdshelf/man-page.png" width="980" alt="man-page" />
-
 You can see detailed document [here](doc/getting-started.md), or type `man cmdshelf`.
 
-# Requirements
-
-## macOS
-- Sierra
-- HighSierra
-
-## Linux and Windows
-- should work on Swift compatible distribution
+# Pro tip: set aliases
+Put this in your `.bashrc`. You don't have to type "cmdshelf" each time.
+```
+alias run='cmdshelf run'
+alias list='cmdshelf list'
+```
 
 # Install
 ## macOS
@@ -48,13 +44,13 @@ Please build from source-code if `install.sh` didn't work.
 ## Linux
 ### Build from source
 
-Please build from source code for Linux. You need Swift installed.
+Please build from source for Linux. You need Swift installed.
 
 - Clone this repo and run `swift build -c release`.
 - Executable will be created at `.build/release/cmdshelf`.
 - `mv .build/release/cmdshelf /usr/local/bin/`
 
-Here is the script I use on Bitrise CI, to install Swift and then cmdshelf.
+Here is the script I use on Bitrise CI, to install Swift and then cmdshelf on Ubuntu 16.04 VM.
 ```bash
 #!/bin/bash
 set -e
