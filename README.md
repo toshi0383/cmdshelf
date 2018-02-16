@@ -1,5 +1,11 @@
 [![cmdshelf](https://github.com/toshi0383/assets/blob/master/cmdshelf/banner.png)](https://github.com/toshi0383/cmdshelf)
 
+[![SPM](https://img.shields.io/badge/SPM-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
+[![Mint](https://img.shields.io/badge/Mint-compatible-brightgreen.svg?style=flat)](https://github.com/yonaskolb/Mint)
+[![Git Version](https://img.shields.io/github/release/toshi0383/cmdshelf.svg)](https://github.com/toshi0383/cmdshelf/releases)
+[![Build Status](https://www.bitrise.io/app/8cd851f423fba13c/status.svg?token=Y4cdlYz2JpdDVxAr1eiOEA)](https://www.bitrise.io/app/8cd851f423fba13c)
+[![license](https://img.shields.io/badge/license-MIT-lightgray.svg)](https://github.com/toshi0383/cmdshelf/blob/master/LICENSE)
+
 cmdshelf is a new way of scripting.😎
 
 - ✅ Seperate name space using directories (e.g. `swiftpm/install.sh` `your/tool/install.sh`)
