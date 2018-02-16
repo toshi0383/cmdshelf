@@ -11,10 +11,10 @@ struct Alias {
 
 enum SubCommand: String {
 
-    case blob, cat, list, remote, run, update
+    case blob, cat, help, list, remote, run, update
 
     var possiblyHasManPage: Bool {
-        return [.blob, .cat, .list, .remote, .run].contains(self)
+        return [.blob, .cat, .list, .help, .remote, .run].contains(self)
     }
 }
 
