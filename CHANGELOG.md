@@ -1,3 +1,8 @@
+## master
+##### Enhancement
+* short names for subcommands [#68](https://github.com/toshi384/cmdshelf/pull/68)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 0.9.4
 ##### Enhancement
 * Add missing man-pages [#67](https://github.com/toshi384/cmdshelf/pull/67)  
