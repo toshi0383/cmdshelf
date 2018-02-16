@@ -17,11 +17,13 @@ enum SubCommand: String {
         if let v = SubCommand(rawValue: string) {
             self = v
         } else {
-            if string == "ls" {
+            switch string {
+            case "ls":
                 self = .list
+            default:
+                return nil
             }
         }
-        return nil
     }
 }
 

@@ -27,10 +27,9 @@ final class BlobCommand: Command {
                 case "rm":
                     self = .remove
                 default:
-                    break
+                    return nil
                 }
             }
-            return nil
         }
     }
 
@@ -176,10 +175,9 @@ final class RemoteCommand: Command {
                 case "rm":
                     self = .remove
                 default:
-                    break
+                    return nil
                 }
             }
-            return nil
         }
     }
 
