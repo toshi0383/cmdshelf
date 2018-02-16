@@ -1,5 +1,8 @@
 ## master
 ##### Enhancement
+* Use $PAGER for spawning man-page process if specified [#66](https://github.com/toshi384/cmdshelf/pull/66)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 * improve `update` command output [#63](https://github.com/toshi0383/cmdshelf/pull/63)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
 
