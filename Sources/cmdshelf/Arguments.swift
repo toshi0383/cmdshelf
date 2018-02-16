@@ -14,7 +14,7 @@ enum SubCommand: String {
     case run, list, remote, blob, cat, update, help
 
     var possiblyHasManPage: Bool {
-        return [.list].contains(self)
+        return [.blob, .list].contains(self)
     }
 }
 
