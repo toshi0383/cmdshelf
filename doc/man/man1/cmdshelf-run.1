@@ -2,12 +2,12 @@
 .SH "NAME"
 cmdshelf-run - Execute command
 .SH "SYNOPSIS"
-\fIcmdshelf run\fR [<remoteName>:]<command> [<args>]
+\fBcmdshelf run\fR [<remoteName>:]<command> [<args>]
 .SH "DESCRIPTION"
 .TP
 The run subcommand receives command-alias and whitespace separated list of parameters.
 .SH "AVOIDING NAMESPACE CONFLICT"
 .TP
 
-The \fIrun\fR subcommand picks up first command matches the <command>. If you have same command names from different remotes, add \fI<remoteName>:\fR prefix to to be explicit.
+The \fBrun\fR subcommand picks up first command matches the <command>. If you have same command names from different remotes, add <\fBremoteName\fR>: prefix to to be explicit.
     e.g. cmdshelf run myRemote:echo-sd hello
