@@ -1,0 +1,13 @@
+.TH "CMDSHELF-RUN" "1" "February 2018" "cmdshelf 0.9.3" "Cmdshelf Manual"
+.SH "NAME"
+cmdshelf-run - Execute command
+.SH "SYNOPSIS"
+\fBcmdshelf run\fR [<remoteName>:]<command> [<args>]
+.SH "DESCRIPTION"
+.TP
+The run subcommand receives command-alias and whitespace separated list of parameters.
+.SH "AVOIDING NAMESPACE CONFLICT"
+.TP
+
+The \fBrun\fR subcommand picks up first command matches the <command>. If you have same command names from different remotes, add <\fBremoteName\fR>: prefix to to be explicit.
+    e.g. cmdshelf run myRemote:echo-sd hello

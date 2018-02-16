@@ -1,5 +1,8 @@
 ## master
 ##### Enhancement
+* Add missing man-pages [#67](https://github.com/toshi384/cmdshelf/pull/67)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 * Use $PAGER for spawning man-page process if specified [#66](https://github.com/toshi384/cmdshelf/pull/66)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
 

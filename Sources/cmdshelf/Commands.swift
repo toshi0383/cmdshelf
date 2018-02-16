@@ -107,11 +107,7 @@ final class HelpCommand: Command {
             return
         }
         let subCommand = try SubCommandArgument().parse(parser)
-        if subCommand.possiblyHasManPage {
-            if spawnPager(cmdString: "man cmdshelf-\(subCommand.rawValue)") != 0 {
-                queuedPrintln(subCommand.helpMessage)
-            }
-        } else {
+        if spawnPager(cmdString: "man cmdshelf-\(subCommand.rawValue)") != 0 {
             queuedPrintln(subCommand.helpMessage)
         }
     }

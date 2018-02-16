@@ -11,11 +11,7 @@ struct Alias {
 
 enum SubCommand: String {
 
-    case run, list, remote, blob, cat, update, help
-
-    var possiblyHasManPage: Bool {
-        return [.list].contains(self)
-    }
+    case blob, cat, help, list, remote, run, update
 }
 
 // - MARK: ArgumentParser
