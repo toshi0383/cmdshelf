@@ -1,10 +1,25 @@
-[![cmdshelf](https://github.com/toshi0383/assets/blob/master/cmdshelf/banner.png)](https://github.com/toshi0383/cmdshelf)
-
-[![SPM](https://img.shields.io/badge/SPM-compatible-brightgreen.svg?style=flat)](https://swift.org/package-manager)
-[![Mint](https://img.shields.io/badge/Mint-compatible-brightgreen.svg?style=flat)](https://github.com/yonaskolb/Mint)
-[![Git Version](https://img.shields.io/github/release/toshi0383/cmdshelf.svg)](https://github.com/toshi0383/cmdshelf/releases)
-[![Build Status](https://www.bitrise.io/app/8cd851f423fba13c/status.svg?token=Y4cdlYz2JpdDVxAr1eiOEA)](https://www.bitrise.io/app/8cd851f423fba13c)
-[![license](https://img.shields.io/badge/license-MIT-lightgray.svg)](https://github.com/toshi0383/cmdshelf/blob/master/LICENSE)
+<p align="center">
+  <a href="https://github.com/toshi0383/cmdshelf">
+    <img src="https://github.com/toshi0383/assets/blob/master/cmdshelf/banner.png" alt="XcodeGen" />
+  </a>
+</p>
+<p align="center">
+  <a href="https://swift.org/package-manager">
+    <img src="https://img.shields.io/badge/SPM-compatible-brightgreen.svg?style=flat" alt="SPM" />
+  </a>
+  <a href="https://github.com/yonaskolb/Mint">
+    <img src="https://img.shields.io/badge/Mint-compatible-brightgreen.svg?style=flat" alt="Mint" />
+  </a>
+  <a href="https://github.com/toshi0383/cmdshelf/releases">
+    <img src="https://img.shields.io/github/release/toshi0383/cmdshelf.svg" alt="Git Version" />
+  </a>
+  <a href="https://www.bitrise.io/app/8cd851f423fba13c">
+    <img src="https://www.bitrise.io/app/8cd851f423fba13c/status.svg?token=Y4cdlYz2JpdDVxAr1eiOEA" alt="Build Status" />
+  </a>
+  <a href="https://github.com/toshi0383/cmdshelf/blob/master/LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-lightgray.svg" alt="license" />
+  </a>
+</p>
 
 cmdshelf is a new way of scripting.😎
 
