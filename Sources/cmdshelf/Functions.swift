@@ -1,5 +1,4 @@
 import Foundation
-import Reporter
 
 @discardableResult
 func silentShellOut(to: String, argument: String? = nil) -> Int32 {
