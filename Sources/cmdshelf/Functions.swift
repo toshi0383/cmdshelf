@@ -1,12 +1,12 @@
 import Foundation
 
 @discardableResult
-func silentShellOut(to: String, argument: String? = nil) -> Int32 {
-    return shellOut(to: to, argument: argument, shouldPrintStdout: false, shouldPrintError: false)
+func silentShellOut(_ to: String, argument: String? = nil) -> Int32 {
+    return shellOut(to, argument: argument, shouldPrintStdout: false, shouldPrintError: false)
 }
 
 @discardableResult
-func shellOut(to: String, argument: String? = nil, shouldPrintStdout: Bool = true, shouldPrintError: Bool = true) -> Int32 {
+func shellOut(_ to: String, argument: String? = nil, shouldPrintStdout: Bool = true, shouldPrintError: Bool = true) -> Int32 {
     let process = Process()
     process.launchPath = "/bin/bash"
     if let arg = argument {
