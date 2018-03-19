@@ -77,7 +77,7 @@ final class CatCommand: Command {
         let aliases = try VaradicAliasArgument().parse(parser)
 
         if aliases.isEmpty {
-            exit(shellOut(to: "cat"))
+            exit(shellOut("cat"))
 
         } else {
 
@@ -96,12 +96,12 @@ final class CatCommand: Command {
                 }
 
                 if context.location.hasPrefix("curl ") {
-                    if shellOut(to: context.location) > 0 {
+                    if shellOut(context.location) > 0 {
                         failure = true
                     }
 
                 } else {
-                    if shellOut(to: "cat \(context.location)") > 0 {
+                    if shellOut("cat \(context.location)") > 0 {
                         failure = true
                     }
                 }
@@ -153,9 +153,9 @@ final class RunCommand: Command {
 
         let singleQuoted = parameters.map { "\'\($0)\'" }.joined(separator: " ")
         if context.location.hasPrefix("curl ") {
-            exit(shellOut(to: "bash <(\(context.location))", argument: singleQuoted))
+            exit(shellOut("bash <(\(context.location))", argument: singleQuoted))
         } else {
-            exit(shellOut(to: context.location, argument: singleQuoted))
+            exit(shellOut(context.location, argument: singleQuoted))
         }
     }
 }

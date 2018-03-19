@@ -1,14 +1,12 @@
 import Foundation
-import Poxis
-import Reporter
 
 @discardableResult
-func silentShellOut(to: String, argument: String? = nil) -> Int32 {
-    return shellOut(to: to, argument: argument, shouldPrintStdout: false, shouldPrintError: false)
+func silentShellOut(_ to: String, argument: String? = nil) -> Int32 {
+    return shellOut(to, argument: argument, shouldPrintStdout: false, shouldPrintError: false)
 }
 
 @discardableResult
-func shellOut(to: String, argument: String? = nil, shouldPrintStdout: Bool = true, shouldPrintError: Bool = true) -> Int32 {
+func shellOut(_ to: String, argument: String? = nil, shouldPrintStdout: Bool = true, shouldPrintError: Bool = true) -> Int32 {
     let process = Process()
     process.launchPath = "/bin/bash"
     if let arg = argument {
@@ -42,22 +40,4 @@ func shellOut(to: String, argument: String? = nil, shouldPrintStdout: Bool = tru
     inPipe.fileHandleForWriting.writeabilityHandler = nil
     #endif
     return process.terminationStatus
-}
-
-/// TODO: improve error handling
-@discardableResult
-func spawnPager(cmdString: String) -> Int32 {
-    errno = 0
-    guard let fpin = poxis_popen(cmdString, "r") else {
-        return 1
-    }
-    guard let fpout = poxis_popen("${PAGER:-more}", "w") else {
-        return 1
-    }
-    var line: [Int8] = []
-    while fgets(&line, 4096, fpin) != nil {
-        fputs(&line, fpout)// == EOF then error
-    }
-    poxis_pclose(fpout)
-    return poxis_pclose(fpin)
 }

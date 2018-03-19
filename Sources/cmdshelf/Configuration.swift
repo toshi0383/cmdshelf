@@ -90,7 +90,7 @@ class Configuration {
 
                 queuedPrint("[\(repo.name)] Cloning ... ")
 
-                let status = silentShellOut(to: "git clone \(repo.url) \(workspace)")
+                let status = silentShellOut("git clone \(repo.url) \(workspace)")
 
                 if status != 0 {
                     queuedPrintlnError("error")
@@ -110,7 +110,7 @@ class Configuration {
 
                 queuedPrint("[\(repo.name)] Updating ... ")
 
-                let status = silentShellOut(to: "cd \(workspace) && git fetch origin master && git checkout origin/master")
+                let status = silentShellOut("cd \(workspace) && git fetch origin master && git checkout origin/master")
 
                 if status != 0 {
                     queuedPrintlnError("error")
