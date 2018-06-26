@@ -1,4 +1,4 @@
-## master
+## 0.9.6
 ##### Enhancement
 * Bash completion [#71](https://github.com/toshi384/cmdshelf/pull/71)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
