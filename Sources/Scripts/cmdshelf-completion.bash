@@ -30,7 +30,7 @@ _cmdshelf() {
             return 0
             ;;
         run)
-            COMPREPLY=($(compgen -W "$(cmdshelf list)" -- ${cur}))
+            COMPREPLY=($(compgen -W "$(cmdshelf list | grep -v ':')" -- ${cur}))
             return 0
             ;;
     esac
