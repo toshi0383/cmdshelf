@@ -1,3 +1,8 @@
+## master
+##### Enhancement
+* Bash completion [#71](https://github.com/toshi384/cmdshelf/pull/71)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 0.9.5
 ##### Enhancement
 * short names for subcommands [#68](https://github.com/toshi384/cmdshelf/pull/68)  

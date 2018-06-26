@@ -33,11 +33,31 @@ cmdshelf is a new way of scripting.😎
 
 You can see detailed document [here](doc/getting-started.md), or type `man cmdshelf`.
 
-# Pro tip: set aliases
+# Pro tip
+## set aliases
 Put this in your `.bashrc`. You don't have to type "cmdshelf" each time.
 ```
 alias run='cmdshelf run'
 alias list='cmdshelf list'
+```
+
+## Use auto bash-completion
+In case of binary install suggested [here](#installsh), `cmdshelf-completion.bash` is copied under `/usr/local/etc/bash-completion.d`. All you have to do is to make bash be aware of that file.
+
+Either put this in your `~/.bashrc`,
+```shell
+source /usr/local/etc/bash_completion.d/cmdshelf-completion.bash
+```
+
+or install `bash-completion` via homebrew. (Personally I've never managed it to work correctly.)
+
+If you build from source either via `Mint` or manually, then you first have to copy or symlink it manually.
+```shell
+# copy
+cp Sources/Scripts/cmdshelf-completion.bash /usr/local/etc/bash-completion.d/
+
+# or simlink
+ln -s Sources/Scripts/cmdshelf-completion.bash /usr/local/etc/bash-completion.d/cmdshelf-completion.bash
 ```
 
 # Install
@@ -58,7 +78,7 @@ mint install toshi0383/cmdshelf
 
 Please build from source-code if `install.sh` didn't work.
 
-- Clone this repo and run `swift build -c release`.  
+- Clone this repo and run `swift build -c release`.
 - Executable will be created at `.build/release/cmdshelf`.
 - `mv .build/release/cmdshelf /usr/local/bin/`
 
