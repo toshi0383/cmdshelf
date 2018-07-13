@@ -48,12 +48,12 @@ struct CmdshelfYaml: NodeRepresentable {
         ]
     }
     func blobLocalPath(for name: String) -> String? {
-        return blobs.filter { $0.name == name }.flatMap { $0.localPath }.first
+        return blobs.filter { $0.name == name }.compactMap { $0.localPath }.first
     }
     func blobURL(for name: String) -> String? {
-        return blobs.filter { $0.name == name }.flatMap { $0.url }.first
+        return blobs.filter { $0.name == name }.compactMap { $0.url }.first
     }
     func remoteURL(for name: String) -> String? {
-        return remotes.filter { $0.name == name }.flatMap { $0.url }.first
+        return remotes.filter { $0.name == name }.compactMap { $0.url }.first
     }
 }

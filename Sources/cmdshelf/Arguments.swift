@@ -103,7 +103,7 @@ final class AliasParameterArgument: ArgumentDescriptor {
 
 final class VaradicAliasArgument: ArgumentDescriptor {
     func parse(_ parser: ArgumentParser) throws -> [Alias] {
-        return parser.shiftAll().flatMap(AliasParameterArgument.AliasParser.parse)
+        return parser.shiftAll().compactMap(AliasParameterArgument.AliasParser.parse)
     }
 }
 

@@ -182,7 +182,7 @@ class Configuration {
         cloneRemotesIfNeeded()
         let allRemoteCommands = try cmdshelfYml.remotes
             .map { $0.name }
-            .flatMap {
+            .compactMap {
                 let names = try self.displayNames(for: $0, type: displayType)
                     .joined(separator: "\n    ")
                 return "  \($0):\n    \(names)"
