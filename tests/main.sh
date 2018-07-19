@@ -213,6 +213,30 @@ if [ $exit_status -ne 0 ];then
     STATUS=1
 fi
 
+## 013: correctly handle stdin
+before_each
+TEST_013_SH=~/.cmdshelf/remote/_cmdshelf-remote/013.sh
+printf "#!/bin/bash\nread line;echo \$line" > $TEST_013_SH
+chmod +x $TEST_013_SH
+RESULT="$(echo a | $CMDSHELF run 013.sh)"
+if [ $RESULT != "a" ];then
+    echo 'expected "a" but got ' $RESULT
+    echo 013 FAILED
+    STATUS=1
+fi
+
+## 014: correctly handle stdin in for-loop
+before_each
+TEST_014_SH=~/.cmdshelf/remote/_cmdshelf-remote/014.sh
+printf "#!/bin/bash\nread line;echo \$line" > $TEST_014_SH
+chmod +x $TEST_014_SH
+RESULT="(for i in a b; do echo $i | $CMDSHELF run 014.sh; done) | wc -l"
+if [ $RESULT -ne 2 ];then
+    echo 'expected 2 but got ' $RESULT
+    echo 014 FAILED
+    STATUS=1
+fi
+
 # Cleanup
 after_all
 
