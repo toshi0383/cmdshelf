@@ -7,6 +7,7 @@
 
 import Foundation
 import Reporter
+import Poxis
 
 protocol Command {
     static func run(_ parser: ArgumentParser) throws
@@ -143,7 +144,6 @@ final class RunCommand: Command {
         let config = try Configuration()
         let alias = aliasParam.alias.alias
         let remoteName = aliasParam.alias.remoteName
-        let parameters = aliasParam.parameters
 
         // Search in blobs and remote
         guard let context = config.getContexts(for: alias, remoteName: remoteName).first else {
@@ -151,12 +151,21 @@ final class RunCommand: Command {
             throw CmdshelfError()
         }
 
-        let singleQuoted = parameters.map { "\'\($0)\'" }.joined(separator: " ")
-        if context.location.hasPrefix("curl ") {
-            exit(shellOut("bash <(\(context.location))", argument: singleQuoted))
-        } else {
-            exit(shellOut(context.location, argument: singleQuoted))
-        }
+        let command: String = {
+            if context.location.hasPrefix("curl ") {
+                return "bash <(\(context.location))"
+            } else {
+                return context.location
+            }
+        }()
+
+        let args = ["-c", command] + aliasParam.parameters
+
+        // Create [UnsafeMutablePointer<Int8>?] carrying NULL at the end.
+        var cargs: [UnsafeMutablePointer<Int8>?] = args.map { strdup($0) }
+        cargs.append(UnsafeMutablePointer.init(bitPattern: 0))
+
+        poxis_exec("/bin/sh", &cargs)
     }
 }
 
