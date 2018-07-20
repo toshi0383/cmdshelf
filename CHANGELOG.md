@@ -1,3 +1,12 @@
+## 1.0.0
+##### Bugfix
+* Doesn't work in for loop? [#72](https://github.com/toshi0383/cmdshelf/issues/72)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
+##### Enhancement
+* [run] replace task runner with posix API [#74](https://github.com/toshi384/cmdshelf/pull/74)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 0.9.6
 ##### Enhancement
 * Bash completion [#71](https://github.com/toshi384/cmdshelf/pull/71)  
@@ -24,10 +33,10 @@
 * fix crash on empty runner [#61](https://github.com/toshi0383/cmdshelf/pull/61)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
 
-- fix --version printing "--version" [#62](https://github.com/toshi0383/cmdshelf/pull/62)  
+* fix --version printing "--version" [#62](https://github.com/toshi0383/cmdshelf/pull/62)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
 
-- fix -h or --help not working [#62](https://github.com/toshi0383/cmdshelf/pull/62)  
+* fix -h or --help not working [#62](https://github.com/toshi0383/cmdshelf/pull/62)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
 
 
