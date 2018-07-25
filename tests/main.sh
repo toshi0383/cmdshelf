@@ -5,7 +5,7 @@
 STATUS=0
 set +e
 
-CMDSHELF=.build/debug/cmdshelf
+CMDSHELF=./.build/x86_64-apple-macosx10.10/debug/cmdshelf
 
 before_all() {
     cp ~/.cmdshelf.yml ~/.cmdshelf.yml.bk
@@ -13,7 +13,6 @@ before_all() {
 
 after_all() {
     echo All tests finished
-    cat ~/.cmdshelf.yml
     cp ~/.cmdshelf.yml.bk ~/.cmdshelf.yml
 }
 
@@ -230,10 +229,47 @@ before_each
 TEST_014_SH=~/.cmdshelf/remote/_cmdshelf-remote/014.sh
 printf "#!/bin/bash\nread line;echo \$line" > $TEST_014_SH
 chmod +x $TEST_014_SH
-RESULT="(for i in a b; do echo $i | $CMDSHELF run 014.sh; done) | wc -l"
+RESULT="$((for i in a b; do echo $i | $CMDSHELF run 014.sh; done) | wc -l)"
 if [ $RESULT -ne 2 ];then
     echo 'expected 2 but got ' $RESULT
     echo 014 FAILED
+    STATUS=1
+fi
+
+## 015: execute non-shell script (perl)
+before_each
+TEST_015_PL=~/.cmdshelf/remote/_cmdshelf-remote/015.pl
+printf "#!/usr/bin/perl -w\nmy (\$a, \$b) = @_;" > $TEST_015_PL
+
+chmod +x $TEST_015_PL
+if ! $CMDSHELF run 015.pl
+then
+    echo 015 FAILED
+    STATUS=1
+fi
+
+## 016: execute non-shell script (swift)
+before_each
+TEST_016_SWIFT=~/.cmdshelf/remote/_cmdshelf-remote/016.swift
+printf "#!/usr/bin/swift\nimport Foundation\nprint(ProcessInfo.processInfo.arguments)" > $TEST_016_SWIFT
+
+chmod +x $TEST_016_SWIFT
+if ! $CMDSHELF run 016.swift a b c | grep '"a", "b", "c"' > /dev/null 2>&1
+then
+    echo 016 FAILED
+    STATUS=1
+fi
+
+## 017: execute non-shell script (swift binary)
+before_each
+TEST_017_ECHO_SH=~/.cmdshelf/remote/_cmdshelf-remote/017_echo.sh
+printf "#!/bin/bash\necho \$#" > $TEST_017_ECHO_SH
+chmod +x $TEST_017_ECHO_SH
+TEST_017_SWIFT=~/.cmdshelf/remote/_cmdshelf-remote/017_cmdshelf
+cp $CMDSHELF $TEST_017_SWIFT
+
+if [ 3 -ne $($CMDSHELF run 017_cmdshelf run 017_echo.sh a b c) ];then
+    echo 017 FAILED
     STATUS=1
 fi
 
