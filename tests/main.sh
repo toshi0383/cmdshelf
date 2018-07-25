@@ -13,7 +13,6 @@ before_all() {
 
 after_all() {
     echo All tests finished
-    cat ~/.cmdshelf.yml
     cp ~/.cmdshelf.yml.bk ~/.cmdshelf.yml
 }
 
@@ -258,6 +257,19 @@ chmod +x $TEST_016_SWIFT
 if ! $CMDSHELF run 016.swift a b c | grep '"a", "b", "c"' > /dev/null 2>&1
 then
     echo 016 FAILED
+    STATUS=1
+fi
+
+## 017: execute non-shell script (swift binary)
+before_each
+TEST_017_ECHO_SH=~/.cmdshelf/remote/_cmdshelf-remote/017_echo.sh
+printf "#!/bin/bash\necho \$#" > $TEST_017_ECHO_SH
+chmod +x $TEST_017_ECHO_SH
+TEST_017_SWIFT=~/.cmdshelf/remote/_cmdshelf-remote/017_cmdshelf
+cp $CMDSHELF $TEST_017_SWIFT
+
+if [ 3 -ne $($CMDSHELF run 017_cmdshelf run 017_echo.sh a b c) ];then
+    echo 017 FAILED
     STATUS=1
 fi
 
