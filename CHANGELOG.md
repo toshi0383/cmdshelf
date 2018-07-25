@@ -1,3 +1,8 @@
+## 1.0.1
+##### Bugfix
+* Fix failing to execute non-shell script [#75](https://github.com/toshi0383/cmdshelf/pull/75)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 1.0.0
 ##### Bugfix
 * Doesn't work in for loop? [#72](https://github.com/toshi0383/cmdshelf/issues/72)  
