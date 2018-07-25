@@ -159,13 +159,13 @@ final class RunCommand: Command {
             }
         }()
 
-        let args = ["-c", command] + aliasParam.parameters
+        let args = [""] + aliasParam.parameters
 
         // Create [UnsafeMutablePointer<Int8>?] carrying NULL at the end.
         var cargs: [UnsafeMutablePointer<Int8>?] = args.map { strdup($0) }
         cargs.append(UnsafeMutablePointer.init(bitPattern: 0))
 
-        poxis_exec("/bin/sh", &cargs)
+        poxis_exec(command, &cargs)
     }
 }
 

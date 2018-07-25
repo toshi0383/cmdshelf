@@ -5,7 +5,7 @@
 STATUS=0
 set +e
 
-CMDSHELF=.build/debug/cmdshelf
+CMDSHELF=./.build/x86_64-apple-macosx10.10/debug/cmdshelf
 
 before_all() {
     cp ~/.cmdshelf.yml ~/.cmdshelf.yml.bk
@@ -230,7 +230,7 @@ before_each
 TEST_014_SH=~/.cmdshelf/remote/_cmdshelf-remote/014.sh
 printf "#!/bin/bash\nread line;echo \$line" > $TEST_014_SH
 chmod +x $TEST_014_SH
-RESULT="(for i in a b; do echo $i | $CMDSHELF run 014.sh; done) | wc -l"
+RESULT="$((for i in a b; do echo $i | $CMDSHELF run 014.sh; done) | wc -l)"
 if [ $RESULT -ne 2 ];then
     echo 'expected 2 but got ' $RESULT
     echo 014 FAILED
