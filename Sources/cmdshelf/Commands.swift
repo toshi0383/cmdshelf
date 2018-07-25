@@ -159,6 +159,7 @@ final class RunCommand: Command {
             }
         }()
 
+        // [""] workaround for execv ¯\_(ツ)_/¯
         let args = [""] + aliasParam.parameters
 
         // Create [UnsafeMutablePointer<Int8>?] carrying NULL at the end.
