@@ -237,6 +237,18 @@ if [ $RESULT -ne 2 ];then
     STATUS=1
 fi
 
+## 015: execute non-shell script
+before_each
+TEST_015_PL=~/.cmdshelf/remote/_cmdshelf-remote/015.pl
+printf "#!/usr/bin/perl -w\nmy (\$a, \$b) = @_;" > $TEST_015_PL
+
+chmod +x $TEST_015_PL
+if ! $CMDSHELF run 015.pl
+then
+    echo 015 FAILED
+    STATUS=1
+fi
+
 # Cleanup
 after_all
 
