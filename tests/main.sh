@@ -237,7 +237,7 @@ if [ $RESULT -ne 2 ];then
     STATUS=1
 fi
 
-## 015: execute non-shell script
+## 015: execute non-shell script (perl)
 before_each
 TEST_015_PL=~/.cmdshelf/remote/_cmdshelf-remote/015.pl
 printf "#!/usr/bin/perl -w\nmy (\$a, \$b) = @_;" > $TEST_015_PL
@@ -246,6 +246,18 @@ chmod +x $TEST_015_PL
 if ! $CMDSHELF run 015.pl
 then
     echo 015 FAILED
+    STATUS=1
+fi
+
+## 016: execute non-shell script (swift)
+before_each
+TEST_016_SWIFT=~/.cmdshelf/remote/_cmdshelf-remote/016.swift
+printf "#!/usr/bin/swift\nimport Foundation\nprint(ProcessInfo.processInfo.arguments)" > $TEST_016_SWIFT
+
+chmod +x $TEST_016_SWIFT
+if ! $CMDSHELF run 016.swift a b c | grep '"a", "b", "c"' > /dev/null 2>&1
+then
+    echo 016 FAILED
     STATUS=1
 fi
 
