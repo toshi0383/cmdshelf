@@ -31,7 +31,7 @@ cmdshelf is a new way of scripting.😎
 - ✅ Portable environment (`.cmdshelf.yml`)
 - ✅ Execute any remote/local executables.
 
-You can see detailed document [here](doc/getting-started.md), or type `man cmdshelf`.
+You can see detailed document [here](docs/getting-started.md), or type `man cmdshelf`.
 
 # Pro tip
 ## set aliases
