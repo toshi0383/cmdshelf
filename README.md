@@ -34,12 +34,6 @@ cmdshelf is a new way of scripting.😎
 You can see detailed document [here](docs/getting-started.md), or type `man cmdshelf`.
 
 # Pro tip
-## set aliases
-Put this in your `.bashrc`. You don't have to type "cmdshelf" each time.
-```
-alias run='cmdshelf run'
-alias list='cmdshelf list'
-```
 
 ## Use auto bash-completion
 In case of binary install suggested [here](#installsh), `cmdshelf-completion.bash` is copied under `/usr/local/etc/bash-completion.d`. All you have to do is to make bash be aware of that file.
@@ -64,7 +58,7 @@ ln -s Sources/Scripts/cmdshelf-completion.bash /usr/local/etc/bash-completion.d/
 ## macOS
 ### install.sh
 I've written install/release scripts for SwiftPM executable.  
-This should be the easiest way.
+This should be the easiest and stable way.
 ```
 bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) toshi0383/cmdshelf
 ```
@@ -75,8 +69,6 @@ mint install toshi0383/cmdshelf
 ```
 
 ### Build from source
-
-Please build from source-code if `install.sh` didn't work.
 
 - Clone this repo and run `swift build -c release`.
 - Executable will be created at `.build/release/cmdshelf`.
@@ -91,20 +83,6 @@ Please build from source for Linux. You need Swift installed.
 - Executable will be created at `.build/release/cmdshelf`.
 - `mv .build/release/cmdshelf /usr/local/bin/`
 
-Here is the script I use on Bitrise CI, to install Swift and then cmdshelf on Ubuntu 16.04 VM.
-```bash
-#!/bin/bash
-set -e
-sudo apt-get -y install libcurl4-openssl-dev clang libicu-dev
-eval "$(curl -sL https://gist.githubusercontent.com/kylef/5c0475ff02b7c7671d2a/raw/9f442512a46d7a2af7b850d65a7e9bd31edfb09b/swiftenv-install.sh)"
-swiftenv install 4.0
-swift build -c release
-.build/release/cmdshelf --version
-```
-
-# Limitation on Linux
-`cmdshelf` cannot handle `stdin` on Linux. [#65](https://github.com/toshi0383/cmdshelf/issues/65)
-
 # Contribute
 Any contribution is welcomed.
 Feel free to open issue for bug reports, questions, or feature requests.
@@ -115,8 +93,5 @@ make bootstrap
 ```
 
 # Development
-- Xcode9+
-- Swift4+
-
-# Special Thanks to
-- My wife for creating a daruma icon.
+- Xcode9.3.1+
+- Swift4.1+
