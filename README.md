@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/github/release/toshi0383/cmdshelf.svg" alt="Git Version" />
   </a>
   <a href="https://www.bitrise.io/app/8cd851f423fba13c">
-    <img src="https://www.bitrise.io/app/8cd851f423fba13c/status.svg?token=Y4cdlYz2JpdDVxAr1eiOEA" alt="Build Status" />
+    <img src="https://app.bitrise.io/app/8cd851f423fba13c/status.svg?token=Y4cdlYz2JpdDVxAr1eiOEA&branch=master" alt="Build Status" />
   </a>
   <a href="https://github.com/toshi0383/cmdshelf/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-lightgray.svg" alt="license" />
