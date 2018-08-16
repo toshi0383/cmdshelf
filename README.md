@@ -25,34 +25,14 @@ cmdshelf is a new way of scripting.😎
 
 - ✅ Seperate name space using directories (e.g. `swiftpm/install.sh` `your/tool/install.sh`)
 - ✅ No more `$PATH` configurations
+- ✅ Command completion by tab
 - ✅ `stdout`, `stdin`, `stderr`
 - ✅ No quoting required for arguments. (just like `swift run`)
 - ✅ The coolest manual page
 - ✅ Portable environment (`.cmdshelf.yml`)
-- ✅ Execute any remote/local executables.
+- ✅ Execute any executables.
 
 You can see detailed document [here](docs/getting-started.md), or type `man cmdshelf`.
-
-# Pro tip
-
-## Use auto bash-completion
-In case of binary install suggested [here](#installsh), `cmdshelf-completion.bash` is copied under `/usr/local/etc/bash-completion.d`. All you have to do is to make bash be aware of that file.
-
-Either put this in your `~/.bashrc`,
-```shell
-source /usr/local/etc/bash_completion.d/cmdshelf-completion.bash
-```
-
-or install `bash-completion` via homebrew. (Personally I've never managed it to work correctly.)
-
-If you build from source either via `Mint` or manually, then you first have to copy or symlink it manually.
-```shell
-# copy
-cp Sources/Scripts/cmdshelf-completion.bash /usr/local/etc/bash-completion.d/
-
-# or simlink
-ln -s Sources/Scripts/cmdshelf-completion.bash /usr/local/etc/bash-completion.d/cmdshelf-completion.bash
-```
 
 # Install
 ## macOS
@@ -82,6 +62,25 @@ Please build from source for Linux. You need Swift installed.
 - Clone this repo and run `swift build -c release`.
 - Executable will be created at `.build/release/cmdshelf`.
 - `mv .build/release/cmdshelf /usr/local/bin/`
+
+## Install auto bash-completion
+In case of binary install suggested [here](#installsh), `cmdshelf-completion.bash` is copied under `/usr/local/etc/bash-completion.d`. All you have to do is to make bash be aware of that file.
+
+Either put this in your `~/.bashrc`,
+```shell
+source /usr/local/etc/bash_completion.d/cmdshelf-completion.bash
+```
+
+or install `bash-completion` via homebrew. (Personally I've never managed it to work correctly.)
+
+If you build from source either via `Mint` or manually, then you first have to copy or symlink it manually.
+```shell
+# copy
+cp Sources/Scripts/cmdshelf-completion.bash /usr/local/etc/bash-completion.d/
+
+# or simlink
+ln -s Sources/Scripts/cmdshelf-completion.bash /usr/local/etc/bash-completion.d/cmdshelf-completion.bash
+```
 
 # Contribute
 Any contribution is welcomed.
