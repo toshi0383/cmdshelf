@@ -1,138 +1,158 @@
-# How to use
+# Getting Started Tutorial
 
-cmdshelf
-- remote
-- run
-- list
-- blob
-- cat
-- update
+[Note]
+Because I'm using mac to write this tutorial, this tutorial expects `macOS` environment.
+If you use Linux, some scripts may not work.
+Especially, `/dev/fd/0` might be in different location.
+Please `sed` them as you need. (PR welcomed)
 
-## remote
+# Setup your remote
 You can add a whole repository to treat every executables as a command.
-Add git repository URL by using `remote` sub-command.
-`list` will look for any executables recursively.
-```
-$ cmdshelf remote add your-scripts https://github.com/you/your-scripts
-$ cmdshelf list
-remote:
-  your-scripts:
-    hello-world
-    your-command
-    hoge/foo/bar.sh
-    hoge/fuga/far.py
-```
+An executable don't have to be a shellscript. It can be any executable. That's said, it can be..
 
-You can add multiple remotes.
-```
-$ cmdshelf remote add bash-snippets https://github.com/alexanderepstein/Bash-Snippets
-$ cmdshelf remote list
-bash-snippets: https://github.com/alexanderepstein/Bash-Snippets
-toshi0383-scripts: https://github.com/toshi0383/scripts.git
-```
+- ShellScript
+- Ruby script
+- Perl script
+- Swift script
+- a.out
 
-## run
-Now you can execute your command with `run` sub-command.
-```
-$ cmdshelf run your-command
-$ cmdshelf run your-command argument and --option
-```
+Make sure though, to put `shebang` at first line of your script. `cmdshelf` uses POSIX `exec` family to execute a command, and `exec` tries to read `shebang`. For detail, read `man execve`.
 
-Add remote specifier to avoid name conflict.
-```
-$ cmdshelf run your-scripts:your-command
-$ cmdshelf run your-scripts:your-command argument and --option
-```
+Also, don't forget to `chmod +x`.
 
-## update
-If you need to update cloned repository, run `update` sub-command.
-```
-$ cmdshelf update
-[bash-snippets] Updating ... success
-[md-toc] Updating ... success
-[abema-ios-script] Updating ... success
-[toshi0383-scripts] Updating ... success
-```
+So let's create your first scripts repository named `scripts` on GitHub.
 
-## blob
-You can add a single file as a blob. Make sure the URL directly points at the script. (Not a web page of gist, for example.)
-```
-$ cmdshelf blob add random https://gist.githubusercontent.com/toshi0383/32728879049e95db41ab801b1f055009/raw/e84fa02c4f9ac7e08b686cee248ab72198470c0b/-
-```
+<details>
+<summary>See code</summary>
 
-A blob can be a local path.
-```
-$ cmdshelf blob add random2 ~/scripts/other-random-script.sh
-```
-
-Run blob using `run` sub-command.
-```
-$ cmdshelf run random
-```
-
-## list
-As already described above, you can see registered commands by using `list` sub-command.
-```
-$ cmdshelf list
-blob:
-  random: https://gist.githubusercontent.com/toshi0383/32728879049e95db41ab801b1f055009/raw/e84fa02c4f9ac7e08b686cee248ab72198470c0b/-
-
-remote:
-  your-scripts:
-    hello-world
-    your-command
-    hoge/foo/bar.sh
-    hoge/fuga/far.py
-```
-
-## cat
-You can use `cat` sub-command to print your script's source code.
-```
-$ cmdshelf cat random
+```console
+$ mkdir -p scripts/tools
+$ cat > scripts/tools/cat.sh
 #!/bin/bash
-# SeeAlso: http://unix.stackexchange.com/questions/45404/why-cant-tr-read-from-dev-urandom-on-osx
-LC_CTYPE=C tr -dc 'A-Z0-9' < /dev/urandom | head -c 32 | xargs echo
+fd=${1:-/dev/fd/0}
+while read line; do echo $line; done < $fd
+(ctrl + D)
+$ chmod +x scripts/tools/cat.sh
+$ cd scripts
+$ git init; git add .; git commit -m "initial"
+$ hub create # if `hub` is not installed, create one on GitHub.
+Updating origin
+https://github.com/you/scripts
+$ git push
 ```
 
-## .cmdshelf.yml
-Finally if you want to share your cmdshelf configuration with your friends or teammates, you just share `~/.cmdshelf.yml` file.
+</details>
 
-Just put `~/.cmdshelf.yml` and you are ready to go.
+Now you've created `tools/cat.sh` command at your repository.
+
+# `remote`
+
+Now add your repo as cmdshelf's **remote**. This is done as following.
+
+```console
+$ cmdshelf remote add you git@github.com:you/scripts.git
 ```
-$ cp ~/Download/.cmdshelf.yml ~
-$ cmdshelf remote list
-bash-snippets: https://github.com/alexanderepstein/Bash-Snippets
-toshi0383-scripts: https://github.com/toshi0383/scripts.git
-$ cmdshelf blob list
-random https://gist.githubusercontent.com/toshi0383/32728879049e95db41ab801b1f055009/raw/e84fa02c4f9ac7e08b686cee248ab72198470c0b/-
-$ cmdshelf list
-blob:
-  random: https://gist.githubusercontent.com/toshi0383/32728879049e95db41ab801b1f055009/raw/e84fa02c4f9ac7e08b686cee248ab72198470c0b/-
 
+This will clone your `scripts` repo at `~/.cmdshelf/remote/you/` and register remote alias as `you`.
+
+It's all setup!
+
+# `run`
+This is how it goes when you launch your awesome, the coolest, super useful `tools/cat.sh` command from your shelf.
+
+```console
+$ cmdshelf run tools/cat.sh ~/.cmdshelf.yml
 remote:
-  bash-snippets:
-    cheat/cheat
-    cloudup/cloudup
-    crypt/crypt
-    ...
-  toshi0383-scripts:
-    decimal2hex.sh
-    git/git-branch-by-author
-    git/replaceOriginWith.sh
-    ...
-$ cmdshelf run movies/movies inception # Run movies script from Bash-Snippets
-
-==================================================
-| Title: Inception
-| Year: 2010
-| Runtime: 148 min
-| IMDB: 8.8/10
-| Tomato: 86%
-| Rated: PG-13
-| Genre: Action, Adventure, Sci-Fi
-| Director: Christopher Nolan
-| Actors: Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page, Tom Hardy
-| Plot: A thief, who steals corporate secrets through use of dream-sharing technology, is given the inverse task of planting an idea into the mind of a CEO.
-==================================================
+  you:
+    url: git@github.com:you/scripts.git
 ```
 
+<details>
+<summary>Side note</summary>
+
+> This is the yml format we use internally. Normally you don't have to care about this file, but remember that you can directly browse and edit it when something is wrong.
+
+</details>
+
+You're already familiar with UNIX `cat` utility, right? It treats every arguments as files, if not given. It tries to read from `stdin` to relay buffer to `stdout`, until it reaches `EOF`.
+
+Even via `cmdshelf`, you have no concern. File descriptor for `stdout` `stderr` `stdin` is inherited from your command-line. You can connect other tools output via pipe intuitively.
+
+```console
+$ echo hello world | cmdshelf run tools/cat.sh
+hello world
+```
+
+# `list` / `ls`
+
+You can list remote content by `list`.
+
+```console
+$ cmdshelf list
+remote:
+  you:
+    tools/cat.sh
+```
+
+It's not exciting at all, but remember you can obtain absolute location by using `--path` option.
+
+```console
+$ cmdshelf ls --path
+remote:
+  you:
+    /Users/you/.cmdshelf/remote/you/tools/cat.sh
+```
+
+# `cat`
+Want to see your script's content? `cmdshelf cat` might be useful.
+
+```console
+$ cmdshelf cat tools/cat.sh
+#!/bin/bash
+fd=${1:-/dev/fd/0}
+while read line; do echo $line; done < $fd
+```
+
+# Advanced `run` usage
+
+## Passing arguments and options
+You don't need to quote or anything. Just pass them as needed. `cmdshelf` doesn't steal your arguments. (Even `--help` option is reserved for you.)
+
+```console
+$ cmdshelf run tools/echo.sh hello world --verbose
+[verbose] Detailed echo output
+hello world
+[verbose] Finish
+```
+
+## Namespace for remotes
+What if you register Tom's script repo and he also had `tools/cat.sh`?
+```console
+$ cmdshelf run tools/cat.sh
+```
+
+Which one gets executed is undefined. So let's be explicit.
+
+```console
+$ cmdshelf run you:tools/cat.sh
+$ cmdshelf run tom:tools/cat.sh
+```
+
+# `update`
+Finally, to keep updated to your latest remote, run following.
+
+```console
+$ cmdshelf update
+[you] Updating ... success
+[tom] Updating ... success
+```
+
+# Summary
+Done! Thanks for taking a first look with us. It was easy, right? Please give feedback about what you think.
+
+`cmdshelf` is useful for team development. Easy to setup and share common scripts between collegues or other teams. It gives huge flexibility and reusability compared to commiting scripts directly into your projects repo.
+Even if you work individually, it's easy to share your scripts between multiple computers.
+
+`cmdshelf` also avoids potential name collision via `$PATH`, simply by not using it.
+
+If you need any help, feel free post question to GitHub issue, or ping [@toshi0383](https://twitter.com/toshi0383/) on Twitter. Happy to help!😄
