@@ -35,6 +35,7 @@ final class BlobCommand: Command {
     }
 
     static func run(_ parser: ArgumentParser) throws {
+        queuedPrintlnWarning("WARNING: blob command is deprecated. Will be removed in future version.")
         guard let string = parser.shift(),
             let subCommand = RemoteCommand.SubCommand(rawValue: string) else {
                 throw CmdshelfError("Invalid arguments. Pass a correct arguments for `blob`.")
