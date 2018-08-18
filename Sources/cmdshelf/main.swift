@@ -1,7 +1,7 @@
 import Foundation
 import Reporter
 
-let version = "1.0.1"
+let version = "1.0.2"
 
 //
 // - MARK: Setup
