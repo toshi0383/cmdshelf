@@ -1,3 +1,8 @@
+## 1.0.2
+##### Enhancement
+* Deprecate blob command [#76](https://github.com/toshi0383/cmdshelf/issues/76)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 1.0.1
 ##### Bugfix
 * Fix failing to execute non-shell script [#75](https://github.com/toshi0383/cmdshelf/pull/75)  
