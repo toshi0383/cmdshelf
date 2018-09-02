@@ -5,19 +5,19 @@
 STATUS=0
 set +e
 
-CMDSHELF=./.build/x86_64-apple-macosx10.10/debug/cmdshelf
+CMDSHELF="./target/debug/cmdshelf"
 
 before_all() {
-    cp ~/.cmdshelf.yml ~/.cmdshelf.yml.bk
+    cp ~/.cmdshelf.toml ~/.cmdshelf.toml.bk
 }
 
 after_all() {
     echo All tests finished
-    cp ~/.cmdshelf.yml.bk ~/.cmdshelf.yml
+    cp ~/.cmdshelf.toml.bk ~/.cmdshelf.toml
 }
 
 before_each() {
-    rm ~/.cmdshelf.yml
+    rm ~/.cmdshelf.toml
     $CMDSHELF remote add _toshi0383 https://github.com/toshi0383/scripts.git
     $CMDSHELF remote add _cmdshelf-remote https://toshi0383@bitbucket.org/toshi0383/cmdshelf-remote-test.git
     $CMDSHELF run a 2> /dev/null # trigger clone repos under `~/.cmshelf/remote`
@@ -30,20 +30,6 @@ teardown() {
 }
 
 before_all
-
-###
-### Arguments tests
-###
-echo Arguments tests started
-
-## 000: Passes parameters correctly
-before_each
-printf '#!/bin/bash\necho $#' > 001.sh && chmod +x 001.sh
-$CMDSHELF blob add _001.sh 001.sh
-if [ 3 -ne $($CMDSHELF run _001.sh a b c) ];then
-    echo 000 FAILED
-    STATUS=1
-fi
 
 ###
 ### Remote tests
@@ -189,7 +175,7 @@ before_each
 VERSION=$($CMDSHELF --version)
 exit_status=$?
 
-if [ "${VERSION}" != "1.0.2" ];then
+if [ "${VERSION}" != "2.0.0" ];then
     echo \-\-version printed invalid value: $VERSION
     echo 011 FAILED
     STATUS=1
