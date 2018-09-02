@@ -2,7 +2,7 @@
 
 _cmdshelf() {
     local commands command cur prev
-    commands="blob cat list ls remote run update"
+    commands="cat list ls remote run update"
 
     command="${COMP_WORDS[1]}"
     cur="${COMP_WORDS[COMP_CWORD]}"
@@ -21,7 +21,7 @@ _cmdshelf() {
     fi
 
     case "${command}" in
-        blob|remote)
+        remote)
             COMPREPLY=($(compgen -W 'add list remove' -- ${cur}))
             return 0
             ;;
