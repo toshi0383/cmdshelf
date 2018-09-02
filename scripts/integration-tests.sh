@@ -36,6 +36,14 @@ before_all
 ###
 echo Remote tests started
 
+## 000: `remote` handles shorthand alias for github repo
+before_each
+$CMDSHELF remote add test000 toshi0383/scripts
+if [ "$($CMDSHELF remote list | grep test000)" != "test000:git@github.com:toshi0383/scripts.git" ];then
+    echo 000 FAILED
+    STATUS=1
+fi
+
 ## 001: `run` detects remote name correctly
 before_each
 if [ "dummy" != "$($CMDSHELF run _cmdshelf-remote:swiftpm/install.sh)" ];then
