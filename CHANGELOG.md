@@ -1,4 +1,4 @@
-## master
+## 2.0.0
 ##### Enhancement & Breaking
 * Migrate from Swift to Rust [#78](https://github.com/toshi0383/cmdshelf/issues/78)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
