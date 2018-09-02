@@ -6,18 +6,26 @@ STATUS=0
 set +e
 
 CMDSHELF="./target/debug/cmdshelf"
+CONFIG_FILE="~/.cmdshelf.toml"
+CONFIG_FILE_BK="~/.cmdshelf.toml.bk"
 
 before_all() {
-    cp ~/.cmdshelf.toml ~/.cmdshelf.toml.bk
+    if [ -e $CONFIG_FILE ];then
+        cp $CONFIG_FILE $CONFIG_FILE_BK
+    fi
 }
 
 after_all() {
     echo All tests finished
-    cp ~/.cmdshelf.toml.bk ~/.cmdshelf.toml
+    if [ -e $CONFIG_FILE_BK ];then
+        cp $CONFIG_FILE_BK $CONFIG_FILE
+    fi
 }
 
 before_each() {
-    rm ~/.cmdshelf.toml
+    if [ -e $CONFIG_FILE ];then
+        rm $CONFIG_FILE
+    fi
     $CMDSHELF remote add _toshi0383 https://github.com/toshi0383/scripts.git
     $CMDSHELF remote add _cmdshelf-remote https://toshi0383@bitbucket.org/toshi0383/cmdshelf-remote-test.git
     $CMDSHELF run a 2> /dev/null # trigger clone repos under `~/.cmshelf/remote`
