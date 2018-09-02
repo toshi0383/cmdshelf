@@ -53,6 +53,12 @@ Now add your repo as cmdshelf's **remote**. This is done as following.
 $ cmdshelf remote add you git@github.com:you/scripts.git
 ```
 
+GitHub repo URL can be shorter. This is equivalent.
+
+```console
+$ cmdshelf remote add you you/scripts
+```
+
 This will clone your `scripts` repo at `~/.cmdshelf/remote/you/` and register remote alias as `you`.
 
 It's all setup!
