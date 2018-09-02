@@ -38,12 +38,20 @@ bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swift
 ### homebrew
 (coming soon)
 
-## Install auto bash-completion
-`cmdshelf-completion.bash` is copied under `/usr/local/etc/bash-completion.d`. All you have to do is to make bash be aware of that file.
+## Build from source
+Note that rust is required.
 
-Either put this in your `~/.bashrc`,
+```bash
+git clone git@github.com:toshi0383/cmdshelf.git
+cd cmdshelf
+cargo build --release
+cp target/release/cmdshelf /usr/local/bin
+```
+
+### Install auto bash-completion
+Put this in your `~/.bashrc`,
 ```shell
-source /usr/local/etc/bash_completion.d/cmdshelf-completion.bash
+source /path-to/cmdshelf-completion.bash
 ```
 
 # Contribute
