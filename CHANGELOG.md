@@ -1,3 +1,8 @@
+## master
+##### Enhancement & Breaking
+* Migrate from Swift to Rust [#78](https://github.com/toshi0383/cmdshelf/issues/78)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 1.0.2
 ##### Enhancement
 * Deprecate blob command [#76](https://github.com/toshi0383/cmdshelf/issues/76)  
