@@ -47,10 +47,19 @@ impl Runnable for Add {
         }
 
         let alias = &args[0];
-        let url = &args[1];
+
+        let a = &args[1];
+
+        let url =
+            if !(a.starts_with("https") || a.starts_with("git"))
+                && a.split("/").collect::<Vec<&str>>().len() == 2 {
+                format!("git@github.com:{}.git", a)
+            } else {
+                format!("{}", a)
+            };
 
         let ctx = Context::new();
-        ctx.add_or_update_remote(alias, url)
+        ctx.add_or_update_remote(alias, &url)
             .and(Ok(0))
     }
 }
