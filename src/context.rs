@@ -41,9 +41,8 @@ impl<'a> Context {
         let toml = default_toml_path();
         let config = read_or_create_config(&toml);
 
-        let _remotes = config.remotes.unwrap();
         let mut remotes = Vec::new();
-        for r in _remotes {
+        for r in config.remotes {
             remotes.push(r.clone());
         }
 
@@ -170,8 +169,7 @@ impl<'a> Context {
         let toml = default_toml_path();
         let mut config = read_or_create_config(&toml);
 
-        let copied_remotes = config.remotes.clone();
-        let mut remotes = copied_remotes.unwrap().to_vec();
+        let mut remotes = config.remotes.to_vec();
 
         let mut index: Option<usize> = None;
 
@@ -186,7 +184,7 @@ impl<'a> Context {
             remotes.remove(i);
         }
 
-        config.remotes = Some(remotes);
+        config.remotes = remotes;
 
         let s = toml::to_string(&config).unwrap();
 
@@ -200,9 +198,7 @@ impl<'a> Context {
 
         // check for duplicate
         {
-            let copied_remotes = config.remotes.clone();
-
-            let remotes = copied_remotes.unwrap().to_vec();
+            let remotes = config.remotes.clone().to_vec();
 
             for r in remotes {
                 if r.alias.as_str() == alias {
@@ -216,11 +212,10 @@ impl<'a> Context {
             url: url.to_owned(),
         };
 
-        let copied_remotes = config.remotes.clone();
-        let mut remotes = copied_remotes.unwrap().to_vec();
+        let mut remotes = config.remotes.to_vec();
 
         remotes.push(remote);
-        config.remotes = Some(remotes);
+        config.remotes = remotes;
 
         let s = toml::to_string(&config).unwrap();
 
@@ -231,13 +226,13 @@ impl<'a> Context {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Config {
-    remotes: Option<Vec<RemoteConfig>>,
+    remotes: Vec<RemoteConfig>,
 }
 
 impl Config {
     fn new() -> Self {
         Config {
-            remotes: Some(vec![]),
+            remotes: vec![],
         }
     }
 }
@@ -298,16 +293,21 @@ fn get_homedir_path() -> Result<String, FileError> {
 fn read_or_create_config(path: &str) -> Config {
     let config: Config = match fs::read_to_string(path) {
         Ok(contents) => {
-            toml::from_str(&contents).unwrap()
+            toml::from_str(&contents)
+                .unwrap_or_else(|_| create_new_config(path))
         },
         Err(_) => {
-            let config = Config::new();
-            let s = toml::to_string(&config).unwrap();
-            fs::write(path, s).expect("failed to write toml");
-            config
+            create_new_config(path)
         },
     };
 
+    config
+}
+
+fn create_new_config(path: &str) -> Config {
+    let config = Config::new();
+    let s = toml::to_string(&config).unwrap();
+    fs::write(path, s).expect("failed to write toml");
     config
 }
 
