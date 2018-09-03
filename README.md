@@ -26,17 +26,12 @@ cmdshelf is a new way of scripting.😎
 You can see detailed document [here](docs/getting-started.md), or type `man cmdshelf`.
 
 # Install
-**Breaking News. cmdshelf has been ported to Rust-lang**.
-
-Previous binary install should work until next release.
-
-```
-bash <(curl -sL https://raw.githubusercontent.com/toshi0383/scripts/master/swiftpm/install.sh) toshi0383/cmdshelf
-```
 
 ## macOS
-### homebrew
-(coming soon)
+
+```
+brew install cmdshelf
+```
 
 ## Build from source
 Note that rust is required.
