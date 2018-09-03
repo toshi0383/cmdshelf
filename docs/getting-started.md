@@ -2,7 +2,7 @@
 
 [Note]
 Because I'm using mac to write this tutorial, this tutorial expects `macOS` environment.
-If you use Linux, some scripts may not work.
+If you're on UNIX like environment, some scripts may not work.
 Especially, `/dev/fd/0` might be in different location.
 Please `sed` them as you need. (PR welcomed)
 
@@ -16,7 +16,7 @@ An executable don't have to be a shellscript. It can be any executable. That's s
 - Swift script
 - a.out
 
-Make sure though, to put `shebang` at first line of your script. `cmdshelf` uses POSIX `exec` family to execute a command, and `exec` tries to read `shebang`. For detail, read `man execve`.
+Make sure to put `shebang` at first line of your script, just to be safe.
 
 Also, don't forget to `chmod +x`.
 
@@ -43,7 +43,7 @@ $ git push
 
 </details>
 
-Now you've created `tools/cat.sh` command at your repository.
+Now you've created `tools/cat.sh` command in your repository.
 
 # `remote`
 
@@ -59,24 +59,25 @@ GitHub repo URL can be shorter. This is equivalent.
 $ cmdshelf remote add you you/scripts
 ```
 
-This will clone your `scripts` repo at `~/.cmdshelf/remote/you/` and register remote alias as `you`.
+This will save remote `you` in config file, called `~/.cmdshelf.toml`.
 
 It's all setup!
+Your `scripts` repo will be cloned to `~/.cmdshelf/remote/you/` lazily when necessary.
 
 # `run`
 This is how it goes when you launch your awesome, the coolest, super useful `tools/cat.sh` command from your shelf.
 
 ```console
-$ cmdshelf run tools/cat.sh ~/.cmdshelf.yml
-remote:
-  you:
-    url: git@github.com:you/scripts.git
+$ cmdshelf run tools/cat.sh ~/.cmdshelf.toml
+[[remotes]]
+alias = "you"
+url = "git@github.com:you/scripts.git"
 ```
 
 <details>
 <summary>Side note</summary>
 
-> This is the yml format we use internally. Normally you don't have to care about this file, but remember that you can directly browse and edit it when something is wrong.
+> This is the toml format we use internally. Normally you don't have to care about this file, but remember that you can directly browse and edit it when something is wrong.
 
 </details>
 
@@ -95,18 +96,14 @@ You can list remote content by `list`.
 
 ```console
 $ cmdshelf list
-remote:
-  you:
-    tools/cat.sh
+you:tools/cat.sh
 ```
 
 It's not exciting at all, but remember you can obtain absolute location by using `--path` option.
 
 ```console
 $ cmdshelf ls --path
-remote:
-  you:
-    /Users/you/.cmdshelf/remote/you/tools/cat.sh
+/Users/you/.cmdshelf/remote/you/tools/cat.sh
 ```
 
 # `cat`
