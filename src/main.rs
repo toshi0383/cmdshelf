@@ -5,7 +5,7 @@ use std::env;
 use cmdshelf::reporter;
 use cmdshelf::commands;
 
-const VERSION: &str = "2.0.0";
+const VERSION: &str = "2.0.1";
 
 fn main() {
     let args: Vec<String> = env::args().collect();
