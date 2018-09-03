@@ -1,7 +1,28 @@
 [package]
 name = "cmdshelf"
 version = "2.0.1"
-authors = ["toshi0383 <t.suzuki326@gmail.com>"]
+authors = ["Toshihiro Suzuki <t.suzuki326@gmail.com>"]
+categories = ["command-line-utilities"]
+description = "Better scripting life with cmdshelf"
+homepage = "https://github.com/toshi0383/cmdshelf"
+
+keywords = [
+    "script",
+    "management",
+    "command",
+    "filesystem",
+    "tool",
+]
+
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/toshi0383/cmdshelf"
+
+exclude = [
+    "docs/getting-started.md",
+    "scripts/*",
+    "fixtures/*",
+]
 
 [dependencies]
 is_executable = "0.1.0"
