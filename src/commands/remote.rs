@@ -1,5 +1,6 @@
 use super::Runnable;
 use context::Context;
+use std::path::MAIN_SEPARATOR;
 
 pub struct Remote {
 }
@@ -52,7 +53,7 @@ impl Runnable for Add {
 
         let url =
             if !(a.starts_with("https") || a.starts_with("git"))
-                && a.split("/").collect::<Vec<&str>>().len() == 2 {
+                && a.split(MAIN_SEPARATOR).collect::<Vec<&str>>().len() == 2 {
                 format!("git@github.com:{}.git", a)
             } else {
                 format!("{}", a)

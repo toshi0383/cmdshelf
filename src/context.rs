@@ -3,7 +3,7 @@ extern crate walkdir;
 
 use self::walkdir::{ WalkDir, DirEntry };
 use self::is_executable::IsExecutable;
-use std::path::Path;
+use std::path::{ Path, PathBuf, MAIN_SEPARATOR };
 use std::error::Error;
 use std::fmt;
 use std::fs;
@@ -28,7 +28,7 @@ impl<'a> CommandEntry<'a> {
     }
 
     pub fn path(&self) -> &str {
-        let s = format!("{}/", self.remote);
+        let s = format!("{}{}", self.remote, MAIN_SEPARATOR);
         let paths = self.fullpath.split(&s).collect::<Vec<&str>>();
         let command_path = paths.last();
 
@@ -39,30 +39,37 @@ impl<'a> CommandEntry<'a> {
 impl<'a> Context {
     pub fn new() -> Self {
         let toml = default_toml_path();
-        let config = read_or_create_config(&toml);
+        let config = read_or_create_config(toml.as_path());
 
         let mut remotes = Vec::new();
         for r in config.remotes {
             remotes.push(r.clone());
         }
 
-        let home = get_homedir_path().expect("");
+        let mut workspace_dir = get_homedir_path().expect("");
+        workspace_dir.push(".cmdshelf");
 
         Context {
             remotes: remotes,
-            workspace_dir: format!("{}/.cmdshelf", home),
+            workspace_dir: workspace_dir.as_path().to_str().unwrap().to_owned(),
         }
+    }
+
+    pub fn remote_alias_path(&self, alias: &str) -> PathBuf {
+        let mut remote_dir = Path::new(&self.workspace_dir).join("remote");
+        remote_dir.push(alias);
+        remote_dir
     }
 
     /// returns: command's fullpath
     ///   Err if not exists or not an executable
-    pub fn command_path(&self, arg: &str) -> Result<String, String> {
+    pub fn command_path(&self, arg: &str) -> Result<PathBuf, String> {
         let vec: Vec<&str> = arg.split(":").collect();
 
         match vec.len() {
             1 => {
                 for remote in &self.remotes {
-                    let result: Option<Result<String, String>> = match self.get_path(&remote.alias, &vec[0]) {
+                    let result: Option<Result<PathBuf, String>> = match self.get_path(&remote.alias, &vec[0]) {
                         Ok(path) => Option::Some(Ok(path)),
                         Err(err) => {
                             match &err {
@@ -95,7 +102,11 @@ impl<'a> Context {
         let mut arr = Vec::new();
 
         for remote in self.remotes.iter() {
-            let remote_base = format!("{}/remote/{}", self.workspace_dir, remote.alias);
+
+            let mut remote_base = Path::new(&self.workspace_dir)
+                .join("remote");
+
+            remote_base.push(&remote.alias);
 
             //
             // recursive children using walkdir lib.
@@ -117,7 +128,7 @@ impl<'a> Context {
                 let fullpath = tmp.path();
                 let is_git = {
                     let tmp = fullpath.to_str().unwrap();
-                    let components: Vec<&str> = tmp.split('/').collect();
+                    let components: Vec<&str> = tmp.split(MAIN_SEPARATOR).collect();
                     components.contains(&".git")
                 };
 
@@ -136,29 +147,38 @@ impl<'a> Context {
         arr
     }
 
-    fn get_path(&self, remote: &str, path: &str) -> Result<String, FileError> {
+    fn get_path(&self, remote: &str, path: &str) -> Result<PathBuf, FileError> {
         let result = get_homedir_path()
-            .map(|home| format!("{}/.cmdshelf/remote/{}/{}", home, remote, path).to_owned());
+            .map(|home| {
+                let mut buf = home.join(".cmdshelf");
+
+                buf.push("remote");
+                buf.push(remote);
+                buf.push(path);
+
+                return buf
+            });
 
         self.validate_path(result)
     }
 
-    fn validate_path(&self, result: Result<String, FileError>) -> Result<String, FileError> {
+    fn validate_path(&self, result: Result<PathBuf, FileError>) -> Result<PathBuf, FileError> {
         match result {
-            Ok(path_str) => {
-                let p = Path::new(&path_str);
+            Ok(p) => {
+                let path = p.as_path();
 
-                if p.exists() {
-                    let s = p.to_str().unwrap();
+                if path.exists() {
+
+                    let s = path.to_str().unwrap().to_owned();
 
                     if p.is_executable() {
-                        return Ok(p.to_str().unwrap().to_owned());
+                        return Ok(path.to_path_buf());
                     } else {
-                        return Err(FileError::NotExecutable(s.to_owned()));
+                        return Err(FileError::NotExecutable(s));
                     }
                 }
 
-                Err(FileError::NotFound(p.to_str().unwrap().to_owned()))
+                Err(FileError::NotFound(path.to_str().unwrap().to_owned()))
             },
 
             result @ Err(_) => result
@@ -167,7 +187,7 @@ impl<'a> Context {
 
     pub fn remove_remote(&self, alias: &str) -> Result<(), String> {
         let toml = default_toml_path();
-        let mut config = read_or_create_config(&toml);
+        let mut config = read_or_create_config(toml.as_path());
 
         let mut remotes = config.remotes.to_vec();
 
@@ -189,12 +209,12 @@ impl<'a> Context {
         let s = toml::to_string(&config).unwrap();
 
         fs::write(&toml, s)
-            .map_err(|_| format!("failed to write toml at: {}", toml))
+            .map_err(|_| format!("failed to write toml at: {}", toml.as_path().to_str().unwrap()))
     }
 
     pub fn add_or_update_remote(&self, alias: &str, url: &str) -> Result<(), String> {
         let toml = default_toml_path();
-        let mut config = read_or_create_config(&toml);
+        let mut config = read_or_create_config(toml.as_path());
 
         // check for duplicate
         {
@@ -220,7 +240,7 @@ impl<'a> Context {
         let s = toml::to_string(&config).unwrap();
 
         fs::write(&toml, s)
-            .map_err(|_| format!("failed to write toml at: {}", toml))
+            .map_err(|_| format!("failed to write toml at: {}", toml.as_path().to_str().unwrap()))
     }
 }
 
@@ -281,16 +301,15 @@ impl fmt::Display for FileError {
     }
 }
 
-fn get_homedir_path() -> Result<String, FileError> {
+fn get_homedir_path() -> Result<PathBuf, FileError> {
     use std::env;
 
     env::home_dir()
-        .map(|p| p.canonicalize().unwrap())
-        .map(|p| p.to_str().unwrap().to_owned())
+        .map(|p| p.canonicalize().expect("failed to canonizalize"))
         .ok_or(FileError::NoHomeDir)
 }
 
-fn read_or_create_config(path: &str) -> Config {
+fn read_or_create_config(path: &Path) -> Config {
     let config: Config = match fs::read_to_string(path) {
         Ok(contents) => {
             toml::from_str(&contents)
@@ -304,15 +323,16 @@ fn read_or_create_config(path: &str) -> Config {
     config
 }
 
-fn create_new_config(path: &str) -> Config {
+fn create_new_config(path: &Path) -> Config {
     let config = Config::new();
     let s = toml::to_string(&config).unwrap();
-    fs::write(path, s).expect("failed to write toml");
+    fs::write(path.to_str().unwrap(), s).expect("failed to write toml");
     config
 }
 
-fn default_toml_path() -> String {
-    let home = get_homedir_path().expect("");
-    format!("{}/.cmdshelf.toml", home)
+fn default_toml_path() -> PathBuf {
+    let mut home = get_homedir_path().expect("");
+    home.push(".cmdshelf.toml");
+    home
 }
 

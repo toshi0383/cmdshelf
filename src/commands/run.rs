@@ -24,7 +24,9 @@ impl Runnable for Run {
             .and_then(|executable_fullpath| {
                 let args = &args[1..];
                 let mut args: Vec<String> = args.into_iter().map(|x| format!("'{}'", x)).collect();
-                args.insert(0, executable_fullpath);
+                let executable_fullpath = executable_fullpath.as_path().to_str().unwrap();
+
+                args.insert(0, executable_fullpath.to_owned());
                 let command = args.join(" ");
                 spawn(&command)
                     .map_err(|()| "failed to execute command".to_owned())

@@ -4,20 +4,20 @@ use reporter;
 
 use std::io::stdout;
 use std::io::Write;
-use std::path::Path;
 
 pub fn clone_remotes_if_needed(ctx: &Context) {
 
     for r in &ctx.remotes {
 
-        let remote_dir = format!("{}/remote/{}", ctx.workspace_dir, r.alias);
+        let remote_dir = ctx.remote_alias_path(&r.alias);
+        let remote_dir_path = remote_dir.as_path();
 
-        if !Path::new(&remote_dir).exists() {
+        if !remote_dir_path.exists() {
 
             print!("[{}] Cloning ...", r.alias);
             stdout().flush().expect("stdout().flush() failed.");
 
-            let cmd = format!("git clone {} {}", r.url, &remote_dir);
+            let cmd = format!("git clone {} {}", r.url, remote_dir_path.to_str().unwrap());
 
             match get_stdout(&cmd) {
 
@@ -39,14 +39,15 @@ pub fn update_or_clone_remotes(ctx: &Context) {
 
     for r in &ctx.remotes {
 
-        let remote_dir = format!("{}/remote/{}", ctx.workspace_dir, r.alias);
+        let remote_dir = ctx.remote_alias_path(&r.alias);
+        let remote_dir_path = remote_dir.as_path();
 
-        if Path::new(&remote_dir).exists() {
+        if remote_dir_path.exists() {
 
             print!("[{}] Updating ...", r.alias);
             stdout().flush().expect("stdout().flush() failed.");
 
-            let cmd = format!("cd {} && git fetch origin master && git checkout origin/master", &remote_dir);
+            let cmd = format!("cd {} && git fetch origin master && git checkout origin/master", remote_dir.to_str().unwrap());
 
             match get_stdout(&cmd) {
 
