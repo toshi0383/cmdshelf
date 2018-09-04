@@ -22,7 +22,9 @@ impl Runnable for Cat {
 
         ctx.command_path(arg)
             .and_then(|executable_fullpath| {
-                let cmd = format!("cat {}", executable_fullpath);
+                let executable_fullpath = executable_fullpath.as_path().to_str().unwrap();
+
+                let cmd = format!("cat {}", executable_fullpath.to_owned());
                 spawn(&cmd)
                     .map_err(|()| "failed to execute command".to_owned())
             })
