@@ -34,14 +34,13 @@ brew install cmdshelf
 ```
 
 ## Build from source
-Note that rust is required.
+With Rust's package manager [cargo](https://github.com/rust-lang/cargo), you can install cmdshelf via:
 
 ```bash
-git clone git@github.com:toshi0383/cmdshelf.git
-cd cmdshelf
-cargo build --release
-cp target/release/cmdshelf /usr/local/bin
+cargo install cmdshelf
 ```
+
+Note that rust is required.
 
 ### Install auto bash-completion
 Put this in your `~/.bashrc`,
