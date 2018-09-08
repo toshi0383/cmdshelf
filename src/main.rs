@@ -15,6 +15,11 @@ fn main() {
         return
     }
 
+    if args[1] == "--help" {
+        commands::help_command().run([].to_vec()).ok();
+        return
+    }
+
     if args[1] == "--version" {
         println!("{}", VERSION);
         return
