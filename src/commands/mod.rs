@@ -21,14 +21,15 @@ pub fn help_command() -> Box<Runnable + 'static> {
     Box::new(Help { })
 }
 
-pub fn sub_command(string: &str) -> Box<Runnable + 'static> {
+pub fn sub_command(string: &str) -> Result<Box<Runnable + 'static>, String> {
     match string.as_ref() {
-        "cat"    => Box::new(Cat { }),
-        "list"   => Box::new(List { }),
-        "ls"     => Box::new(List { }),
-        "remote" => Box::new(Remote { }),
-        "run"    => Box::new(Run { }),
-        "update" => Box::new(Update { }),
-        _        => Box::new(Help { }),
+        "cat"    => Ok(Box::new(Cat { })),
+        "list"   => Ok(Box::new(List { })),
+        "ls"     => Ok(Box::new(List { })),
+        "remote" => Ok(Box::new(Remote { })),
+        "run"    => Ok(Box::new(Run { })),
+        "update" => Ok(Box::new(Update { })),
+        "help"   => Ok(Box::new(Help { })),
+        _        => Err(format!("no such command: {}", string)),
     }
 }

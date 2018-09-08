@@ -29,7 +29,7 @@ fn sub_command(arg: &str) -> Result<Box<Runnable + 'static>, String> {
         "remove" => Ok(Box::new(Remove { })),
         "list"   => Ok(Box::new(List { })),
         "ls"     => Ok(Box::new(List { })),
-        _        => Err("missing arguments".to_owned()),
+        _        => Err(format!("invalid argument: {}", arg)),
     }
 }
 
