@@ -3,6 +3,9 @@
 * remote add: allow shorthand github repo name [#80](https://github.com/toshi0383/cmdshelf/issues/80)  
   [Toshihiro Suzuki](https://github.com/toshi0383)
 
+* improve behavior on error [#83](https://github.com/toshi0383/cmdshelf/issues/83)  
+  [Toshihiro Suzuki](https://github.com/toshi0383)
+
 ## 2.0.0
 ##### Enhancement & Breaking
 * Migrate from Swift to Rust [#78](https://github.com/toshi0383/cmdshelf/issues/78)  

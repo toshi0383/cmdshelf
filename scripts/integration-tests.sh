@@ -267,6 +267,91 @@ if [ 3 -ne $($CMDSHELF run 017_cmdshelf run 017_echo.sh a b c) ];then
     STATUS=1
 fi
 
+## 018: exit status 1 with invalid arguments
+before_each
+
+$CMDSHELF aaa > /dev/null 2>&1
+exit_status=$?
+
+if [ $exit_status -ne 1 ];then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 018 FAILED
+    STATUS=1
+fi
+
+## 019: exit status 1 with invalid arguments
+before_each
+
+$CMDSHELF run aaa > /dev/null 2>&1
+exit_status=$?
+
+if [ $exit_status -ne 1 ];then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 019 FAILED
+    STATUS=1
+fi
+
+## 020: exit status 1 with invalid arguments
+before_each
+
+$CMDSHELF cat aaa > /dev/null 2>&1
+exit_status=$?
+
+if [ $exit_status -ne 1 ];then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 020 FAILED
+    STATUS=1
+fi
+
+## 021: exit status 1 with invalid arguments
+before_each
+
+$CMDSHELF remote aaa > /dev/null 2>&1
+exit_status=$?
+
+if [ $exit_status -ne 1 ];then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 021 FAILED
+    STATUS=1
+fi
+
+## 022: exit status 1 with invalid arguments
+before_each
+
+$CMDSHELF remote add a > /dev/null 2>&1
+exit_status=$?
+
+if [ $exit_status -ne 1 ];then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 022 FAILED
+    STATUS=1
+fi
+
+## 023: exit status 1 with invalid arguments
+before_each
+
+$CMDSHELF remote remove > /dev/null 2>&1
+exit_status=$?
+
+if [ $exit_status -ne 1 ];then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo 023 FAILED
+    STATUS=1
+fi
+
+## 024: exit status 1 with invalid arguments
+before_each
+
+$CMDSHELF remote remove aaa > /dev/null 2>&1
+exit_status=$?
+
+if [ $exit_status -ne 1 ];then
+    echo Exit code is expected to be 1 but was $exit_status
+    echo TODO: 024 FAILED
+    # TODO
+    #STATUS=1
+fi
+
 # Cleanup
 after_all
 
