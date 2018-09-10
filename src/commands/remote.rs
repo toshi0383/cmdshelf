@@ -23,7 +23,7 @@ impl Runnable for Remote {
 
 }
 
-fn sub_command(arg: &str) -> Result<Box<Runnable + 'static>, String> {
+fn sub_command(arg: &str) -> Result<Box<dyn Runnable + 'static>, String> {
     match arg {
         "add"    => Ok(Box::new(Add { })),
         "remove" => Ok(Box::new(Remove { })),

@@ -17,11 +17,11 @@ pub trait Runnable {
     fn run(&mut self, args: Vec<String>) -> Result<i32, String>;
 }
 
-pub fn help_command() -> Box<Runnable + 'static> {
+pub fn help_command() -> Box<dyn Runnable + 'static> {
     Box::new(Help { })
 }
 
-pub fn sub_command(string: &str) -> Result<Box<Runnable + 'static>, String> {
+pub fn sub_command(string: &str) -> Result<Box<dyn Runnable + 'static>, String> {
     match string.as_ref() {
         "cat"    => Ok(Box::new(Cat { })),
         "list"   => Ok(Box::new(List { })),
