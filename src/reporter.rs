@@ -1,3 +1,4 @@
+use std::fmt;
 use std::io::Write;
 
 enum Color {
@@ -7,12 +8,16 @@ enum Color {
     Reset,
 }
 
-fn color_string(color: Color) -> String {
-    match color {
-        Color::Red    => "\u{001B}[0;31m".to_string(),
-        Color::Green  => "\u{001B}[0;32m".to_string(),
-        Color::Yellow => "\u{001B}[0;33m".to_string(),
-        Color::Reset  => "\u{001B}[0;0m".to_string(),
+impl fmt::Display for Color {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let s: &str = match self {
+            Color::Red    => "\u{001B}[0;31m",
+            Color::Green  => "\u{001B}[0;32m",
+            Color::Yellow => "\u{001B}[0;33m",
+            Color::Reset  => "\u{001B}[0;0m",
+        };
+
+        write!(f, "{}", s)
     }
 }
 
@@ -20,9 +25,9 @@ fn _println<O>(out: &mut O, color: Color, message: String) where O: Write {
     writeln!(
         out,
         "{}{}{}",
-        color_string(color),
+        color,
         message,
-        color_string(Color::Reset)
+        Color::Reset
     ).expect("Failed writing to stderr");
 }
 
