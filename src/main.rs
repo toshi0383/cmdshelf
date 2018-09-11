@@ -29,7 +29,7 @@ fn main() {
     let args_remainder = _args.split_off(2);
 
     let status = commands::sub_command(&_args[1])
-        .and_then(|mut sub_command: Box<Runnable + 'static>| -> Result<i32, String> {
+        .and_then(|mut sub_command: Box<dyn Runnable + 'static>| -> Result<i32, String> {
             sub_command.run(args_remainder)
                 .or_else(|msg| {
                     reporter::error(format!("cmdshelf {}: {} ", sub_command.name(), msg));
