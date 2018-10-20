@@ -13,7 +13,13 @@ cargo build
 git push --tag
 
 ### homebrew
+set +e
+
 cd /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/
+git checkout master
+git branch -D update-cmdshelf 2>/dev/null
+git pull upstream master
+git checkout -b update-cmdshelf
 sed -i "" -e "s/$CUR_VER/$NEW_VER/" cmdshelf.rb
 
 # available after version in tarball URL updated and tag pushed
