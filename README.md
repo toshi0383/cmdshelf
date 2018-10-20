@@ -33,6 +33,9 @@ You can see detailed document [here](docs/getting-started.md), or type `man cmds
 brew install cmdshelf
 ```
 
+It's recommended to [upgrade your bash to version 4](https://troymccall.com/better-bash-4--completions-on-osx/), to use full feature of cmdshelf's bash-completion.  
+See: https://github.com/toshi0383/cmdshelf/pull/88
+
 ## Build from source
 With Rust's package manager [cargo](https://github.com/rust-lang/cargo), you can install cmdshelf via:
 
