@@ -6,7 +6,7 @@ use cmdshelf::reporter;
 use cmdshelf::commands::Runnable;
 use cmdshelf::commands;
 
-const VERSION: &str = "2.0.1";
+const VERSION: &str = "2.0.2";
 
 fn main() {
     let args: Vec<String> = env::args().collect();
