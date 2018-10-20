@@ -26,18 +26,31 @@ _cmdshelf() {
             return 0
             ;;
         list|ls)
-            COMPREPLY=($(compgen -W '--path' -- ${cur}))
+            COMPREPLY=($(compgen -W '--path' -- "${cur}"))
             return 0
             ;;
         run)
-            COMPREPLY=($(compgen -W "$(cmdshelf list | awk -F: '{print $2}')" -- ${cur}))
+            if [ $COMP_CWORD -le 2 ]; then
+                COMPREPLY=($(compgen -W "$(cmdshelf list | awk -F: '{print $2}')" -- "${cur}"))
+            else
+
+                # NOTE: available on bash 4 or later
+                compopt -o filenames cmdshelf 2>/dev/null
+                compgen -f /non-existing-dir/ >/dev/null
+
+                COMPREPLY=($(compgen -df -- "$cur"))
+            fi
+
             return 0
             ;;
         cat)
-            COMPREPLY=($(compgen -W "$(cmdshelf list | awk -F: '{print $2}')" -- ${cur}))
+            COMPREPLY=($(compgen -W "$(cmdshelf list | awk -F: '{print $2}')" -- "${cur}"))
+
             return 0
             ;;
     esac
 }
 
-complete -F _cmdshelf cmdshelf
+# https://www.gnu.org/software/bash/manual/html_node/A-Programmable-Completion-Example.html
+
+complete -o bashdefault -F _cmdshelf cmdshelf
