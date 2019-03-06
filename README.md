@@ -3,16 +3,10 @@
     <img src="https://github.com/toshi0383/assets/blob/master/cmdshelf/banner.svg" alt="cmdshelf" />
   </a>
 </p>
-<p align="center">
-  <a href="https://github.com/toshi0383/cmdshelf/releases">
-    <img src="https://img.shields.io/github/release/toshi0383/cmdshelf.svg" alt="Git Version" />
-  </a>
-  <a href="https://github.com/toshi0383/cmdshelf/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-lightgray.svg" alt="license" />
-  </a>
-</p>
 
-cmdshelf is a new way of scripting.😎
+# cmdshelf <a href="https://github.com/toshi0383/cmdshelf/releases"><img src="https://img.shields.io/github/release/toshi0383/cmdshelf.svg" alt="Git Version" /></a><a href="https://github.com/toshi0383/cmdshelf/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-lightgray.svg" alt="license" /></a>
+
+`cmdshelf` is a new way of scripting.😎
 
 - ✅ Seperate name space using directories (e.g. `swiftpm/install.sh` `your/tool/install.sh`)
 - ✅ No more `$PATH` configurations
