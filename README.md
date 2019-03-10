@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/toshi0383/cmdshelf">
-    <img src="https://github.com/toshi0383/assets/blob/master/cmdshelf/banner.svg" alt="cmdshelf" />
+    <img src="https://github.com/toshi0383/assets/blob/master/cmdshelf/banner.png" alt="cmdshelf" />
   </a>
 </p>
 
