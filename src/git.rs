@@ -18,7 +18,6 @@ pub fn clone_remotes_if_needed(ctx: &Context) {
             stdout().flush().expect("stdout().flush() failed.");
 
             let cmd = format!("git clone {} {}", r.url, remote_dir_path.to_str().unwrap());
-
             match get_stdout(&cmd) {
 
                 Ok(_)    => reporter::successful("success".to_owned()),
