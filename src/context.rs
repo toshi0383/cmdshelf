@@ -302,9 +302,7 @@ impl fmt::Display for FileError {
 }
 
 fn get_homedir_path() -> Result<PathBuf, FileError> {
-    use std::env;
-
-    env::home_dir()
+    dirs::home_dir()
         .map(|p| p.canonicalize().expect("failed to canonizalize"))
         .ok_or(FileError::NoHomeDir)
 }
